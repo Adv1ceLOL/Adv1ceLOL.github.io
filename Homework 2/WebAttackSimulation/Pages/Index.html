@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Euler–Maruyama</title>
+    <link rel="stylesheet" href="../wwwroot/css/site.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-dark text-white">
+    <div class="container mt-5">
+        <h1>Euler–Maruyama</h1>
+        <div class="form-group">
+            <label for="timesInput"># times:</label>
+            <input type="number" id="timesInput" value="100" min="10" max="10000" step="10" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="pathsInput"># sample paths:</label>
+            <input type="number" id="pathsInput" value="50" min="10" max="10000" step="10" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="muInput">μ (drift):</label>
+            <input type="number" id="muInput" value="0" min="-20" max="20" step=".1" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="sigmaInput">σ (diffusion):</label>
+            <input type="number" id="sigmaInput" value="1" min="0.1" max="1000" step=".1" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="lambdaInput">λ:</label>
+            <input type="number" id="lambdaInput" value="50" min="1" max="1000" step="1" class="form-control">
+        </div>
+        <div class="form-group">
+            <div class="form-check form-check-inline">
+                <input type="radio" id="allAtOnce" name="animationGroup" class="form-check-input">
+                <label for="allAtOnce" class="form-check-label">All at once</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" id="animated" name="animationGroup" checked class="form-check-input">
+                <label for="animated" class="form-check-label">Slow animation</label>
+            </div>
+        </div>
+        <hr>
+        <canvas id="canvas" width="900" height="600" oncontextmenu="return false;" class="border"></canvas>
+        <div class="form-group mt-3">
+            <div class="form-check">
+                <input type="radio" id="randomWalk" name="processGroup" checked class="form-check-input">
+                <label for="randomWalk" class="form-check-label">Random Walk (RW) [µ=0, uses σ]</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" id="poisson" name="processGroup" class="form-check-input">
+                <label for="poisson" class="form-check-label">Poisson [uses rate of occurrences λ]</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" id="absoluteFrequency" name="processGroup" class="form-check-input">
+                <label for="absoluteFrequency" class="form-check-label">Absolute Frequency Trajectories</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" id="relativeFrequency" name="processGroup" class="form-check-input">
+                <label for="relativeFrequency" class="form-check-label">Relative Frequency Trajectories</label>
+            </div>
+        </div>
+        <button id="recomputeBtn" type="button" class="btn btn-primary mt-3">Generate new</button>
+    </div>
+    <script src="../wwwroot/js/MyRndUtilities.js"></script>
+    <script src="../wwwroot/js/MyChartUtilities.js"></script>
+    <script src="../wwwroot/js/My2dUtilities.js"></script>
+    <script src="../wwwroot/js/MyDistributionUtilities.js"></script>
+    <script src="../wwwroot/js/Rettangolo.js"></script>
+    <script src="../wwwroot/js/site.js"></script>
+</body>
+</html>

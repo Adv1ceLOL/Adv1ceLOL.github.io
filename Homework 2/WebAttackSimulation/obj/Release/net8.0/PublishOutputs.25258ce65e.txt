@@ -1,0 +1,8 @@
+C:\Users\dario\Desktop\Adv1ceLOL.github.io\Homework 2\WebAttackSimulation\publish\WebAttackSimulation.exe
+C:\Users\dario\Desktop\Adv1ceLOL.github.io\Homework 2\WebAttackSimulation\publish\web.config
+C:\Users\dario\Desktop\Adv1ceLOL.github.io\Homework 2\WebAttackSimulation\publish\appsettings.Development.json
+C:\Users\dario\Desktop\Adv1ceLOL.github.io\Homework 2\WebAttackSimulation\publish\appsettings.json
+C:\Users\dario\Desktop\Adv1ceLOL.github.io\Homework 2\WebAttackSimulation\publish\WebAttackSimulation.dll
+C:\Users\dario\Desktop\Adv1ceLOL.github.io\Homework 2\WebAttackSimulation\publish\WebAttackSimulation.deps.json
+C:\Users\dario\Desktop\Adv1ceLOL.github.io\Homework 2\WebAttackSimulation\publish\WebAttackSimulation.runtimeconfig.json
+C:\Users\dario\Desktop\Adv1ceLOL.github.io\Homework 2\WebAttackSimulation\publish\WebAttackSimulation.pdb

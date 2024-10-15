@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "WebAttackSimulation/1.0.0": {
+        "runtime": {
+          "WebAttackSimulation.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "WebAttackSimulation/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
