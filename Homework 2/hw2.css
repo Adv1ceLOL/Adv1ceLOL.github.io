@@ -32,6 +32,17 @@ body {
 }
 .content-section {
     padding: 20px;
+    height: calc(210vh); /* Adjust height to fill remaining space */
+    overflow: hidden; /* Prevent scrolling */
+    display: flex;
+    flex-direction: column;
+}
+
+iframe {
+    flex: 1; /* Allow iframe to expand to fill available space */
+    width: 100%; /* Ensure iframe takes full width */
+    height: 100%; /* Ensure iframe takes full height */
+    border: none; /* Remove iframe border */
 }
 .main-title {
     font-size: 2em;
