@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 2</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="hw2.css" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="header-text">Homework 2</div>
+    </div>
+    <div class="container">
+        <div class="content-section">
+            <h2 class="section-title">Theory</h2>
+            <h3 class="main-title">What is the Welford recursion?</h3>
+            <p>
+                Welford's method is a numerically stable way to compute the mean and variance of a 
+                dataset in a single pass, which is both efficient and avoids problems like loss of 
+                precision that can occur with naive methods. The elegance of Welford’s method lies 
+                in how it recursively updates the mean and variance with each new data point without 
+                needing to store the entire dataset or reprocess old data.
+            </p>
+            <h4 class="secondary-title" style="text-align: center;">We can breakdown the Welford's Recursion in updating the mean and the variance</h4>
+            <h3 class="main-title">Updating the Mean</h3>
+            <p>
+                Imagine we have already processed <em>n</em> data points and calculated the mean <em>&mu;<sub>n</sub></em> (mean after the first <em>n</em> points). Now, we get a new data point, <em>x<sub>n+1</sub></em>, and want to update our mean to account for it.
+            </p>
+            <p>
+                Formula for updating the mean:
+            </p>
+            <div class="formula">
+                <em>&mu;<sub>n+1</sub> = &mu;<sub>n</sub> + <sup>(x<sub>n+1</sub> - &mu;<sub>n</sub>)</sup>&frasl;<sub>(n + 1)</sub></em>
+            </div>
+            <p>
+                This formula might look intimidating at first, but it’s quite intuitive with the right analogy:
+            </p>
+            <p>
+                Analogy: Imagine you're at a dinner party, and the host has served soup to <em>n</em> people. You know the average amount of soup everyone has had so far (<em>&mu;<sub>n</sub></em>). When a new guest arrives, you don’t want to recheck how much soup everyone has had; instead, you only care about how much soup this new person (<em>x<sub>n+1</sub></em>) is having compared to the existing average (<em>&mu;<sub>n</sub></em>). If they have exactly the average amount, the overall mean doesn't change. If they have more or less than the current average, you adjust the mean slightly based on how much their portion differs and how many guests there are now. This adjustment is divided by the total number of people, <em>n + 1</em>, to spread the change evenly.
+            </p>
+            <h3 class="main-title">Updating the Variance</h3>
+            <p>
+                Next, let's deal with the variance, which tells us how spread out the data points are around the mean. The tricky part of variance is that it depends on the mean, which is changing with every new data point. However, Welford's method gives us a neat way to update the variance incrementally.
+            </p>
+            <p>
+                The sample variance (unbiased estimate) after <em>n</em> points is:
+            </p>
+            <div class="formula">
+                <em>&sigma;<sub>n</sub><sup>2</sup> = <sup>1</sup>&frasl;<sub>n-1</sub> &sum;<sub>i=1</sub><sup>n</sup> (x<sub>i</sub> - &mu;<sub>n</sub>)<sup>2</sup></em>
+            </div>
+            <p>
+                When we add a new data point, <em>x<sub>n+1</sub></em>, we can update the variance using the following recursive formula:
+            </p>
+            <p>
+                Formula for updating the variance:
+            </p>
+            <div class="formula">
+                <em>M<sub>n+1</sub> = M<sub>n</sub> + (x<sub>n+1</sub> - &mu;<sub>n</sub>)(x<sub>n+1</sub> - &mu;<sub>n+1</sub>)</em><br>
+                <em>&sigma;<sub>n+1</sub><sup>2</sup> = <sup>M<sub>n+1</sub></sup>&frasl;<sub>n</sub></em>
+            </div>
+            <p>
+                where <em>M<sub>n</sub></em> is a running total related to the sum of squared differences from the mean (but without dividing by <em>n-1</em>).
+            </p>
+            <p>
+                This formula might seem more abstract, but it essentially says: "The new total squared difference from the mean (after adding <em>x<sub>n+1</sub></em>) is the old total squared difference, plus a correction factor based on how far <em>x<sub>n+1</sub></em> is from both the old and the new mean."
+            </p>
+            <h3 class="main-title">Why is Welford's method simple and elegant?</h3>
+            <p>
+                <strong>Single-pass computation:</strong> It doesn't require storing all the data or making multiple passes through it. We only need to keep track of the current mean, variance, and a couple of additional variables.
+            </p>
+            <p>
+                <strong>Numerical stability:</strong> By using a recursive update and working incrementally, Welford’s method avoids the numerical precision issues that arise when using the naive method of summing squares (particularly when working with large datasets or values with very different magnitudes).
+            </p>
+            <p>
+                <strong>Efficient:</strong> With only a handful of operations per new data point, it’s both time and space-efficient.
+            </p>
+        </div>
+        <div class="content-section">
+            <h2 class="section-title">Practice</h2>
+            <pre>
+                <code>
+                    <!-- Add your code here -->
+                    console.log('Hello, world!');
+                </code>
+            </pre>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

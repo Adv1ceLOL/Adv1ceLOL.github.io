@@ -1,0 +1,66 @@
+body {
+    background-color: #333; /* Dark grey background */
+    color: white; /* White text */
+}
+.header {
+    position: relative;
+    height: 40vh;
+    background: url('../Images/IndexImage.webp') no-repeat center center;
+    background-size: cover;
+}
+.header-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 3em;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px black;
+}
+.section-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #01f01d;
+    text-transform: uppercase;
+    border-bottom: 2px solid #01f01d;
+    padding-bottom: 10px;
+}
+.content-section {
+    padding: 20px;
+}
+.main-title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 20px; /* Increased margin-bottom */
+    color: #01f01d;
+}
+.subtitle {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 30px; /* Increased margin-top */
+    margin-bottom: 20px; /* Increased margin-bottom */
+}
+.secondary-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 25px; /* Increased margin-top */
+    margin-bottom: 20px; /* Increased margin-bottom */
+    text-align: center;
+}
+pre code {
+    background-color: #444; /* Slightly lighter grey for code background */
+    color: white; /* White text for code */
+    padding: 10px;
+    border-radius: 5px;
+    display: block;
+}
+.formula {
+    text-align: center;
+    font-size: 1.2em;
+    margin: 20px 0;
+}
