@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const VariateType = Object.freeze({
         RW: Symbol("randomWalk"),
         POISSON: Symbol("Poisson"),
+        RELATIVE_FREQUENCY: Symbol("relativeFrequency"),
     });
 
     const recomputeBtn = document.getElementById("recomputeBtn");
@@ -13,11 +14,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const timesInput = document.getElementById("timesInput");
     const pathsInput = document.getElementById("pathsInput");
 
-    const allAtOnce = document.getElementById("allAtOnce");
     const animated = document.getElementById("animated");
 
     const randomWalk = document.getElementById("randomWalk");
     const poisson = document.getElementById("poisson");
+    const relativeFrequency = document.getElementById("relativeFrequency");
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
@@ -65,14 +66,13 @@ document.addEventListener("DOMContentLoaded", function() {
         animate = animated.checked;
 
         const sigmaRange = 4;
-        const dt = 1 / n;
-        const sigmaSqrtDt = sigma * Math.sqrt(dt);
-        const sqrtDt = Math.sqrt(dt);
 
         if (randomWalk.checked) {
             setProcess("Random Walk (sum of scaled Rademacher rv's = Σ σ R(-1,1), ±1 jumps, p=.5, mean=0, var = σ² t, std = σ √t", VariateType.RW, false, -sigmaRange * sigma * Math.sqrt(n), sigmaRange * sigma * Math.sqrt(n), () => MyRndUtilities.RademacherVariate(), (sum) => (sigma * sum));
         } else if (poisson.checked) {
             setProcess("Poisson with rate λ ( ≈ Σ Be(λ/n), mean=λ, var=λ )", VariateType.POISSON, false, 0, lambda * 1.5, () => MyRndUtilities.bernoulliVariate(lambda / n), (sum) => (sum));
+        } else if (relativeFrequency.checked) {
+            setProcess("Relative Frequency (f = rel freq = count/t ( Σ σ R(-1,1)), mean = p, var = √p(1-p)/t → 0)", VariateType.RELATIVE_FREQUENCY, false, -1, 1, () => MyRndUtilities.RademacherVariate(), (sum,t) => (sum / t));
         }
 
         range = maxView - minView;
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
         currentPath = s;
         const path = new Path2D();
 
-        let sum = 0;
+        let sum = 0; // Initialize sum for Bernoulli trials
         let prevY = yOrigin;
 
         path.moveTo(xOrigin, yOrigin);
@@ -123,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function() {
             sum += randomJump();
             let value = variate(sum, t);
 
+            console.log("t = " + t + "  sum = " + sum + "  value = " + value);
             if (t === histTimeT) {
                 MyDistributionUtilities.allocateValueInIntervals(value, intervalsT, intervalSize);
             } else if (t === histTimeN) {

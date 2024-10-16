@@ -83,9 +83,9 @@
             <h3 class="main-title">Personal Notes on Mean and Variance with Respect to Time</h3>
             <h5 class="tertiary-title">Observations in Different Cases</h5>
             <p>
-                <strong>1. Random Walk (RW):</strong><br>
-                <strong>Mean:</strong> The mean of the random walk process remains around zero over time, as the process is symmetric with equal probability of moving up or down.<br>
-                <strong>Variance:</strong> The variance increases linearly with time. This is because each step adds a random variable with a fixed variance, leading to a cumulative effect.
+                <strong>1. Absolute Frequency (Random Walk with -1, +1 Jumps):</strong><br>
+                <strong>Mean:</strong> The mean of the absolute frequency remains zero over time. This is because the random walk is symmetric, and the expected value of each step is zero.<br>
+                <strong>Variance:</strong> The variance of the absolute frequency increases linearly with time. Specifically, it is given by &sigma;<sup>2</sup> &middot; t, where &sigma; is the standard deviation of the steps (which is 1 in this case). This indicates that the spread of the positions increases with time.
             </p>
             <p>
                 <strong>2. Poisson Process:</strong><br>
@@ -93,14 +93,11 @@
                 <strong>Variance:</strong> The variance also increases linearly with time, and it is equal to the mean in a Poisson process.
             </p>
             <p>
-                <strong>3. Relative Frequency (Bernoulli Trials):</strong><br>
-                <strong>Mean:</strong> The mean of the relative frequency converges to the probability of success (p) as time increases. This is due to the Law of Large Numbers.<br>
-                <strong>Variance:</strong> The variance of the relative frequency decreases over time, approaching zero. This is because the relative frequency stabilizes around the mean probability of success.
-            </p>
-            <p>
-                <strong>4. Absolute Frequency (Bernoulli Trials):</strong><br>
-                <strong>Mean:</strong> The mean of the absolute number of successes increases linearly with time, proportional to the probability of success (p).<br>
-                <strong>Variance:</strong> The variance of the absolute number of successes increases linearly with time, similar to the Poisson process.
+                <strong>3. Relative Frequency (Random Walk with -1, +1 Jumps):</strong><br>
+                <strong>Mean:</strong> The mean of the relative frequency converges to zero as time increases. This is due to the symmetric nature of the random walk.<br>
+                <strong>Variance:</strong> The variance of the relative frequency decreases over time, approaching zero. This is because the relative frequency stabilizes around the mean of zero.
+                <br><br><strong>ASSUMPTION 1:</strong> The relative frequency is calculated using the same random walk with -1, +1 jumps to understand the difference with absolute frequency.
+                <br><br><strong>ASSUMPTION 2:</strong> The graph is in the interval [-1,1] to see the whole graph, but the important feature is that it converges to zero as previously mentioned.
             </p>
             <h5 class="tertiary-title">Main Differences Between Absolute Number of Successes and Relative Frequencies</h5>
             <p>
