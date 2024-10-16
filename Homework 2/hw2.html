@@ -78,7 +78,42 @@
         </div>
         <div class="content-section">
             <h2 class="section-title">Practice</h2>
-            <iframe src="WebAttackSimulation/Pages/Index.html" width="100%" height="100%" frameborder="0"></iframe>
+            <iframe src="WebAttackSimulation/Pages/Index.html"></iframe>
+            
+            <h3 class="main-title">Personal Notes on Mean and Variance with Respect to Time</h3>
+            <h5 class="tertiary-title">Observations in Different Cases</h5>
+            <p>
+                <strong>1. Random Walk (RW):</strong><br>
+                <strong>Mean:</strong> The mean of the random walk process remains around zero over time, as the process is symmetric with equal probability of moving up or down.<br>
+                <strong>Variance:</strong> The variance increases linearly with time. This is because each step adds a random variable with a fixed variance, leading to a cumulative effect.
+            </p>
+            <p>
+                <strong>2. Poisson Process:</strong><br>
+                <strong>Mean:</strong> The mean of the Poisson process increases linearly with time, proportional to the rate parameter λ.<br>
+                <strong>Variance:</strong> The variance also increases linearly with time, and it is equal to the mean in a Poisson process.
+            </p>
+            <p>
+                <strong>3. Relative Frequency (Bernoulli Trials):</strong><br>
+                <strong>Mean:</strong> The mean of the relative frequency converges to the probability of success (p) as time increases. This is due to the Law of Large Numbers.<br>
+                <strong>Variance:</strong> The variance of the relative frequency decreases over time, approaching zero. This is because the relative frequency stabilizes around the mean probability of success.
+            </p>
+            <p>
+                <strong>4. Absolute Frequency (Bernoulli Trials):</strong><br>
+                <strong>Mean:</strong> The mean of the absolute number of successes increases linearly with time, proportional to the probability of success (p).<br>
+                <strong>Variance:</strong> The variance of the absolute number of successes increases linearly with time, similar to the Poisson process.
+            </p>
+            <h5 class="tertiary-title">Main Differences Between Absolute Number of Successes and Relative Frequencies</h5>
+            <p>
+                <strong>1. Distribution Shape:</strong><br>
+                <strong>Absolute Number of Successes:</strong> The distribution of the absolute number of successes is typically skewed, especially for small probabilities of success. It follows a binomial distribution.<br>
+                <strong>Relative Frequencies:</strong> The distribution of relative frequencies tends to be more symmetric and bell-shaped as the number of trials increases, due to the Central Limit Theorem.
+            </p>
+           
+        
+            <h4 class="secondary-title">My Unfiltered Conclusion</h4>
+            <p>
+                The behavior of mean and variance in these processes highlights the differences between absolute and relative measures. Absolute measures grow with time, while relative measures stabilize, providing different insights into the underlying stochastic processes. But at the end of the day, what do i know.
+            </p>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

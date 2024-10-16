@@ -2,6 +2,8 @@
 
 class MyRndUtilities {
 
+  
+
   static gaussianPair(mean, stdDev) {
     let u, v, s = 0;
     while (s >= 1 || s === 0) {

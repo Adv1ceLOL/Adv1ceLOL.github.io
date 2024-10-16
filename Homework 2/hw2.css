@@ -20,7 +20,7 @@ body {
 }
 .section-title {
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     text-align: center;
     font-family: 'Arial', sans-serif;
     font-size: 2.5em;
@@ -32,17 +32,17 @@ body {
 }
 .content-section {
     padding: 20px;
-    height: calc(210vh); /* Adjust height to fill remaining space */
     overflow: hidden; /* Prevent scrolling */
     display: flex;
     flex-direction: column;
 }
 
-iframe {
-    flex: 1; /* Allow iframe to expand to fill available space */
+.content-section iframe {
+    height: 1400px; /* Apply height only to the iframe */
     width: 100%; /* Ensure iframe takes full width */
-    height: 100%; /* Ensure iframe takes full height */
     border: none; /* Remove iframe border */
+    overflow: none;
+    margin-bottom: 50px; /* Increase margin-bottom to push content lower */
 }
 .main-title {
     font-size: 2em;
