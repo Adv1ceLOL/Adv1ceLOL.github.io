@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
         currentPath = s;
         const path = new Path2D();
 
-        let sum = 0; // Initialize sum for Bernoulli trials
+        let sum = 0; 
         let prevY = yOrigin;
 
         path.moveTo(xOrigin, yOrigin);

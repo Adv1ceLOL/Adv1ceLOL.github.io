@@ -1,0 +1,25 @@
+.header {
+    background-color: #28a745;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+body{
+    background-color: #333 !important; /* Dark grey background */
+    color: white !important; /* White text */
+}
+.custom-navbar {
+    background-color: #28a745 !important;
+}
+.btn-homework {
+    margin: 10px;
+}
+.homework-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+.homework-row {
+    display: flex;
+    justify-content: center;
+}
