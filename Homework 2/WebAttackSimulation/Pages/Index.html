@@ -43,16 +43,20 @@
         <canvas id="canvas" width="900" height="600" oncontextmenu="return false;" class="border"></canvas>
         <div class="form-group mt-3">
             <div class="form-check">
+                <input type="radio" id="bernulli" name="processGroup" class="form-check-input">
+                <label for="bernulli" class="form-check-label">Bernulli [uses rate of occurrences λ]</label>
+            </div>
+            <div class="form-check">
                 <input type="radio" id="randomWalk" name="processGroup" checked class="form-check-input">
                 <label for="randomWalk" class="form-check-label">Random Walk (RW) [µ=0, uses σ] Absolute Frequency</label>
             </div>
             <div class="form-check">
-                <input type="radio" id="poisson" name="processGroup" class="form-check-input">
-                <label for="poisson" class="form-check-label">Poisson [uses rate of occurrences λ]</label>
-            </div>
-            <div class="form-check">
                 <input type="radio" id="relativeFrequency" name="processGroup" class="form-check-input">
                 <label for="relativeFrequency" class="form-check-label">Relative Frequency {interval [-1,1]}</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" id="poisson" name="processGroup" class="form-check-input">
+                <label for="poisson" class="form-check-label">Poisson [uses rate of occurrences λ/N]</label>
             </div>
         </div>
         <button id="recomputeBtn" type="button" class="btn btn-primary mt-3">Generate new</button>

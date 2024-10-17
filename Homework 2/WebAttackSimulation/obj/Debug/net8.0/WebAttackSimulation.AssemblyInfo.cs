@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebAttackSimulation")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4336c80f8c718378cf7f3fa3f7b21f8b8708e509")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a9ef8e35aed508270325fd2cb460c8b7c29c77d")]
 [assembly: System.Reflection.AssemblyProductAttribute("WebAttackSimulation")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebAttackSimulation")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
