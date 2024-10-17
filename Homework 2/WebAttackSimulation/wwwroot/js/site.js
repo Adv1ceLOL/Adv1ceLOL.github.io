@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
         } else if (poisson.checked) {
             setProcess("Poisson with rate λ ( ≈ Σ Be(λ/n), mean=λ, var=λ )", VariateType.POISSON, false, 0, lambda * 1.5, () => MyRndUtilities.bernoulliVariate(lambda / n), (sum) => (sum));
         } else if (relativeFrequency.checked) {
-            setProcess("Relative Frequency (f = rel freq = count/t ( Σ σ R(-1,1)), mean = p, var = √p(1-p)/t → 0)", VariateType.RELATIVE_FREQUENCY, false, -1, 1, () => MyRndUtilities.RademacherVariate(), (sum,t) => (sum / t));
+            setProcess("Relative Frequency (f = rel freq = count/t ( Σ σ R(-1,1)), mean = p, var = √p(1-p)/t → 0)", VariateType.RELATIVE_FREQUENCY, false, -1, 1, () => (Math.random() <= lambda/100) ? -1 : 1, (sum,t) => (sum / t));
         }
 
         range = maxView - minView;
