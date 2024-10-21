@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const VariateType = Object.freeze({
         RW: Symbol("randomWalk"),
         POISSON: Symbol("Poisson"),
-        RELATIVE_FREQUENCY: Symbol("relativeFrequency"),
+        //RELATIVE_FREQUENCY: Symbol("relativeFrequency"),
         BERNULLI: Symbol("bernoulli"),
     });
 
@@ -16,10 +16,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const pathsInput = document.getElementById("pathsInput");
 
     const animated = document.getElementById("animated");
+    const absoluteFrequency = document.getElementById("absolute");
+    const relativeFrequency = document.getElementById("relative");
 
     const randomWalk = document.getElementById("randomWalk");
     const poisson = document.getElementById("poisson");
-    const relativeFrequency = document.getElementById("relativeFrequency");
+    //const relativeFrequency = document.getElementById("relativeFrequency");
     const bernulli = document.getElementById("bernulli");
 
     const canvas = document.getElementById("canvas");
@@ -70,13 +72,15 @@ document.addEventListener("DOMContentLoaded", function() {
         const sigmaRange = 4;
 
         if (randomWalk.checked) {
-            setProcess("Random Walk (sum of scaled Rademacher rv's = Σ σ R(-1,1), ±1 jumps, p=.5, mean=0, var = σ² t, std = σ √t", VariateType.RW, false, -sigmaRange * sigma * Math.sqrt(n), sigmaRange * sigma * Math.sqrt(n), () => MyRndUtilities.RademacherVariate(), (sum) => (sigma * sum));
+            if(absoluteFrequency.checked){
+                setProcess("Random Walk (sum of scaled Rademacher rv's = Σ σ R(-1,1), ±1 jumps, p=.5, mean=0, var = σ² t, std = σ √t", VariateType.RW, false, -sigmaRange * sigma * Math.sqrt(n), sigmaRange * sigma * Math.sqrt(n), () => (Math.random() <= lambda/100) ? -1 : 1, (sum) => (sigma * sum));
+            } else if (relativeFrequency.checked){
+                //console.log("Relative Frequency = ", relativeFrequency.checked);
+                setProcess("Relative Frequency (f = rel freq = count/t ( Σ σ R(-1,1)), mean = p, var = √p(1-p)/t → 0)", VariateType.RELATIVE_FREQUENCY, false, -1, 1, () => (Math.random() <= lambda/100) ? -1 : 1, (sum,t) => (sum / t));
+            }
         } else if (bernulli.checked) {
             setProcess("Bernulli with rate λ ( ≈ Σ Be(λ), mean=λ, var=λ )", VariateType.BERNULLI, false, 0, lambda * 1.5, () => MyRndUtilities.bernoulliVariate(lambda/100), (sum) => (sum));
-        } else if (relativeFrequency.checked) {
-            setProcess("Relative Frequency (f = rel freq = count/t ( Σ σ R(-1,1)), mean = p, var = √p(1-p)/t → 0)", VariateType.RELATIVE_FREQUENCY, false, -1, 1, () => (Math.random() <= lambda/100) ? -1 : 1, (sum,t) => (sum / t));
-        }
-        else if (poisson.checked) {
+        } else if (poisson.checked) {
             setProcess("Poisson with rate λ/N ( ≈ Σ Be(λ/N), mean=λ, var=λ )", VariateType.POISSON, false, 0, lambda * 1.5, () => MyRndUtilities.bernoulliVariate(lambda / n), (sum) => (sum));
         }
 

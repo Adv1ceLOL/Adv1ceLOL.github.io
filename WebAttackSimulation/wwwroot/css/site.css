@@ -24,3 +24,16 @@ body {
   background-color: #333 !important;/* Dark grey background */
   color: white !important; /* Set text color to white */
 }
+
+.small-windowed {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #444; /* Slightly lighter background */
+  color: white; /* Ensure text is white */
+  margin-top: 480px;
+  right: 10px; /* Align to the right */
+  top: 10px; /* Align to the top */
+  width: 200px; /* Set a fixed width */
+  z-index: 10; /* Ensure it is on top */
+}

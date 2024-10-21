@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 3</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="hw3.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <a class="navbar-brand" href="../index.html">
+            <img src="../Images/Navigation.jpg" alt="Navigation" style="height: 40px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link">Previous Homeworks: </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../Homework 1/hw1.html">Homework 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../Homework 2/hw2.html">Homework 2</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="card rounded-border-gradient">
+            <div class="card-body">
+                <div class="header">
+                    <h1 class="header-text">Homework 3</h1>
+                </div>
+            </div>
+        </div>
+        <div class="content-section mt-4">
+            <h2 class="section-title">Theory</h2>
+            <h3 class="main-title">Absolute Deviations and Their Meaning</h3>
+            <p>
+                When you compute the absolute deviation from a central point <em>c</em>, you're measuring how far each data point <em>x<sub>i</sub></em> is from that point <em>c</em>, but without worrying about the direction (positive or negative differences). The sum of absolute deviations from a point <em>c</em> for a data set <em>x<sub>1</sub>, x<sub>2</sub>, …, x<sub>n</sub></em> is:
+            </p>
+            <div class="formula">
+                <em>S(c) = ∑<sub>i=1</sub><sup>n</sup> |x<sub>i</sub> - c|</em>
+            </div>
+            <p>
+                The question we are addressing is: 
+                <span style="color: red;">Why is the median the value of <em>c</em> that minimizes this sum?</span>
+            </p>
+            <h3 class="main-title">Case 1: <em>c</em> is the median</h3>
+            <p>
+                Let’s consider the case where <em>c</em> is the median of the data points. For simplicity, assume the data is ordered as follows:
+            </p>
+            <div class="formula">
+                <em>x<sub>1</sub> ≤ x<sub>2</sub> ≤ ⋯ ≤ x<sub>n</sub></em>
+            </div>
+            <p>
+                The median, denoted as <em>m</em>, is:
+            </p>
+            <div class="formula">
+                <em>If <em>n</em> is odd, <em>m = x<sub>(n+1)/2</sub></em></em>
+            </div>
+            <div class="formula">
+                <em>If <em>n</em> is even, <em>m = (x<sub>n/2</sub> + x<sub>(n/2)+1</sub>)/2</em></em>
+            </div>
+            <h3 class="main-title">Case 2: What happens if we move <em>c</em> away from the median?</h3>
+            <p>
+                Now imagine you shift <em>c</em> slightly to the right or left of the median.
+            </p>
+            <ul>
+                <li><strong>If <em>c</em> is to the left of the median</strong>, say <em>c < m</em>, the deviations on the right (the majority of points) increase, and the deviations on the left decrease, but the increase on the right outweighs the decrease on the left.</li>
+                <li><strong>If <em>c</em> is to the right of the median</strong>, say <em>c > m</em>, the deviations on the left increase, and the deviations on the right decrease, but again, the increase on the left outweighs the decrease on the right.</li>
+            </ul>
+            <p>
+                Thus, in both cases, moving away from the median increases the total sum of absolute deviations.
+            </p>
+            <h3 class="main-title">Why does this happen?</h3>
+            <p>
+                Mathematically, the behavior of the absolute value function is key. The absolute value <em>|x - c|</em> changes differently depending on whether <em>c</em> is greater than or less than <em>x</em>. The function has a "kink" at <em>x = c</em>. Unlike a smooth curve, the absolute value function doesn't have a simple slope everywhere; it changes slope at each data point. When you move the point <em>c</em> away from the median, the sum of the slopes will push the total sum higher.
+            </p>
+            <p>
+                To make this more formal, let's consider the derivative of the sum of absolute deviations. The absolute value function <em>|x - c|</em> behaves as follows:
+            </p>
+            <div class="formula">
+                <em>
+                    <div>
+                        <span>d</span>
+                        <span class="fraction">
+                            <span class="top">|x<sub>i</sub> - c|</span>
+                            <span class="bottom">dc</span>
+                        </span>
+                        <span>=</span>
+                        <span class="cases">
+                            <span class="case">-1 if c < x<sub>i</sub></span><br>
+                            <span class="case">1 if c > x<sub>i</sub></span>
+                        </span>
+                    </div>
+                </em>
+            </div>
+            <p>
+                Now, when <em>c</em> is exactly at the median, there are an equal number of data points to the left and to the right of <em>c</em>. This symmetry minimizes the sum of absolute deviations because the overall "push" from the points on either side of <em>c</em> balances out. If you move <em>c</em> away from the median, this balance breaks, causing the sum to increase.
+            </p>
+        </div>
+        <div class="content-section">
+            <h2 class="section-title">Practice</h2>
+            <iframe src="../WebAttackSimulation/Pages/Index.html"></h5>
+            
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
