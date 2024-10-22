@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="content-section mt-4">
-            <h2 class="section-title">Theory</h2>
+            <h2 class="section-title">Theory Part 1</h2>
             <h3 class="main-title">Absolute Deviations and Their Meaning</h3>
             <p>
                 When you compute the absolute deviation from a central point <em>c</em>, you're measuring how far each data point <em>x<sub>i</sub></em> is from that point <em>c</em>, but without worrying about the direction (positive or negative differences). The sum of absolute deviations from a point <em>c</em> for a data set <em>x<sub>1</sub>, x<sub>2</sub>, …, x<sub>n</sub></em> is:
@@ -103,11 +103,90 @@
             <p>
                 Now, when <em>c</em> is exactly at the median, there are an equal number of data points to the left and to the right of <em>c</em>. This symmetry minimizes the sum of absolute deviations because the overall "push" from the points on either side of <em>c</em> balances out. If you move <em>c</em> away from the median, this balance breaks, causing the sum to increase.
             </p>
+            <h2 class="section-title">Theory Part 2</h2>
+            <h3 class="main-title">All potential definitions of the "center" of a distribution</h3>
+            <p>The concept of a location statistic (or central tendency) refers to ways of identifying a single value that represents the center or typical value of a data distribution.</p>
+            <p>There are several ways to define the center of a distribution:</p>
+            <ol class="colored-numbers">
+                <li><strong class="text-green">Arithmetic Mean (or Average)</strong><br>
+                    The sum of all values divided by the number of values. This is sensitive to all values and therefore is influenced by extreme outliers.<br>
+                    Formula: <em>μ = (1/n) ∑<sub>i=1</sub><sup>n</sup> x<sub>i</sub></em>
+                </li>
+                <li><strong class="text-green">Median</strong><br>
+                    The middle value when data is ordered. It is robust to outliers and represents the 50th percentile.<br>
+                    No specific formula as it depends on ordering.
+                </li>
+                <li><strong class="text-green">Mode</strong><br>
+                    The most frequently occurring value in a dataset. It may not be unique and is not always present for continuous data.
+                </li>
+                <li><strong class="text-green">Geometric Mean</strong><br>
+                    The central tendency of multiplicative processes, often used for positive data, where values are multiplied instead of summed.<br>
+                    Formula: <em>GM = (∏<sub>i=1</sub><sup>n</sup> x<sub>i</sub>)<sup>1/n</sup></em>
+                </li>
+                <li><strong class="text-green">Harmonic Mean</strong><br>
+                    The reciprocal of the arithmetic mean of reciprocals, often used for rates or ratios.<br>
+                    Formula: <em>HM = n / ∑<sub>i=1</sub><sup>n</sup> (1/x<sub>i</sub>)</em>
+                </li>
+                <li><strong class="text-green">Trimmed Mean</strong><br>
+                    The arithmetic mean after removing a fixed percentage of the largest and smallest data points, reducing the impact of outliers.
+                </li>
+                <li><strong class="text-green">Winsorized Mean</strong><br>
+                    Similar to the trimmed mean, but instead of discarding outliers, extreme values are replaced with the closest non-outlying values.
+                </li>
+                <li><strong class="text-green">Midrange</strong><br>
+                    The average of the maximum and minimum values.<br>
+                    Formula: <em>Midrange = (max(x) + min(x)) / 2</em>
+                </li>
+                <li><strong class="text-green">Quantile-Based Means</strong><br>
+                    These generalize the idea of the median by taking values at different quantiles (e.g., 25th percentile, 75th percentile). One can create a "center" by balancing different quantiles, such as calculating a weighted average of multiple quantiles.
+                </li>
+                <li><strong class="text-green">M-Estimators (Robust Measures of Location)</strong><br>
+                    Generalizations of the mean that use an iterative process to reduce the influence of outliers (e.g., Huber's M-estimator).
+                </li>
+                <li><strong class="text-green">L-estimators</strong><br>
+                    Linear combinations of order statistics (e.g., averages of specific quantiles) can define alternative "center" values. The midhinge (average of the 25th and 75th percentiles) is an example.
+                </li>
+                <li><strong class="text-green">Generalized Means (Power Mean)</strong><br>
+                    A family of means parametrized by an exponent <em>p</em>. When <em>p = 1</em>, you get the arithmetic mean; when <em>p = 0</em>, you get the geometric mean; when <em>p = -1</em>, you get the harmonic mean.<br>
+                    Formula: <em>M<sub>p</sub>(x<sub>1</sub>, x<sub>2</sub>, …, x<sub>n</sub>) = ( (1/n) ∑<sub>i=1</sub><sup>n</sup> x<sub>i</sub><sup>p</sup> )<sup>1/p</sup></em>
+                </li>
+                <li><strong class="text-green">Median of Means</strong><br>
+                    Break the data into equal-sized chunks, compute the mean of each chunk, and take the median of these means. This estimator is robust to outliers.
+                </li>
+                <li><strong class="text-green">Barycenter in Metric Spaces</strong><br>
+                    In more complex spaces (such as probability spaces or geometrically complex spaces), the concept of a central tendency is generalized to a barycenter, the generalization of a mean in non-Euclidean spaces.
+                </li>
+                <li><strong class="text-green">Entropic Mean</strong><br>
+                    Based on information theory, the entropic mean minimizes the relative entropy (or Kullback-Leibler divergence) between a probability distribution and a target point.
+                </li>
+                <li><strong class="text-green">Mode-based Averages</strong><br>
+                    While mode usually refers to the most frequent value, variations can include multiple modes or centers of clusters, creating a definition of central tendency in multi-modal distributions.
+                </li>
+                <li><strong class="text-green">Minimum Distance Estimators</strong><br>
+                    The "center" is defined as the value that minimizes some measure of distance from the data. Examples include the least squares criterion (arithmetic mean minimizes the sum of squared errors) or the least absolute deviations (median minimizes the sum of absolute deviations).
+                </li>
+                <li><strong class="text-green">Fréchet Mean</strong><br>
+                    For data in non-Euclidean spaces, like on a manifold, the Fréchet mean generalizes the concept of a mean to minimize the expected distance between points.
+                </li>
+                <li><strong class="text-green">Center of Gravity (for Distributions)</strong><br>
+                    In physics-based or geometry-inspired approaches, the concept of a "center" is generalized as the center of mass, applying integration for continuous distributions.
+                </li>
+            </ol>
+            <h3 class="main-title">Why can there be potentially infinite definitions of the "center"?</h3>
+            <ul>
+                <li><strong>Parameterized Families of Means:</strong> By defining functions that depend on parameters, you can create a limitless range of means. </li>
+                <li><strong>Distance Function Generalization:</strong> Any function that measures the distance between a dataset and a candidate center can serve as a basis for a location statistic. </li>
+                <li><strong>Weighted Means/Quantiles:</strong> Assigning weights to different parts of the distribution can result in infinite generalizations. </li>
+                <li><strong>Optimization Frameworks:</strong> Many location statistics arise as solutions to optimization problems (e.g., minimizing a loss function). Since the set of possible loss functions is infinite, this approach provides a pathway to an endless variety of location measures.</li>
+                <li><strong>Bayesian Means:</strong> Bayesian approaches to statistics can define a "central tendency" through posterior distributions, which can be specified using different prior beliefs, leading to infinite variations in the resulting mean or mode.</li>
+            </ul>
+            <p>By continuously altering distance metrics, error functions, weighting schemes, or optimization criteria, we can define an endless variety of central tendency measures.</p>
+            
+
         </div>
         <div class="content-section">
             <h2 class="section-title">Practice</h2>
-            <iframe src="../WebAttackSimulation/Pages/Index.html"></h5>
-            
+            <iframe src="../WebAttackSimulation/Pages/Index.html"></iframe>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
