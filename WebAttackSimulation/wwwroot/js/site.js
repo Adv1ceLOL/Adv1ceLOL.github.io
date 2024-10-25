@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
         POISSON: Symbol("Poisson"),
         //RELATIVE_FREQUENCY: Symbol("relativeFrequency"),
         BERNULLI: Symbol("bernoulli"),
+        BROWNIAN: Symbol("brownian"),
     });
 
     const recomputeBtn = document.getElementById("recomputeBtn");
@@ -23,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const poisson = document.getElementById("poisson");
     //const relativeFrequency = document.getElementById("relativeFrequency");
     const bernulli = document.getElementById("bernulli");
+    const brownian = document.getElementById("brownian");
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
@@ -79,9 +81,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 setProcess("Relative Frequency (f = rel freq = count/t ( Σ σ R(-1,1)), mean = p, var = √p(1-p)/t → 0)", VariateType.RELATIVE_FREQUENCY, false, -1, 1, () => (Math.random() <= lambda/100) ? -1 : 1, (sum,t) => (sum / t));
             }
         } else if (bernulli.checked) {
-            setProcess("Bernulli with rate λ ( ≈ Σ Be(λ), mean=λ, var=λ )", VariateType.BERNULLI, false, 0, lambda * 1.5, () => MyRndUtilities.bernoulliVariate(lambda/100), (sum) => (sum));
+            setProcess("Bernulli with rate λ ( ≈ Σ Be(λ), mean=λ, var=λ )", VariateType.BERNULLI, true, 0, lambda * 1.5, () => MyRndUtilities.bernoulliVariate(lambda/100), (sum) => (sum));
         } else if (poisson.checked) {
-            setProcess("Poisson with rate λ/N ( ≈ Σ Be(λ/N), mean=λ, var=λ )", VariateType.POISSON, false, 0, lambda * 1.5, () => MyRndUtilities.bernoulliVariate(lambda / n), (sum) => (sum));
+            setProcess("Poisson with rate λ/N ( ≈ Σ Be(λ/N), mean=λ, var=λ )", VariateType.POISSON, true, 0, lambda * 1.5, () => MyRndUtilities.bernoulliVariate(lambda / n), (sum) => (sum));
+        }else if(brownian.checked){
+            setProcess("Brownian Motion (Σ N( -√(1/n), √(1/n)), mean=0, var = t)", VariateType.BROWNIAN, true, -sigmaRange, sigmaRange, () => (Math.random() <= lambda/n) ? - Math.sqrt(1/n) : Math.sqrt(1/n), (sum) => (sum));
         }
 
         range = maxView - minView;
