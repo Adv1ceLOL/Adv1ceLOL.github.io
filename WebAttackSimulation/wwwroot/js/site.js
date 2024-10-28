@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
         } else if (poisson.checked) {
             setProcess("Poisson with rate λ/N ( ≈ Σ Be(λ/N), mean=λ, var=λ )", VariateType.POISSON, true, 0, lambda * 1.5, () => MyRndUtilities.bernoulliVariate(lambda / n), (sum) => (sum));
         }else if(brownian.checked){
-            setProcess("Brownian Motion (Σ N( -√(1/n), √(1/n)), mean=0, var = t)", VariateType.BROWNIAN, true, -sigmaRange, sigmaRange, () => (Math.random() <= lambda/n) ? - Math.sqrt(1/n) : Math.sqrt(1/n), (sum) => (sum));
+            setProcess("Brownian Motion (Σ N( -√(1/n), √(1/n)), mean=0, var = t)", VariateType.BROWNIAN, true, -sigmaRange , sigmaRange, () => (Math.random() <= lambda/n) ? - Math.sqrt(1/n) : Math.sqrt(1/n), (sum) => (sum));
         }
 
         range = maxView - minView;

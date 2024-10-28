@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 4</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="hw4.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <a class="navbar-brand" href="../index.html">
+            <img src="../Images/Navigation.jpg" alt="Navigation" style="height: 40px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link">Previous Homeworks: </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../Homework 1/hw1.html">Homework 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../Homework 2/hw2.html">Homework 2</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../Homework 3/hw3.html">Homework 3</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="card rounded-border-gradient">
+            <div class="card-body">
+                <h1 class="header-text">Homework 4</h1>
+            </div>
+        </div>
+        <div class="header">
+           
+        </div>
+        <div class="content-section mt-4">
+            <h2 class="section-title">Theory</h2>
+            <p class="theory-text">
+                <h3 class="main-title">What is Statistical Independence?</h3>
+                Imagine you’re flipping two coins, one in each hand. If you flip one coin, the outcome (say, heads or tails) doesn’t change the probability of the outcome for the other coin. In other words, what happens with one coin doesn't influence what happens with the other.<br><br>
+                Formally, two events A and B are statistically independent if knowing that one event has occurred gives no information about whether the other event has occurred. This is the backbone of independence: the outcome of one event says nothing about the likelihood of the other.<br><br>
+                
+                <h3 class="main-title">Formal Definition of Independence</h3>
+                To formally capture independence, we use probabilities. Let’s denote:<br>
+                <li>P(A) as the probability that event A happens,<br></li>
+                <li>P(B) as the probability that event B happens,<br></li>
+                <li>P(A ∩ B) as the probability that both A and B happen (their intersection).<br></li>
+                In probability theory, events A and B are independent if:<br>
+                <em><span class="math formula-center">P(A ∩ B) = P(A) × P(B)</span></em>
+                This equation tells us that the probability of both events happening simultaneously is exactly the product of their individual probabilities. If this is true, then neither event affects the other — they’re statistically independent.<br><br>
+                
+                <h3 class="main-title">Why Does This Formula Work?</h3>
+                Imagine two dice rolls. The probability of rolling a 1 on one die is 1/6, and the probability of rolling a 1 on the second die is also 1/6. Since rolling one die doesn’t affect the other, the probability of both showing a 1 is:<br>
+                <span class="math formula-center">1/6 × 1/6 = 1/36</span>
+                This is the essence of independence: the probability of both things happening is simply the product of each probability, assuming they don’t influence one another.<br><br>
+                
+                <h3 class="main-title">Dependence vs. Independence</h3>
+                To sharpen our understanding, let’s contrast with dependent events.<br>
+                Imagine you have a deck of 52 playing cards. If you draw one card, it changes the probabilities for the second draw. For example, if you draw an Ace, there are now only 51 cards left, and only three Aces remain. So the probability of drawing a second Ace has changed. In this case, drawing the first Ace affects the probability of drawing the second, making these events dependent.<br><br>
+                
+                <h3 class="main-title">Checking Independence</h3>
+                Using the formula P(A ∩ B) = P(A) × P(B), let’s walk through how you might check if events are independent.<br>
+                <ol>
+                    <li><strong>Calculate Individual Probabilities:</strong> Determine P(A) and P(B).</li>
+                    <li><strong>Calculate Joint Probability:</strong> Determine P(A ∩ B).</li>
+                    <li><strong>Compare:</strong> Check if <span class="math">P(A ∩ B) = P(A) × P(B)</span>. If they are equal, the events are independent. If not, they’re dependent.</li>
+                </ol><br>
+                
+                <h3 class="main-title">Intuition Behind the Multiplication Rule for Independence</h3>
+                Think of independence as the idea that no extra information is shared between the two events. When we multiply P(A) and P(B), we’re treating each event as fully separate, with nothing about one event altering or influencing the other. If they were linked, we’d use a different approach, like conditional probability.
+            </p>
+        </div>
+        <div class="content-section">
+            <h2 class="section-title">Practice</h2>
+            <iframe src="../WebAttackSimulation/Pages/Index.html"></iframe>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

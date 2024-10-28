@@ -1,0 +1,179 @@
+body {
+    background-color: #333; /* Dark grey background */
+    color: white; /* White text */
+}
+.header {
+    position: relative;
+    height: 50vh;
+    background: url('../Images/statisticalIndependence.png') no-repeat center center ;
+   }
+.header img {
+    border-radius: 45px !important; 
+}
+.header-text {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 3em;
+    font-weight: bold;
+    text-shadow: 10px 10px 10px black;
+}
+.section-title {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #01f01d;
+    text-transform: uppercase;
+    border-bottom: 2px solid #01f01d;
+    padding-bottom: 10px;
+}
+.content-section {
+    padding: 20px;
+    overflow: hidden; /* Prevent scrolling */
+    display: flex;
+    flex-direction: column;
+}
+
+.content-section iframe {
+    height: 1430px; /* Apply height only to the iframe */
+    width: 100%; /* Ensure iframe takes full width */
+    border: none; /* Remove iframe border */
+    overflow: none;
+    margin-bottom: 50px; /* Increase margin-bottom to push content lower */
+}
+.main-title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 20px; /* Increased margin-bottom */
+    color: #01f01d;
+}
+.subtitle {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 30px; /* Increased margin-top */
+    margin-bottom: 20px; /* Increased margin-bottom */
+}
+.secondary-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 25px; /* Increased margin-top */
+    margin-bottom: 20px; /* Increased margin-bottom */
+    text-align: center;
+}
+pre code {
+    background-color: #444; /* Slightly lighter grey for code background */
+    color: white; /* White text for code */
+    padding: 10px;
+    border-radius: 5px;
+    display: block;
+}
+.formula {
+    text-align: center;
+    font-size: 1.2em;
+    margin: 20px 0;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+.formula-center {
+    display: block;
+    text-align: center;
+    font-size: 1.5em; /* Make the formula bigger */
+    margin: 20px 0; /* Add some margin for spacing */
+    color: #00ff1e;
+}
+
+.custom-navbar {
+    background-color: #28a745;
+}
+
+.custom-navbar .nav-link {
+    color: white;
+}
+
+.custom-navbar .nav-link:hover {
+    color: #d4d4d4;
+}
+
+.rounded-border-gradient {
+    position: relative;
+    z-index: 10; /* Ensure it appears on top */
+    border-radius: 15px;
+    padding: 20px;
+    background: white; /* Ensure the background is white */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+}
+
+.rounded-border-gradient::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    z-index: -1;
+    border-radius: 15px;
+    background: linear-gradient(45deg, #ff6b6b, #f06595, #cc5de8, #845ef7, #5c7cfa, #339af0, #22b8cf, #20c997, #51cf66, #94d82d, #fcc419, #ff922b);
+    background-size: 100%;
+    animation: gradient-animation 5s ease infinite;
+}
+
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.fraction {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.fraction .top {
+    border-bottom: 1px solid rgb(255, 255, 255);
+    display: block;
+}
+
+.fraction .bottom {
+    display: block;
+}
+
+.cases {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.case {
+    display: block;
+}
+.text-green {
+    color: #01f01d;
+}
+
+.colored-numbers {
+    counter-reset: list-counter;
+}
+
+.colored-numbers li {
+    list-style: none;
+    position: relative;
+    padding-left: 1.5em;
+}
+
+.colored-numbers li::before {
+    content: counter(list-counter) ". ";
+    counter-increment: list-counter;
+    position: absolute;
+    left: 0;
+    color: #01f01d; /* Change the color of the numbers */
+}
