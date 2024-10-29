@@ -156,3 +156,17 @@ html {
       calc(-2.3*var(--s)) calc(1.7*var(--s)),0 0
     }
 }
+
+/* Media queries for responsiveness */
+@media (max-width: 1000px) {
+    .button-left, .button-right {
+        margin: 0; /* Remove margins on smaller screens */
+    }
+    .homework-row {
+        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    }
+    .container {
+        margin-left: 0 !important; /* Remove left margin on smaller screens */
+        height: auto; /* Adjust height for smaller screens */
+    }
+}
