@@ -2,9 +2,13 @@ html {
   font-size: 14px;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   html {
     font-size: 16px;
+  }
+  #canvas.border {
+    width: 320px !important;
+    height: auto !important;
   }
 }
 
