@@ -74,9 +74,10 @@
                 <input type="radio" id="brownian" name="processGroup" checked class="form-check-input">
                 <label for="brownian" class="form-check-label">Brownian Motion</label>
             </div>
-            
+            <div class="form-check">
+                <button id="recomputeBtn" type="button" class="btn btn-primary mt-3">Generate new</button>
+            </div>
         </div>
-        <button id="recomputeBtn" type="button" class="btn btn-primary mt-3">Generate new</button>
     </div>
     <script src="../wwwroot/js/MyRndUtilities.js"></script>
     <script src="../wwwroot/js/MyChartUtilities.js"></script>
@@ -84,5 +85,18 @@
     <script src="../wwwroot/js/MyDistributionUtilities.js"></script>
     <script src="../wwwroot/js/Rettangolo.js"></script>
     <script src="../wwwroot/js/site.js"></script>
+
+    <script>
+        function adjustParentIframeHeight() {
+            const height = document.documentElement.scrollHeight;
+            window.parent.postMessage(height, '*');
+        }
+    
+        window.addEventListener('load', adjustParentIframeHeight);
+        window.addEventListener('resize', adjustParentIframeHeight);
+    
+        const observer = new MutationObserver(adjustParentIframeHeight);
+        observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+    </script>
 </body>
 </html>

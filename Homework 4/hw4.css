@@ -40,7 +40,6 @@ body {
 }
 
 .content-section iframe {
-    height: 1430px; /* Apply height only to the iframe */
     width: 100%; /* Ensure iframe takes full width */
     border: none; /* Remove iframe border */
     overflow: none;
@@ -180,7 +179,7 @@ pre code {
     color: #01f01d; /* Change the color of the numbers */
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 765px) {
     .header-text {
         font-size: 2em;
         width: max-content;
