@@ -17,20 +17,48 @@ body {
     border-color: #67434F; /* Change button border color */
     color: white; /* Ensure button text is white */
     border-color: black;
-    border-width: 0.5mm;
+    border-width: 0.7mm;
+}
+.btn-block{
+    width:fit-content !important;
+    
+    
 }
 .homework-image {
     width: 100%;
     height: auto;
     margin-bottom: 10px;
 }
-.homework-row {
-    display: flex;
-    justify-content: space-between;
+.homework-row{
+    display: contents;
+    flex-wrap: nowrap;
+    justify-content:center;
     align-items: center;
     height: 100%; /* Ensure the row takes full height */
     width: 100%; /* Ensure the row takes full width */
 }
+/* Override Bootstrap row flex-wrap */
+.homework-row {
+    
+}
+
+.button-left {
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+    order: 1;
+}
+
+.button-right {
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+    order: 3;
+}
+
+
 .img-fluid {
     height: auto;
     width: 100%;
@@ -38,9 +66,15 @@ body {
 
 /* Frame styles */
 figure {
+    display: flex;
     width: 100%;
     height: auto;
     margin: 1em auto;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
 }
 
 .outerBevel { /* of frame */
@@ -72,33 +106,24 @@ figure {
     border-color: rgb(207, 166, 0) rgb(207, 166, 0) rgb(145, 110, 0) rgb(145, 110, 0);
 }
 
-.button-left {
-    margin-right: 50px; /* Move the left column further to the left */
-}
-
-.button-right {
-    margin-left: 50px; /* Move the right column further to the right */
-}
-
 .caption {
+    width: 40%;
     text-align: center;
     font-style: italic;
     margin-top: 10px;
     color: black;
+    background-size:cover;
+    background-color: rgba(255, 255, 255, 0.416);
 }
 
-/* Override Bootstrap row flex-wrap */
-.homework-row {
-    flex-wrap: nowrap;
-}
 
 /* Center elements horizontally */
 .container {
     display: flex;
+    flex-wrap: nowrap;
+    align-items: center; 
     justify-content: center;
-    align-items: center;
     height: 80vh; /* Full viewport height */
-    margin-left: 140px !important;
 }
 
 /* Background styles */
@@ -156,17 +181,50 @@ html {
       calc(-2.3*var(--s)) calc(1.7*var(--s)),0 0
     }
 }
+.col-md-6{
+    display: flex;
+    order: 2;
+}
 
 /* Media queries for responsiveness */
 @media (max-width: 1000px) {
-    .button-left, .button-right {
+    .button-left {
+        display: flex;
         margin: 0; /* Remove margins on smaller screens */
+        order: 0;
+        flex-direction: column;
+        justify-content:center;
+        align-items: flex-start; 
+    }
+    .button-right {
+        display: flex;
+        margin: 0; /* Remove margins on smaller screens */
+        order: 0;
+        flex-direction: column;
+        justify-content:center;
+        align-items: flex-end; 
     }
     .homework-row {
-        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
     }
     .container {
         margin-left: 0 !important; /* Remove left margin on smaller screens */
         height: auto; /* Adjust height for smaller screens */
+        flex-direction: column;
+    }
+    .col-md-6{
+        display: flex;
+        order: 1;
+    }
+}
+@media (min-width: 768px) {
+    .col-md-3 {
+        -ms-flex: 0 0 25%;
+        flex: 0 0 25%;
+        max-width: 100%; 
     }
 }
