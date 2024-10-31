@@ -107,15 +107,28 @@ figure {
 }
 
 .caption {
-    width: 40%;
     text-align: center;
     font-style: italic;
-    margin-top: 10px;
     color: black;
-    background-size:cover;
-    background-color: rgba(255, 255, 255, 0.416);
-}
 
+    display: block;
+    clear: both;
+    height: auto;
+    width: 100%;
+    
+    padding: 2.5% 2.5% 2.5% 2.5%; /* Mat width */
+    background-color: rgb(255,249,224);  /* Mat color */
+    border-width: 3px; /* Gold edge of mat */
+    border-style: solid;
+    border-color: rgb(207, 166, 0) rgb(207, 166, 0) rgb(145, 110, 0) rgb(145, 110, 0);
+    white-space: nowrap; /* Ensure text fits in one line */
+    padding: 0 10px; /* Add horizontal padding to keep text well inside */.mt-5, .my-5 {
+    margin-top: 3rem !important;
+}
+}
+.mt-5, .my-5 {
+    margin-top: 0rem !important;
+}
 
 /* Center elements horizontally */
 .container {
@@ -123,7 +136,7 @@ figure {
     flex-wrap: nowrap;
     align-items: center; 
     justify-content: center;
-    height: 80vh; /* Full viewport height */
+    font-family: "dancing script", cursive;
 }
 
 /* Background styles */
