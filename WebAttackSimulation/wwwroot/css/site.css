@@ -30,6 +30,9 @@ html {
   padding: 0;
   overflow: hidden;
 }
+#recomputeBtn{
+  margin-bottom: 20px;
+}
 
 body {
   background-color: #333 !important;/* Dark grey background */

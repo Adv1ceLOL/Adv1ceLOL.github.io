@@ -4,6 +4,170 @@ body {
     background: radial-gradient(ellipse at bottom, #0d1d31 0%, #0c0d13 100%);
 }
 
+.header {
+    position: relative;
+    height: 70vh;
+    width: 100%;
+   
+}
+.header-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 45px !important; 
+}
+
+.header-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 3em;
+    font-weight: bold;
+    text-shadow: 0px 0px 10px black;
+}
+
+.section-title {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #01f01d;
+    text-transform: uppercase;
+    border-bottom: 2px solid #01f01d;
+    padding-bottom: 10px;
+}
+.content-section {
+    padding: 20px;
+    /* overflow: hidden; */ /* Comment out or remove this line */
+    display: flex;
+    flex-direction: column;
+    
+}
+.content-section iframe {
+    width: 100%;
+    height: auto;
+    border: none;
+    margin-bottom: 50px;
+    border-radius: 50px;
+}
+.main-title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 20px; /* Increased margin-bottom */
+    color: #01f01d;
+}
+.subtitle {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 30px; /* Increased margin-top */
+    margin-bottom: 20px; /* Increased margin-bottom */
+}
+.secondary-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 25px; /* Increased margin-top */
+    margin-bottom: 20px; /* Increased margin-bottom */
+    text-align: center;
+}
+pre code {
+    background-color: #444; /* Slightly lighter grey for code background */
+    color: white; /* White text for code */
+    padding: 10px;
+    border-radius: 5px;
+    display: block;
+}
+.formula {
+    text-align: center;
+    font-size: 1.2em;
+    margin: 20px 0;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+.formula-inline {
+    display: inline; /* Ensure inline display */
+    font-size: 1.2em;
+    font-family: 'Courier New', Courier, monospace;
+}
+span {
+    display: flex;
+}
+.custom-navbar {
+    background-color: #28a745;
+}
+.custom-navbar .nav-link {
+    color: white;
+}
+.custom-navbar .nav-link:hover {
+    color: #d4d4d4;
+}
+.rounded-border-gradient {
+    position: relative;
+    z-index: 10; /* Ensure it appears on top */
+    border-radius: 45px !important;
+    padding: 20px;
+    background: white; /* Ensure the background is white */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.rounded-border-gradient::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    z-index: -1;
+    border-radius: 45px;
+    background: linear-gradient(45deg, #ff6b6b, #f06595, #cc5de8, #845ef7, #5c7cfa, #339af0, #22b8cf, #20c997, #51cf66, #94d82d, #fcc419, #ff922b);
+    background-size: 300%;
+    animation: gradient-animation 5s ease infinite;
+}
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.formula-center {
+    display: block;
+    text-align: center;
+    font-size: 1.5em; /* Make the formula bigger */
+    margin: 20px 0; /* Add some margin for spacing */
+    color: #00ff1e;
+}
+@media (max-width: 1000px) {
+    .header-image {
+        width: 100%;
+        height: 30% !important;
+        object-fit: cover; /* Ensures the image fills its container and crops if necessary */
+    }
+    .header {
+        width: 100%;
+        height: 30%;
+    }
+    .header-text {
+        font-size: 2em;
+        width: max-content;
+    }
+    .content-section iframe {
+        width: 100%;
+        border: none;
+        border-radius: 50px;
+        position: relative;
+    }
+    
+    .html {
+        width: max-content;
+        size-adjust: 100px;
+        max-width: 1040px;
+    }
+}
+
+
 /* Background Stars */
 .stars {
     position: fixed;
@@ -165,156 +329,4 @@ body {
     top: 60vh;
     left: 0;
     animation-delay: 19s;
-}
-
-.header {
-    position: relative;
-    height: 70vh;
-    width: 100%;
-   
-}
-.header-image {
-    width: 100%;
-    height: 100%;
-    border-radius: 45px !important; 
-}
-.header-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 3em;
-    font-weight: bold;
-    text-shadow: 0px 0px 10px black;
-}
-.section-title {
-    margin-top: 20px;
-    margin-bottom: 5px;
-    text-align: center;
-    font-family: 'Arial', sans-serif;
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #01f01d;
-    text-transform: uppercase;
-    border-bottom: 2px solid #01f01d;
-    padding-bottom: 10px;
-}
-.content-section {
-    padding: 20px;
-    /* overflow: hidden; */ /* Comment out or remove this line */
-    display: flex;
-    flex-direction: column;
-}
-.content-section iframe {
-    width: 100%;
-    height: auto;
-    border: none;
-    margin-bottom: 50px;
-    border-radius: 50px;
-}
-.main-title {
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 20px; /* Increased margin-bottom */
-    color: #01f01d;
-}
-.subtitle {
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-top: 30px; /* Increased margin-top */
-    margin-bottom: 20px; /* Increased margin-bottom */
-}
-.secondary-title {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-top: 25px; /* Increased margin-top */
-    margin-bottom: 20px; /* Increased margin-bottom */
-    text-align: center;
-}
-pre code {
-    background-color: #444; /* Slightly lighter grey for code background */
-    color: white; /* White text for code */
-    padding: 10px;
-    border-radius: 5px;
-    display: block;
-}
-.formula {
-    text-align: center;
-    font-size: 1.2em;
-    margin: 20px 0;
-    font-family: 'Courier New', Courier, monospace;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px 0;
-}
-.custom-navbar {
-    background-color: #28a745;
-}
-.custom-navbar .nav-link {
-    color: white;
-}
-.custom-navbar .nav-link:hover {
-    color: #d4d4d4;
-}
-.rounded-border-gradient {
-    position: relative;
-    z-index: 10; /* Ensure it appears on top */
-    border-radius: 45px !important;
-    padding: 20px;
-    background: white; /* Ensure the background is white */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.rounded-border-gradient::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    z-index: -1;
-    border-radius: 45px;
-    background: linear-gradient(45deg, #ff6b6b, #f06595, #cc5de8, #845ef7, #5c7cfa, #339af0, #22b8cf, #20c997, #51cf66, #94d82d, #fcc419, #ff922b);
-    background-size: 300%;
-    animation: gradient-animation 5s ease infinite;
-}
-@keyframes gradient-animation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-.formula-center {
-    display: block;
-    text-align: center;
-    font-size: 1.5em; /* Make the formula bigger */
-    margin: 20px 0; /* Add some margin for spacing */
-    color: #00ff1e;
-}
-@media (max-width: 1000px) {
-    .header-image {
-        width: 100%;
-        height: 30% !important;
-        object-fit: cover; /* Ensures the image fills its container and crops if necessary */
-    }
-    .header {
-        width: 100%;
-        height: 30%;
-    }
-    .header-text {
-        font-size: 2em;
-        width: max-content;
-    }
-    .content-section iframe {
-        width: 100%;
-        border: none;
-        border-radius: 50px;
-        position: relative;
-    }
-    
-    .html {
-        width: max-content;
-        size-adjust: 100px;
-        max-width: 1040px;
-    }
 }

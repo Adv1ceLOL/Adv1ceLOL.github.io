@@ -4,9 +4,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const VariateType = Object.freeze({
         RW: Symbol("randomWalk"),
         POISSON: Symbol("Poisson"),
-        //RELATIVE_FREQUENCY: Symbol("relativeFrequency"),
+        RELATIVE_FREQUENCY: Symbol("relativeFrequency"),
         BERNULLI: Symbol("bernoulli"),
         BROWNIAN: Symbol("brownian"),
+        REGRESSION: Symbol("regression") // New process type for regression
     });
 
     const recomputeBtn = document.getElementById("recomputeBtn");
@@ -25,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
     //const relativeFrequency = document.getElementById("relativeFrequency");
     const bernulli = document.getElementById("bernulli");
     const brownian = document.getElementById("brownian");
+    const regression = document.getElementById("regression");
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
@@ -32,6 +34,9 @@ document.addEventListener("DOMContentLoaded", function() {
     let mu, sigma, lambda, n, numPaths, paths, randomJump, variate, scalingLimit, processType, processDesc, minView, maxView, range, intervalSize, numClasses, xOrigin, yOrigin, histTimeT, histTimeN, avgLast, ssLast, intervalsT, intervalsN, timer, animate, currentPath;
 
     const chartRect = new Rettangolo(20, 30, canvas.width - 200, canvas.height - 30 - 40);
+
+    let xValues = [];
+    let yValues = [];
 
     recomputeBtn.onclick = main;
 
@@ -43,6 +48,9 @@ document.addEventListener("DOMContentLoaded", function() {
         resetVariables();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         paths = [];
+
+        xValues = [];
+        yValues = [];
 
         if (animate) {
             timer = setInterval(animatePaths, 10);
@@ -56,6 +64,17 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             drawHistograms();
             drawLegend();
+
+            if (processType === VariateType.REGRESSION) {
+                // Calculate and display regression coefficients and R^2
+                const coefficients = calculateRegressionCoefficients(xValues, yValues);
+                const r2 = calculateR2(xValues, yValues, coefficients);
+
+                console.log(`Intercept (a): ${coefficients.a}`);
+                console.log(`Slope for m (b1): ${coefficients.b1}`);
+                console.log(`Slope for p (b2): ${coefficients.b2}`);
+                console.log(`R^2: ${r2}`);
+            }
         }
     }
 
@@ -74,18 +93,19 @@ document.addEventListener("DOMContentLoaded", function() {
         const sigmaRange = 4;
 
         if (randomWalk.checked) {
-            if(absoluteFrequency.checked){
-                setProcess("Random Walk (sum of scaled Rademacher rv's = Σ σ R(-1,1), ±1 jumps, p=.5, mean=0, var = σ² t, std = σ √t", VariateType.RW, false, -sigmaRange * sigma * Math.sqrt(n), sigmaRange * sigma * Math.sqrt(n), () => (Math.random() <= lambda/100) ? -1 : 1, (sum) => (sigma * sum));
-            } else if (relativeFrequency.checked){
-                //console.log("Relative Frequency = ", relativeFrequency.checked);
-                setProcess("Relative Frequency (f = rel freq = count/t ( Σ σ R(-1,1)), mean = p, var = √p(1-p)/t → 0)", VariateType.RELATIVE_FREQUENCY, false, -1, 1, () => (Math.random() <= lambda/100) ? -1 : 1, (sum,t) => (sum / t));
+            if (absoluteFrequency.checked) {
+                setProcess("Random Walk (sum of scaled Rademacher rv's = Σ σ R(-1,1), ±1 jumps, p=.5, mean=0, var = σ² t, std = σ √t", VariateType.RW, false, -sigmaRange * sigma * Math.sqrt(n), sigmaRange * sigma * Math.sqrt(n), () => (Math.random() <= lambda / 100) ? -1 : 1, (sum) => (sigma * sum));
+            } else if (relativeFrequency.checked) {
+                setProcess("Relative Frequency (f = rel freq = count/t ( Σ σ R(-1,1)), mean = p, var = √p(1-p)/t → 0)", VariateType.RELATIVE_FREQUENCY, false, -1, 1, () => (Math.random() <= lambda / 100) ? -1 : 1, (sum, t) => (sum / t));
             }
         } else if (bernulli.checked) {
-            setProcess("Bernulli with rate λ ( ≈ Σ Be(λ), mean=λ, var=λ )", VariateType.BERNULLI, true, 0, lambda * 1.5, () => MyRndUtilities.bernoulliVariate(lambda/100), (sum) => (sum));
+            setProcess("Bernulli with rate λ ( ≈ Σ Be(λ), mean=λ, var=λ )", VariateType.BERNULLI, true, 0, lambda * 1.5, () => MyRndUtilities.bernoulliVariate(lambda / 100), (sum) => (sum));
         } else if (poisson.checked) {
             setProcess("Poisson with rate λ/N ( ≈ Σ Be(λ/N), mean=λ, var=λ )", VariateType.POISSON, true, 0, lambda * 1.5, () => MyRndUtilities.bernoulliVariate(lambda / n), (sum) => (sum));
-        }else if(brownian.checked){
-            setProcess("Brownian Motion (Σ N( -√(1/n), √(1/n)), mean=0, var = t)", VariateType.BROWNIAN, true, -sigmaRange , sigmaRange, () => (Math.random() <= lambda/n) ? - Math.sqrt(1/n) : Math.sqrt(1/n), (sum) => (sum));
+        } else if (brownian.checked) {
+            setProcess("Brownian Motion (Σ N( -√(1/n), √(1/n)), mean=0, var = t)", VariateType.BROWNIAN, true, -sigmaRange, sigmaRange, () => (Math.random() <= lambda / n) ? -Math.sqrt(1 / n) : Math.sqrt(1 / n), (sum) => (sum));
+        } else if (regression.checked) {
+            setProcess("Regression Coefficients (Least Squares Method)", VariateType.REGRESSION, false, 0, n, () => Math.random(), (sum, t) => sum);
         }
 
         range = maxView - minView;
@@ -127,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
         currentPath = s;
         const path = new Path2D();
 
-        let sum = 0; 
+        let sum = 0;
         let prevY = yOrigin;
 
         path.moveTo(xOrigin, yOrigin);
@@ -136,7 +156,13 @@ document.addEventListener("DOMContentLoaded", function() {
             sum += randomJump();
             let value = variate(sum, t);
 
-            console.log("t = " + t + "  sum = " + sum + "  value = " + value);
+            if (processType === VariateType.REGRESSION) {
+                const m = t; 
+                const p = lambda;
+                xValues.push([m, p]);
+                yValues.push(value);
+            }
+
             if (t === histTimeT) {
                 MyDistributionUtilities.allocateValueInIntervals(value, intervalsT, intervalSize);
             } else if (t === histTimeN) {
@@ -213,3 +239,46 @@ document.addEventListener("DOMContentLoaded", function() {
 
     window.onload = main;
 });
+
+/**
+ * Calculate the regression coefficients (a and b) using the least squares method.
+ * @param {Array<Array<number>>} x - Array of [m, p] values.
+ * @param {Array<number>} y - Array of y values.
+ * @returns {Object} - Object containing the slope (b) and intercept (a).
+ */
+function calculateRegressionCoefficients(x, y) {
+    const n = x.length;
+    const sumX1 = x.reduce((acc, val) => acc + val[0], 0);
+    const sumX2 = x.reduce((acc, val) => acc + val[1], 0);
+    const sumY = y.reduce((acc, val) => acc + val, 0);
+    const sumX1Y = x.reduce((acc, val, i) => acc + val[0] * y[i], 0);
+    const sumX2Y = x.reduce((acc, val, i) => acc + val[1] * y[i], 0);
+    const sumX1X2 = x.reduce((acc, val) => acc + val[0] * val[1], 0);
+    const sumX1X1 = x.reduce((acc, val) => acc + val[0] * val[0], 0);
+    const sumX2X2 = x.reduce((acc, val) => acc + val[1] * val[1], 0);
+
+    const denominator = n * sumX1X1 * sumX2X2 + 2 * sumX1 * sumX2 * sumX1X2 - sumX1 * sumX1 * sumX2X2 - sumX2 * sumX2 * sumX1X1 - n * sumX1X2 * sumX1X2;
+
+    const a = (sumY * sumX1X1 * sumX2X2 + sumX1 * sumX2 * sumX1Y * sumX2Y - sumX1 * sumX1 * sumX2Y - sumX2 * sumX2 * sumX1Y - sumY * sumX1X2 * sumX1X2) / denominator;
+    const b1 = (n * sumX1Y * sumX2X2 + sumX1 * sumX2 * sumY * sumX2Y - sumX1 * sumX1 * sumX2Y - sumX2 * sumX2 * sumX1Y - n * sumX1X2 * sumX2Y) / denominator;
+    const b2 = (n * sumX1X1 * sumX2Y + sumX1 * sumX2 * sumX1Y * sumY - sumX1 * sumX1 * sumX2Y - sumX2 * sumX2 * sumX1Y - n * sumX1X2 * sumX1Y) / denominator;
+
+    return { a, b1, b2 };
+}
+
+/**
+ * Calculate the coefficient of determination (R^2).
+ * @param {Array<Array<number>>} x - Array of [m, p] values.
+ * @param {Array<number>} y - Array of y values.
+ * @param {Object} coefficients - Object containing the intercept (a) and slopes (b1, b2).
+ * @returns {number} - The R^2 value.
+ */
+function calculateR2(x, y, coefficients) {
+    const { a, b1, b2 } = coefficients;
+    const meanY = y.reduce((acc, val) => acc + val, 0) / y.length;
+
+    const ssTotal = y.reduce((acc, val) => acc + Math.pow(val - meanY, 2), 0);
+    const ssResidual = y.reduce((acc, val, i) => acc + Math.pow(val - (a + b1 * x[i][0] + b2 * x[i][1]), 2), 0);
+
+    return 1 - ssResidual / ssTotal;
+}

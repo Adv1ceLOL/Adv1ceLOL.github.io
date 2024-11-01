@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 5</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../hw.css" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <a class="navbar-brand" href="../index.html">
+            <img src="../Images/Navigation.jpg" alt="Navigation" style="height: 40px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link">Previous Homeworks: </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://sites.google.com/view/blogs-statistics-cyber/homework-1">Homework 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw2.html">Homework 2</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw3.html">Homework 3</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw4.html">Homework 4</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="card rounded-border-gradient">
+            <div class="card-body">
+                <div class="header">
+                    <img src="/Images/independence.jpg" alt="Statistical Independence" class="header-image">
+                    <h1 class="header-text">Homework 5</h1>
+                </div>
+            </div>
+        </div>
+        <div class="content-section mt-4">
+            <h2 class="section-title">Theory</h2>
+            <p class="theory-text">
+                <h3 class="main-title">Cauchy-Schwarz Inequality Proof</h3>
+                <p>
+                    The <strong>Cauchy-Schwarz inequality</strong> states:
+                    <div class="formula">$$|\mathbf{u} \cdot \mathbf{v}|^2 \leq \|\mathbf{u}\|^2 \|\mathbf{v}\|^2$$</div>
+                </p>
+                <h4>Proof via Non-Negativity of Norms</h4>
+                <ol>
+                    <li><strong>Consider</strong> the vector <span class="formula-inline">\( \alpha \mathbf{u} + \beta \mathbf{v} \)</span> for any real <span class="formula-inline">\( \alpha \)</span> and <span class="formula-inline">\( \beta \)</span>. The squared norm must be non-negative:
+                        <div class="formula">$$\|\alpha \mathbf{u} + \beta \mathbf{v}\|^2 \geq 0$$</div>
+                    </li>
+                    <li><strong>Expand</strong> using the dot product:
+                        <div class="formula">$$\alpha^2 \|\mathbf{u}\|^2 + 2 \alpha \beta (\mathbf{u} \cdot \mathbf{v}) + \beta^2 \|\mathbf{v}\|^2$$</div>
+                    </li>
+                    <li><strong>Interpret as a quadratic</strong> in <span class="formula-inline">\( \alpha \)</span>:
+                        <div class="formula">$$A \alpha^2 + B \alpha + C \geq 0$$</div>
+                        where <span class="formula-inline">\( A = \|\mathbf{u}\|^2 \)</span>, <span class="formula-inline">\( B = 2 \beta (\mathbf{u} \cdot \mathbf{v}) \)</span>, and <span class="formula-inline">\( C = \beta^2 \|\mathbf{v}\|^2 \)</span>.
+                    </li>
+                    <li><strong>Set the discriminant \(\leq 0\)</strong> (to ensure the quadratic has no real roots and stays non-negative):
+                        <div class="formula">$$\left( 2 \beta (\mathbf{u} \cdot \mathbf{v}) \right)^2 - 4 \|\mathbf{u}\|^2 \beta^2 \|\mathbf{v}\|^2 \leq 0$$</div>
+                    </li>
+                    <li><strong>Simplify</strong>:
+                        <div class="formula">$$4 \beta^2 (\mathbf{u} \cdot \mathbf{v})^2 \leq 4 \beta^2 \|\mathbf{u}\|^2 \|\mathbf{v}\|^2$$</div>
+                        Dividing by <span class="formula-inline">\( 4 \beta^2 \)</span> (assuming <span class="formula-inline">\( \beta \neq 0 \)</span>):
+                        <div class="formula">$$(\mathbf{u} \cdot \mathbf{v})^2 \leq \|\mathbf{u}\|^2 \|\mathbf{v}\|^2$$</div>
+                    </li>
+                    
+                </ol>
+            </p>
+            <div class="content-section">
+                <h2 class="main-title">Independence vs. Uncorrelation: Key Differences</h2>
+                    <p>
+                        In probability and statistics, independence and uncorrelation are two ways to describe relationships between random variables, but they have different meanings and implications. Let's break down each concept, how they differ, and the types of measures typically used for each.
+                    </p>
+                
+                <h3>Independence</h3>
+                    <p>
+                        Two random variables <span class="formula-inline">\( X \)</span> and <span class="formula-inline">\( Y \)</span> are independent if knowing the value of one gives no information about the other. Mathematically:
+                        <div class="formula">$$P(X = x \text{ and } Y = y) = P(X = x) \cdot P(Y = y)$$</div>
+                        Or, for continuous variables, if their joint probability density function factors as:
+                        <div class="formula">$$f_{X,Y}(x,y) = f_X(x) \cdot f_Y(y)$$</div>
+                    </p>
+                    <p>
+                        <strong>Implication:</strong> Independence implies that the probability of any event involving <span class="formula-inline">\( X \)</span> is unaffected by the outcome of <span class="formula-inline">\( Y \)</span> and vice versa. Independence is a strong condition and implies no relationship in any form between <span class="formula-inline">\( X \)</span> and <span class="formula-inline">\( Y \)</span>.
+                    </p>
+
+                <h3>Uncorrelation</h3>
+                    <p>
+                        Two random variables <span class="formula-inline">\( X \)</span> and <span class="formula-inline">\( Y \)</span> are uncorrelated if their covariance is zero:
+                        <div class="formula">$$\text{Cov}(X, Y) = E[(X - E[X])(Y - E[Y])] = 0$$</div>
+                        If both have finite variances, this condition can also be expressed as:
+                        <div class="formula">$$\text{Corr}(X, Y) = \frac{\text{Cov}(X, Y)}{\sigma_X \sigma_Y} = 0$$</div>
+                        <p>
+                            where <span class="formula-inline">\( \text{Corr}(X, Y) \)</span> is the correlation coefficient, and <span class="formula-inline">\( \sigma_X \)</span> and <span class="formula-inline">\( \sigma_Y \)</span> are the standard deviations of 
+                            <span class="formula-inline">\( X \)</span> and <span class="formula-inline">\( Y \)</span>.</p>
+                        </p>
+                    <p>
+                        <strong>Implication:</strong> Uncorrelated random variables have no linear relationship, meaning a change in <span class="formula-inline">\( X \)</span> does not predict any consistent linear change in <span class="formula-inline">\( Y \)</span>. However, uncorrelation is a weaker condition than independence; uncorrelated variables can still have nonlinear dependencies.
+                    </p>
+                    
+                <h3>Conceptual Differences</h3>
+                    <p>
+                        <strong>Strength of Condition:</strong> Independence is a stricter condition than uncorrelation. Independence implies uncorrelation (no linear relationship), but uncorrelation does not imply independence (there may be other types of dependency).
+                    </p>
+                    <p>
+                        <strong>Types of Relationships:</strong> Independence rules out any kind of dependency (linear or nonlinear), while uncorrelation only rules out linear dependency. For example, two random variables <span class="formula-inline">\( X \)</span> and <span class="formula-inline">\( Y = X^2 \)</span> are uncorrelated if <span class="formula-inline">\( X \)</span> has a mean of zero, but they are certainly not independent.
+                    </p>
+                    <p>
+                        <strong>Measures:</strong> Independence is typically verified by examining the joint distribution or using statistical tests (like the chi-square test for categorical variables). Uncorrelation, on the other hand, is commonly measured by the correlation coefficient or covariance.
+                    </p>
+                <h3>Possible Measures for Independence and Uncorrelation</h3>
+                <ul>
+                    <li>
+                        <strong>Measuring Independence</strong>
+                        <ul>
+                            <li>
+                                <strong>Joint Probability Distributions:</strong> Comparing <span class="formula-inline">\( P(X, Y) \)</span> with <span class="formula-inline">\( P(X)P(Y) \)</span> across all possible values of <span class="formula-inline">\( X \)</span> and <span class="formula-inline">\( Y \)</span> for discrete variables, or comparing the joint and product of marginals for continuous distributions.
+                            </li>
+                            <li>
+                                <strong>Statistical Tests:</strong> Chi-square tests or mutual information can assess independence, especially for categorical data.
+                            </li>
+                            <li>
+                                <strong>Mutual Information:</strong> A measure from information theory that quantifies the amount of information one variable provides about another. Zero mutual information implies independence.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Measuring Uncorrelation</strong>
+                        <ul>
+                            <li>
+                                <strong>Covariance:</strong> Covariance measures the tendency of two variables to vary together. If <span class="formula-inline">\( \text{Cov}(X, Y) = 0 \)</span>, <span class="formula-inline">\( X \)</span> and <span class="formula-inline">\( Y \)</span> are uncorrelated.
+                            </li>
+                            <li>
+                                <strong>Correlation Coefficient:</strong> The Pearson correlation coefficient standardizes covariance by dividing by the product of the standard deviations. A correlation coefficient of zero indicates uncorrelation.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content-section">
+            <h2 class="section-title">Practice</h2>
+            <iframe src="../WebAttackSimulation/Pages/Index.html"></iframe>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        window.addEventListener('message', function(event) {
+          const iframe = document.querySelector('.content-section iframe');
+          if (iframe && Number.isInteger(event.data)) {
+            iframe.style.height = event.data + 'px';
+          }
+        });
+      </script>
+</body>
+</html>
+
