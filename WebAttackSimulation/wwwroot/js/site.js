@@ -35,6 +35,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let regressionModel; 
 
+    let flag = true;
+
     const chartRect = new Rettangolo(20, 30, canvas.width - 200, canvas.height - 30 - 40);
 
     recomputeBtn.onclick = main;
@@ -111,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function() {
         } else if (brownian.checked) {
             setProcess("Brownian Motion (Σ N( -√(1/n), √(1/n)), mean=0, var = t)", VariateType.BROWNIAN, true, -sigmaRange, sigmaRange, () => (Math.random() <= lambda / n) ? -Math.sqrt(1 / n) : Math.sqrt(1 / n), (sum) => (sum));
         } else if (regression.checked) {
-            setProcess("Regression Coefficients (Least Squares Method)", VariateType.REGRESSION, false, 0, n, () => Math.random(), (sum, t) => sum);
+            setProcess("Regression Coefficients (With n random points)", VariateType.REGRESSION, true, 0, n, () => Math.random(), (sum, t) => sum);
         }
 
         range = maxView - minView;
@@ -268,10 +270,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function drawLegendRegression() {
         // Increase the width of the rectangle by adjusting the parameters
-        const rectWidth = chartRect.width + 135; // Increase width by 20 pixels
+        const rectWidth = chartRect.width + 105; 
         const rectHeight = chartRect.height;
+        
+        if(flag){
+            chartRect.x += 30;
+            flag = false;
+        }
     
-        // Draw the rectangle with the new width
         ctx.beginPath();
         ctx.rect(chartRect.x, chartRect.y, rectWidth, rectHeight);
         ctx.strokeStyle = "darkblue";
@@ -296,11 +302,17 @@ document.addEventListener("DOMContentLoaded", function() {
         if (scalingLimit) {
             ctx.fillStyle = "orange";
             ctx.strokeStyle = "orange";
-            for (let t = 0; t <= 1; t += 0.1) {
-                let x = My2dUtilities.transformX(t, 0, 1, chartRect.x, chartRect.width);
+            for (let t = 0; t <= n; t += n/10) {
+                let x = My2dUtilities.transformX(t, 0, n, chartRect.x, rectWidth);
                 ctx.moveTo(x, chartRect.bottom() - 3);
                 ctx.lineTo(x, chartRect.bottom() + 3);
                 ctx.fillText(t.toFixed(1).toString(), x - 5, chartRect.bottom() + 15);
+            }
+            for (let t = 0; t <= 1; t += 0.1) {
+                let y = My2dUtilities.transformY(t, 0, 1, chartRect.y, rectHeight);
+                ctx.moveTo(chartRect.left() - 3, y); 
+                ctx.lineTo(chartRect.left() + 3, y); 
+                ctx.fillText(t.toFixed(1).toString(), chartRect.left() - 25, y + 5); 
             }
         }
     
