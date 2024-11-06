@@ -31,12 +31,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
-    let mu, sigma, lambda, n, numPaths, paths, randomJump, variate, scalingLimit, processType, processDesc, minView, maxView, range, intervalSize, numClasses, xOrigin, yOrigin, histTimeT, histTimeN, avgLast, ssLast, intervalsT, intervalsN, timer, animate, currentPath;
+    let mu, sigma, lambda, n, numPaths, paths, randomJump, variate, scalingLimit, processType, processDesc, minView, maxView, range, intervalSize, numClasses, xOrigin, yOrigin, histTimeT, histTimeN, avgLast, ssLast, intervalsT, intervalsN, timer, animate, currentPath, currentT;
+
+    let regressionModel; 
 
     const chartRect = new Rettangolo(20, 30, canvas.width - 200, canvas.height - 30 - 40);
-
-    let xValues = [];
-    let yValues = [];
 
     recomputeBtn.onclick = main;
 
@@ -49,31 +48,38 @@ document.addEventListener("DOMContentLoaded", function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         paths = [];
 
-        xValues = [];
-        yValues = [];
-
-        if (animate) {
-            timer = setInterval(animatePaths, 10);
-        } else {
-            for (let s = 1; s <= numPaths; s++) {
-                const newPath = createPath(s);
-                paths.push(newPath);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = MyChartUtilities.randomColorCSS();
-                ctx.stroke(newPath);
+        if (processType === VariateType.REGRESSION) {
+            regressionModel = new Regression([], []);
+            if (animate) {
+                timer = setInterval(animateRegressionPaths, 50);
+            } else {
+                const xData = [];
+                const yData = [];
+                // Collect exactly n data points
+                for (let t = 1; t <= n; t++) {
+                    const value = variate(randomJump(), t);
+                    xData.push(t);
+                    yData.push(value);
+                }
+                regressionModel = new Regression(xData, yData);
+                regressionModel.calculateCoefficients();
+                regressionModel.calculateR2();
+                regressionModel.drawPlot('canvas');
+                drawLegendRegression();
             }
-            drawHistograms();
-            drawLegend();
-
-            if (processType === VariateType.REGRESSION) {
-                // Calculate and display regression coefficients and R^2
-                const coefficients = calculateRegressionCoefficients(xValues, yValues);
-                const r2 = calculateR2(xValues, yValues, coefficients);
-
-                console.log(`Intercept (a): ${coefficients.a}`);
-                console.log(`Slope for m (b1): ${coefficients.b1}`);
-                console.log(`Slope for p (b2): ${coefficients.b2}`);
-                console.log(`R^2: ${r2}`);
+        } else {
+            if (animate) {
+                timer = setInterval(animatePaths, 10);
+            } else {
+                for (let s = 1; s <= numPaths; s++) {
+                    const newPath = createPath(s);
+                    paths.push(newPath);
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = MyChartUtilities.randomColorCSS();
+                    ctx.stroke(newPath);
+                }
+                drawHistograms();
+                drawLegend();
             }
         }
     }
@@ -130,6 +136,32 @@ document.addEventListener("DOMContentLoaded", function() {
         currentPath = 0;
         avgLast = 0;
         ssLast = 0;
+        currentT = 0;
+    }
+
+    function animateRegressionPaths() {
+        if (currentT >= n) {
+            clearInterval(timer);
+            regressionModel.calculateCoefficients();
+            regressionModel.calculateR2();
+            regressionModel.drawPlot('canvas');
+            drawLegendRegression();
+            return;
+        }
+
+        currentT++;
+        const t = currentT;
+        const value = variate(randomJump(), t);
+        regressionModel.addDataPoint(t, value);
+
+        regressionModel.calculateCoefficients();
+        regressionModel.calculateR2();
+        regressionModel.drawPlot('canvas');
+        drawLegendRegression();
+
+        if (currentT >= n) {
+            clearInterval(timer);
+        }
     }
 
     function animatePaths() {
@@ -157,10 +189,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let value = variate(sum, t);
 
             if (processType === VariateType.REGRESSION) {
-                const m = t; 
-                const p = lambda;
-                xValues.push([m, p]);
-                yValues.push(value);
+                regressionModel.addDataPoint(t, value);
             }
 
             if (t === histTimeT) {
@@ -237,48 +266,46 @@ document.addEventListener("DOMContentLoaded", function() {
         ctx.stroke();
     }
 
+    function drawLegendRegression() {
+        // Increase the width of the rectangle by adjusting the parameters
+        const rectWidth = chartRect.width + 135; // Increase width by 20 pixels
+        const rectHeight = chartRect.height;
+    
+        // Draw the rectangle with the new width
+        ctx.beginPath();
+        ctx.rect(chartRect.x, chartRect.y, rectWidth, rectHeight);
+        ctx.strokeStyle = "darkblue";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    
+        ctx.font = "15px Consolas";
+        ctx.fillStyle = "white";
+        ctx.fillText(maxView.toFixed(1), chartRect.right() + 90, chartRect.y - 7);
+        ctx.fillText(minView.toFixed(1), chartRect.right() + 100, chartRect.bottom() - 7);
+        ctx.fillStyle = "lightblue";
+        ctx.fillText(
+            `Y = ${regressionModel.a.toFixed(2)}X + ${regressionModel.b.toFixed(2)}     R² = ${regressionModel.rSquared.toFixed(2)}`,
+            chartRect.x + 350,
+            chartRect.bottom() + 30
+        );
+        ctx.fillStyle = "white";
+        ctx.fillText(processDesc, chartRect.x + 100, chartRect.y + 15);
+    
+        ctx.beginPath();
+    
+        if (scalingLimit) {
+            ctx.fillStyle = "orange";
+            ctx.strokeStyle = "orange";
+            for (let t = 0; t <= 1; t += 0.1) {
+                let x = My2dUtilities.transformX(t, 0, 1, chartRect.x, chartRect.width);
+                ctx.moveTo(x, chartRect.bottom() - 3);
+                ctx.lineTo(x, chartRect.bottom() + 3);
+                ctx.fillText(t.toFixed(1).toString(), x - 5, chartRect.bottom() + 15);
+            }
+        }
+    
+        ctx.stroke();
+    }
+
     window.onload = main;
 });
-
-/**
- * Calculate the regression coefficients (a and b) using the least squares method.
- * @param {Array<Array<number>>} x - Array of [m, p] values.
- * @param {Array<number>} y - Array of y values.
- * @returns {Object} - Object containing the slope (b) and intercept (a).
- */
-function calculateRegressionCoefficients(x, y) {
-    const n = x.length;
-    const sumX1 = x.reduce((acc, val) => acc + val[0], 0);
-    const sumX2 = x.reduce((acc, val) => acc + val[1], 0);
-    const sumY = y.reduce((acc, val) => acc + val, 0);
-    const sumX1Y = x.reduce((acc, val, i) => acc + val[0] * y[i], 0);
-    const sumX2Y = x.reduce((acc, val, i) => acc + val[1] * y[i], 0);
-    const sumX1X2 = x.reduce((acc, val) => acc + val[0] * val[1], 0);
-    const sumX1X1 = x.reduce((acc, val) => acc + val[0] * val[0], 0);
-    const sumX2X2 = x.reduce((acc, val) => acc + val[1] * val[1], 0);
-
-    const denominator = n * sumX1X1 * sumX2X2 + 2 * sumX1 * sumX2 * sumX1X2 - sumX1 * sumX1 * sumX2X2 - sumX2 * sumX2 * sumX1X1 - n * sumX1X2 * sumX1X2;
-
-    const a = (sumY * sumX1X1 * sumX2X2 + sumX1 * sumX2 * sumX1Y * sumX2Y - sumX1 * sumX1 * sumX2Y - sumX2 * sumX2 * sumX1Y - sumY * sumX1X2 * sumX1X2) / denominator;
-    const b1 = (n * sumX1Y * sumX2X2 + sumX1 * sumX2 * sumY * sumX2Y - sumX1 * sumX1 * sumX2Y - sumX2 * sumX2 * sumX1Y - n * sumX1X2 * sumX2Y) / denominator;
-    const b2 = (n * sumX1X1 * sumX2Y + sumX1 * sumX2 * sumX1Y * sumY - sumX1 * sumX1 * sumX2Y - sumX2 * sumX2 * sumX1Y - n * sumX1X2 * sumX1Y) / denominator;
-
-    return { a, b1, b2 };
-}
-
-/**
- * Calculate the coefficient of determination (R^2).
- * @param {Array<Array<number>>} x - Array of [m, p] values.
- * @param {Array<number>} y - Array of y values.
- * @param {Object} coefficients - Object containing the intercept (a) and slopes (b1, b2).
- * @returns {number} - The R^2 value.
- */
-function calculateR2(x, y, coefficients) {
-    const { a, b1, b2 } = coefficients;
-    const meanY = y.reduce((acc, val) => acc + val, 0) / y.length;
-
-    const ssTotal = y.reduce((acc, val) => acc + Math.pow(val - meanY, 2), 0);
-    const ssResidual = y.reduce((acc, val, i) => acc + Math.pow(val - (a + b1 * x[i][0] + b2 * x[i][1]), 2), 0);
-
-    return 1 - ssResidual / ssTotal;
-}

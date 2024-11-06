@@ -108,7 +108,7 @@ figure {
 
 .caption {
     text-align: center;
-    font-style: italic;
+    font-style: Helvetica;
     color: black;
 
     display: block;
@@ -136,7 +136,7 @@ figure {
     flex-wrap: nowrap;
     align-items: center; 
     justify-content: center;
-    font-family: "dancing script", cursive;
+    font-family: "dancing script, cursive" !important;
 }
 
 /* Background styles */
