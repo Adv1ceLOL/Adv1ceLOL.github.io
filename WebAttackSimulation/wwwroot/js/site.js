@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", function() {
         RELATIVE_FREQUENCY: Symbol("relativeFrequency"),
         BERNULLI: Symbol("bernoulli"),
         BROWNIAN: Symbol("brownian"),
-        REGRESSION: Symbol("regression") // New process type for regression
+        REGRESSION: Symbol("regression"),
+        INTERVAL: Symbol("interval")
     });
 
     const recomputeBtn = document.getElementById("recomputeBtn");
@@ -16,6 +17,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const lambdaInput = document.getElementById("lambdaInput");
     const timesInput = document.getElementById("timesInput");
     const pathsInput = document.getElementById("pathsInput");
+
+    // New Inputs for Interval Simulation
+    const numDrawsInput = document.getElementById("numDraws"); // Add this input in your HTML
+    const numIntervalsInput = document.getElementById("numIntervals"); // Add this input in your HTML
 
     const animated = document.getElementById("animated");
     const absoluteFrequency = document.getElementById("absolute");
@@ -27,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const bernulli = document.getElementById("bernulli");
     const brownian = document.getElementById("brownian");
     const regression = document.getElementById("regression");
+    const interval = document.getElementById("interval");
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
@@ -34,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let mu, sigma, lambda, n, numPaths, paths, randomJump, variate, scalingLimit, processType, processDesc, minView, maxView, range, intervalSize, numClasses, xOrigin, yOrigin, histTimeT, histTimeN, avgLast, ssLast, intervalsT, intervalsN, timer, animate, currentPath, currentT;
 
     let regressionModel; 
+    let boundieries;
 
     let flag = true;
 
@@ -49,6 +56,9 @@ document.addEventListener("DOMContentLoaded", function() {
         resetVariables();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         paths = [];
+
+        // Initialize boundieries
+        boundieries = new Array(numIntervals).fill(0).map(() => []);
 
         if (processType === VariateType.REGRESSION) {
             regressionModel = new Regression([], []);
@@ -69,6 +79,47 @@ document.addEventListener("DOMContentLoaded", function() {
                 regressionModel.drawPlot('canvas');
                 drawLegendRegression();
             }
+        } else if (processType === VariateType.INTERVAL) {
+            const numDraws = Number(numDrawsInput.value);
+            const numIntervals = Number(numIntervalsInput.value);
+            let n = Math.round(Number(timesInput.value));
+            
+            let value;
+            for (let i = 0; i <= numIntervals; i++) {
+                value = (1/numIntervals) * i;
+                MyDistributionUtilities.allocateValueInIntervals(value, intervalsN, 1/numIntervals);
+            }
+
+            // Initialize the count array
+            for (let i = 0; i < numIntervals; i++) {
+                intervalsN[i].count = 0;
+            }
+            
+
+            // Randomly allocate draws to intervals
+            for (let i = 0; i < numDraws; i++) {
+                let draw = Math.random();
+                let intervalIndex = Math.floor(draw * numIntervals);
+                
+                // Ensure the index is within bounds
+                if (intervalIndex >= 0 && intervalIndex < numIntervals) {
+                    intervalsN[intervalIndex].count++;
+                    console.log(`Draw ${i}: ${draw} -> Interval ${intervalIndex}`);
+                    console.log(`Boundary ${intervalIndex}:`, intervalsN[intervalIndex].count);
+                }
+            }
+            
+            const histRectN = new Rettangolo(My2dUtilities.transformY(histTimeN, 0, n, chartRect.x, chartRect.width), chartRect.y, chartRect.width + 160, chartRect.height);
+            histRectN.disegnaRettangolo(ctx, "rgba(250,100,150,0.5)", 2, [1, 1]);
+
+            // Create gradient with inverted x and y axes
+            const gradient = ctx.createLinearGradient(histRectN.y, histRectN.x, histRectN.y + histRectN.height, histRectN.x + histRectN.width);
+            gradient.addColorStop(0, "blue");
+            gradient.addColorStop(1, "green");
+
+            MyChartUtilities.horizontalHistoFromIntervals(ctx, intervalsN, 0, 10, histRectN, gradient, 1, "lightgreen");
+
+            
         } else {
             if (animate) {
                 timer = setInterval(animatePaths, 10);
@@ -114,6 +165,8 @@ document.addEventListener("DOMContentLoaded", function() {
             setProcess("Brownian Motion (Σ N( -√(1/n), √(1/n)), mean=0, var = t)", VariateType.BROWNIAN, true, -sigmaRange, sigmaRange, () => (Math.random() <= lambda / n) ? -Math.sqrt(1 / n) : Math.sqrt(1 / n), (sum) => (sum));
         } else if (regression.checked) {
             setProcess("Regression Coefficients (With n random points)", VariateType.REGRESSION, true, 0, n, () => Math.random(), (sum, t) => sum);
+        } else if (interval.checked) {
+            setProcess("Interval Simulation", VariateType.INTERVAL, false, 0, 1, () => Math.random(), (sum, t) => sum);
         }
 
         range = maxView - minView;

@@ -40,7 +40,7 @@ class MyChartUtilities {
       Math.round(Math.random() * 250) + ', ' + Alpha + ')';
   }
 
-  static verticalHistoFromIntervals(ctx, intervals, y_min, y_range, viewRect, strokeStyle, lineWidth, fillStyle) {
+  static verticalHistoFromIntervals(ctx, intervals, x_min, x_range, viewRect, strokeStyle, lineWidth, fillStyle) {
     let maxcount = 0;
     for (const interval of intervals) {
       maxcount = Math.max(maxcount, interval.count);
@@ -52,8 +52,8 @@ class MyChartUtilities {
       let x_rect = viewRect.x;
       let width_rect = viewRect.width * interval.count / maxcount;
 
-      let y_rect_top = My2dUtilities.transformY(interval.upper, y_min, y_range, viewRect.y, viewRect.height);
-      let y_rect_bottom = My2dUtilities.transformY(interval.lower, y_min, y_range, viewRect.y, viewRect.height);
+      let y_rect_top = My2dUtilities.transformY(interval.upper, x_min, x_range, viewRect.y, viewRect.height);
+      let y_rect_bottom = My2dUtilities.transformY(interval.lower, x_min, x_range, viewRect.y, viewRect.height);
       let height_rect = y_rect_bottom - y_rect_top;   //y crescono verso il basso
 
       let rectInterval = new Rettangolo(x_rect, y_rect_top, width_rect, height_rect);
@@ -69,6 +69,62 @@ class MyChartUtilities {
       ctx.fillRect(rectInterval.x, rectInterval.y, rectInterval.width, rectInterval.height);
     }
 
+  }
+
+
+  static horizontalHistoFromIntervals(ctx, intervals, x_min, x_range, viewRect, strokeStyle, lineWidth, fillStyle) {
+    // Determine the maximum count to scale the bars
+    let maxcount = 0;
+    for (const interval of intervals) {
+      maxcount = Math.max(maxcount, interval.count);
+    }
+
+    // Define spacing and bar dimensions
+    const spacing = 10; // Space between bars
+    const barHeight = (viewRect.height - (intervals.length + 1) * spacing) / intervals.length;
+    const maxBarLength = viewRect.width - 150; // Reserve space for labels
+
+    // Set font for labels
+    ctx.font = "12px Verdana";
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+
+    // Iterate through intervals and draw each bar
+    intervals.forEach((interval, index) => {
+      const barLength = (interval.count / maxcount) * maxBarLength;
+      const y = viewRect.y + spacing + index * (barHeight + spacing);
+
+      // Draw the bar
+      ctx.fillStyle = fillStyle;
+      ctx.fillRect(viewRect.x, y, barLength, barHeight);
+
+      // Create and apply gradient
+      const gradient = ctx.createLinearGradient(viewRect.x, y, viewRect.x + barLength, y);
+      gradient.addColorStop(0, 'black');
+      gradient.addColorStop(0.25, fillStyle);
+      gradient.addColorStop(0.5, 'white');
+      gradient.addColorStop(0.75, fillStyle);
+      gradient.addColorStop(1, 'black');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(viewRect.x, y, barLength, barHeight);
+
+      // Draw the count label
+      ctx.fillStyle = "white";
+      ctx.textAlign = "right";
+      ctx.fillText(interval.count.toString(), viewRect.x - 5, y + barHeight / 2);
+
+      // Draw the interval range label
+      ctx.textAlign = "left";
+      const label = `[${interval.lower.toFixed(2)}, ${interval.upper.toFixed(2)})`;
+      ctx.fillText(label, viewRect.x + barLength + 5, y + barHeight / 2);
+
+      ctx.textAlign = "right"; // Reset alignment for next label
+    });
+
+    // Optional: Draw border around the histogram area
+    ctx.strokeStyle = strokeStyle;
+    ctx.lineWidth = lineWidth;
+    ctx.strokeRect(viewRect.x, viewRect.y, maxBarLength, viewRect.height);
   }
 
   static chartColumnForMap(wordMap, ctx, rettangolo, columnColor, font, fillStyle) {
