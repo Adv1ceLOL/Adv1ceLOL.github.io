@@ -40,6 +40,38 @@ class MyChartUtilities {
       Math.round(Math.random() * 250) + ', ' + Alpha + ')';
   }
 
+  static randomDrawDistribution(numDraws, numIntervals, intervalsN) {
+    console.log("Intervals while starting:", JSON.stringify(intervalsN));
+    
+    let value = 0;
+    for (let i = 0; i <= numIntervals; i++) {
+        value = (1 / numIntervals) * i;
+        console.log("Value:", value);
+        MyDistributionUtilities.allocateValueInIntervals(value, intervalsN, 1 / numIntervals);
+        console.log("Intervals after allocation:", JSON.stringify(intervalsN));
+    }
+
+    // Initialize the count array
+    for (let i = 0; i < numIntervals; i++) {
+        intervalsN[i].count = 0;
+    }
+
+    console.log("Intervals after initialization:", JSON.stringify(intervalsN));
+
+    // Randomly allocate draws to intervals
+    for (let i = 0; i < numDraws; i++) {
+        let draw = Math.random();
+        let intervalIndex = Math.floor(draw * numIntervals);
+
+        // Ensure the index is within bounds
+        if (intervalIndex >= 0 && intervalIndex < numIntervals) {
+            intervalsN[intervalIndex].count++;
+            console.log(`Draw ${i}: ${draw} -> Interval ${intervalIndex}`);
+            console.log(`Boundary ${intervalIndex}:`, intervalsN[intervalIndex].count);
+        }
+    }
+}
+
   static verticalHistoFromIntervals(ctx, intervals, x_min, x_range, viewRect, strokeStyle, lineWidth, fillStyle) {
     let maxcount = 0;
     for (const interval of intervals) {
@@ -72,16 +104,46 @@ class MyChartUtilities {
   }
 
 
-  static horizontalHistoFromIntervals(ctx, intervals, x_min, x_range, viewRect, strokeStyle, lineWidth, fillStyle) {
+  static horizontalHistoFromIntervals(ctx, intervals, viewRect, strokeStyle, lineWidth, fillStyle, numDraws, numIntervals) {
+    // Log intervals before calling randomDrawDistribution
+    console.log("Intervals before randomDrawDistribution:", JSON.stringify(intervals));
+
+    // Call randomDrawDistribution to update intervals
+    MyChartUtilities.randomDrawDistribution(numDraws, numIntervals, intervals);
+
+    // Create a copy of intervals for intervals2
+    let intervals2 = [];
+
+    console.log("Intervals2 ");
+
+    // Call randomDrawDistribution to update intervals2
+    MyChartUtilities.randomDrawDistribution(numDraws, numIntervals, intervals2);
+
+    // Log intervals after calling randomDrawDistribution
+    console.log("Intervals after randomDrawDistribution:", JSON.stringify(intervals));
+
+    // Log intervals2 after calling randomDrawDistribution
+    console.log("Intervals2 after randomDrawDistribution:", JSON.stringify(intervals2));
+
     // Determine the maximum count to scale the bars
     let maxcount = 0;
     for (const interval of intervals) {
       maxcount = Math.max(maxcount, interval.count);
     }
+    for (let i = 0; i < numIntervals; i++){
+      maxcount = Math.max(maxcount, intervals[i].count);
+    }
+    for (let i = 0; i < numIntervals; i++){
+      if(intervals2[i].count > maxcount){
+        maxcount = intervals2[i].count;
+      }
+    }
+    
+    console.log("Maxcount:", maxcount); 
 
     // Define spacing and bar dimensions
     const spacing = 10; // Space between bars
-    const barHeight = (viewRect.height - (intervals.length + 1) * spacing) / intervals.length;
+    const barHeight = ((viewRect.height - 50) - (intervals.length + 1) * spacing) / (2 * intervals.length); // Halve the bar height
     const maxBarLength = viewRect.width - 150; // Reserve space for labels
 
     // Set font for labels
@@ -89,37 +151,19 @@ class MyChartUtilities {
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
 
-    // Iterate through intervals and draw each bar
-    intervals.forEach((interval, index) => {
+    // Iterate through intervals and intervals2 in parallel and draw each bar
+    for (let i = 0; i < numIntervals; i++) {
+      const interval = intervals[i];
+      const interval2 = intervals2[i];
+
       const barLength = (interval.count / maxcount) * maxBarLength;
-      const y = viewRect.y + spacing + index * (barHeight + spacing);
+      const y = viewRect.y + spacing + i * (barHeight + spacing) * 2;
 
-      // Draw the bar
-      ctx.fillStyle = fillStyle;
+      // Draw the first bar (red)
+      ctx.fillStyle = '#FF4500'; // Red color
       ctx.fillRect(viewRect.x, y, barLength, barHeight);
-
-      // Create and apply gradient
-      const gradient = ctx.createLinearGradient(viewRect.x, y, viewRect.x , y + barHeight);
-      gradient.addColorStop(0, 'black');                 // Start with black
-
-      gradient.addColorStop(0.1, '#FF4500');             // Central red
-      gradient.addColorStop(0.9, '#FF4500');             // Central red
-
-      gradient.addColorStop(1, 'black');                 // End with black
-      ctx.fillStyle = gradient;
-      ctx.fillRect(viewRect.x, y, barLength, barHeight);
-
-      // Set the fill style to red
-      ctx.fillStyle = 'red';
-
-      // Draw the red box
-      ctx.fillRect(viewRect.x, y, barLength, barHeight);
-
-      // Set the stroke style to black
-      ctx.strokeStyle = 'black';
-      ctx.lineWidth = 3; // Set the border width
-
-      // Draw the black border around the box
+      ctx.strokeStyle = 'black'; // Black border
+      ctx.lineWidth = 1;
       ctx.strokeRect(viewRect.x, y, barLength, barHeight);
 
       // Draw the count label
@@ -130,16 +174,32 @@ class MyChartUtilities {
       // Draw the interval range label
       ctx.textAlign = "left";
       const label = `[${interval.lower.toFixed(2)}, ${interval.upper.toFixed(2)})`;
-      ctx.fillText(label, viewRect.x + barLength + 5, y + barHeight / 2);
+      ctx.fillText(label, viewRect.x + barLength + 25, y + barHeight / 2);
 
       ctx.textAlign = "right"; // Reset alignment for next label
-    });
 
-    // Optional: Draw border around the histogram area
-    ctx.strokeStyle = strokeStyle;
-    ctx.lineWidth = lineWidth;
-    ctx.strokeRect(viewRect.x, viewRect.y, maxBarLength, viewRect.height);
-  }
+      // Draw the second bar below the first one (blue)
+      const y2 = y + barHeight + spacing;
+      const barLength2 = (interval2.count / maxcount) * maxBarLength;
+      ctx.fillStyle = 'blue'; // Blue color
+      ctx.fillRect(viewRect.x, y2, barLength2, barHeight);
+      ctx.strokeStyle = 'black'; // Black border
+      ctx.lineWidth = 1;
+      ctx.strokeRect(viewRect.x, y2, barLength2, barHeight);
+
+      // Draw the count label for the second bar
+      ctx.fillStyle = "white";
+      ctx.textAlign = "right";
+      ctx.fillText(interval2.count.toString(), viewRect.x - 5, y2 + barHeight / 2);
+
+      // Draw the interval range label for the second bar
+      ctx.textAlign = "left";
+      const label2 = `[${interval2.lower.toFixed(2)}, ${interval2.upper.toFixed(2)})`;
+      ctx.fillText(label2, viewRect.x + barLength2 + 25, y2 + barHeight / 2);
+
+      ctx.textAlign = "right"; // Reset alignment for next label
+    }
+}
 
   static chartColumnForMap(wordMap, ctx, rettangolo, columnColor, font, fillStyle) {
 

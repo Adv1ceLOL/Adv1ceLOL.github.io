@@ -80,44 +80,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 drawLegendRegression();
             }
         } else if (processType === VariateType.INTERVAL) {
-            const numDraws = Number(numDrawsInput.value);
-            const numIntervals = Number(numIntervalsInput.value);
-            let n = Math.round(Number(timesInput.value));
+            //MyChartUtilities.randomDrawDistribution(numDrawsInput.value, numIntervalsInput.value, intervalsN);
             
-            let value;
-            for (let i = 0; i <= numIntervals; i++) {
-                value = (1/numIntervals) * i;
-                MyDistributionUtilities.allocateValueInIntervals(value, intervalsN, 1/numIntervals);
-            }
-
-            // Initialize the count array
-            for (let i = 0; i < numIntervals; i++) {
-                intervalsN[i].count = 0;
-            }
-            
-
-            // Randomly allocate draws to intervals
-            for (let i = 0; i < numDraws; i++) {
-                let draw = Math.random();
-                let intervalIndex = Math.floor(draw * numIntervals);
-                
-                // Ensure the index is within bounds
-                if (intervalIndex >= 0 && intervalIndex < numIntervals) {
-                    intervalsN[intervalIndex].count++;
-                    console.log(`Draw ${i}: ${draw} -> Interval ${intervalIndex}`);
-                    console.log(`Boundary ${intervalIndex}:`, intervalsN[intervalIndex].count);
-                }
-            }
-            
-            const histRectN = new Rettangolo(My2dUtilities.transformY(histTimeN, 0, n, chartRect.x, chartRect.width), chartRect.y, chartRect.width + 160, chartRect.height);
-            histRectN.disegnaRettangolo(ctx, "rgba(250,100,150,0.5)", 2, [1, 1]);
+            const histRectN = new Rettangolo(My2dUtilities.transformY(histTimeN, 0, n, chartRect.x + 40, chartRect.width), chartRect.y, chartRect.width + 120, chartRect.height + 20);
+            histRectN.disegnaRettangolo(ctx, "rgba(0,0,0)", 2, [1, 1]);
 
             // Create gradient with inverted x and y axes
             const gradient = ctx.createLinearGradient(histRectN.y, histRectN.x, histRectN.y + histRectN.height, histRectN.x + histRectN.width);
             gradient.addColorStop(0, "blue");
             gradient.addColorStop(1, "green");
 
-            MyChartUtilities.horizontalHistoFromIntervals(ctx, intervalsN, 0, 10, histRectN, gradient, 1, "lightgreen");
+            MyChartUtilities.horizontalHistoFromIntervals(ctx, intervalsN, histRectN, gradient, 1, "lightgreen", numDrawsInput.value, numIntervalsInput.value);
 
             
         } else {
