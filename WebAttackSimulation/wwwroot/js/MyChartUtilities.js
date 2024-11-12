@@ -99,14 +99,28 @@ class MyChartUtilities {
       ctx.fillRect(viewRect.x, y, barLength, barHeight);
 
       // Create and apply gradient
-      const gradient = ctx.createLinearGradient(viewRect.x, y, viewRect.x + barLength, y);
-      gradient.addColorStop(0, 'black');
-      gradient.addColorStop(0.25, fillStyle);
-      gradient.addColorStop(0.5, 'white');
-      gradient.addColorStop(0.75, fillStyle);
-      gradient.addColorStop(1, 'black');
+      const gradient = ctx.createLinearGradient(viewRect.x, y, viewRect.x , y + barHeight);
+      gradient.addColorStop(0, 'black');                 // Start with black
+
+      gradient.addColorStop(0.1, '#FF4500');             // Central red
+      gradient.addColorStop(0.9, '#FF4500');             // Central red
+
+      gradient.addColorStop(1, 'black');                 // End with black
       ctx.fillStyle = gradient;
       ctx.fillRect(viewRect.x, y, barLength, barHeight);
+
+      // Set the fill style to red
+      ctx.fillStyle = 'red';
+
+      // Draw the red box
+      ctx.fillRect(viewRect.x, y, barLength, barHeight);
+
+      // Set the stroke style to black
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 3; // Set the border width
+
+      // Draw the black border around the box
+      ctx.strokeRect(viewRect.x, y, barLength, barHeight);
 
       // Draw the count label
       ctx.fillStyle = "white";
