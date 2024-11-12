@@ -58,7 +58,12 @@ class MyChartUtilities {
 
     console.log("Intervals after initialization:", JSON.stringify(intervalsN));
 
-    // Randomly allocate draws to intervals
+    // Variables for mean and variance calculation using Welford's algorithm
+    let mean = 0;
+    let m2 = 0;
+    let variance = 0;
+
+    // Randomly allocate draws to intervals and update mean and variance
     for (let i = 0; i < numDraws; i++) {
         let draw = Math.random();
         let intervalIndex = Math.floor(draw * numIntervals);
@@ -199,6 +204,35 @@ class MyChartUtilities {
 
       ctx.textAlign = "right"; // Reset alignment for next label
     }
+
+
+    // Compute mean and variance using Welford's algorithm
+    let mean = 0;
+    let m2 = 0;
+    let variance = 0;
+
+    for (let i = 0; i < numDraws; i++) {
+        let draw = Math.random();
+        let delta = draw - mean;
+        mean += delta / (i + 1);
+        let delta2 = draw - mean;
+        m2 += delta * delta2;
+        variance = m2 / (i + 1);
+    }
+
+    // Theoretical mean and variance for a uniform distribution [0, 1]
+    const theoreticalMean = 0.5;
+    const theoreticalVariance = 1 / 12;
+
+    // Draw the computed and theoretical values below the histogram
+    ctx.font = "14px Consolas";
+    ctx.fillStyle = "white";
+    ctx.textAlign = "left";
+    ctx.fillText(`Computed Mean (Σxᵢ / n): ${mean.toFixed(4)}`, viewRect.x, viewRect.y + viewRect.height + 20);
+    ctx.fillText(`Computed Variance (Σ(xᵢ - μ)² / n): ${variance.toFixed(4)}`, viewRect.x, viewRect.y + viewRect.height + 40);
+    ctx.fillText(`Theoretical Mean: ${theoreticalMean}`, viewRect.x + 600, viewRect.y + viewRect.height + 20);
+    ctx.fillText(`Theoretical Variance: ${theoreticalVariance.toFixed(4)}`, viewRect.x + 600, viewRect.y + viewRect.height + 40);
+
 }
 
   static chartColumnForMap(wordMap, ctx, rettangolo, columnColor, font, fillStyle) {

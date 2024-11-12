@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let flag = true;
 
-    const chartRect = new Rettangolo(20, 30, canvas.width - 200, canvas.height - 30 - 40);
+    const chartRect = new Rettangolo(20, 30, canvas.width - 200, canvas.height - 60 - 40);
 
     recomputeBtn.onclick = main;
 
@@ -56,9 +56,6 @@ document.addEventListener("DOMContentLoaded", function() {
         resetVariables();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         paths = [];
-
-        // Initialize boundieries
-        boundieries = new Array(numIntervals).fill(0).map(() => []);
 
         if (processType === VariateType.REGRESSION) {
             regressionModel = new Regression([], []);
@@ -80,10 +77,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 drawLegendRegression();
             }
         } else if (processType === VariateType.INTERVAL) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
             //MyChartUtilities.randomDrawDistribution(numDrawsInput.value, numIntervalsInput.value, intervalsN);
             
-            const histRectN = new Rettangolo(My2dUtilities.transformY(histTimeN, 0, n, chartRect.x + 40, chartRect.width), chartRect.y, chartRect.width + 120, chartRect.height + 20);
-            histRectN.disegnaRettangolo(ctx, "rgba(0,0,0)", 2, [1, 1]);
+            const histRectN = new Rettangolo(My2dUtilities.transformY(histTimeN, 0, n, chartRect.x + 40, chartRect.width), chartRect.y - 20, chartRect.width + 120, chartRect.height + 40);
+            histRectN.disegnaRettangolo(ctx, "rgba(0,255,0 )", 2, [1, 1]);
 
             // Create gradient with inverted x and y axes
             const gradient = ctx.createLinearGradient(histRectN.y, histRectN.x, histRectN.y + histRectN.height, histRectN.x + histRectN.width);
@@ -165,6 +164,8 @@ document.addEventListener("DOMContentLoaded", function() {
         avgLast = 0;
         ssLast = 0;
         currentT = 0;
+        regressionModel = null; // Reset the regression model
+        flag = true; // Reset the flag
     }
 
     function animateRegressionPaths() {
@@ -174,6 +175,7 @@ document.addEventListener("DOMContentLoaded", function() {
             regressionModel.calculateR2();
             regressionModel.drawPlot('canvas');
             drawLegendRegression();
+            
             return;
         }
 
@@ -299,13 +301,10 @@ document.addEventListener("DOMContentLoaded", function() {
         const rectWidth = chartRect.width + 105; 
         const rectHeight = chartRect.height;
         
-        if(flag){
-            chartRect.x += 30;
-            flag = false;
-        }
+        
     
         ctx.beginPath();
-        ctx.rect(chartRect.x, chartRect.y, rectWidth, rectHeight);
+        ctx.rect(chartRect.x + 30, chartRect.y, rectWidth, rectHeight);
         ctx.strokeStyle = "darkblue";
         ctx.lineWidth = 2;
         ctx.stroke();
@@ -317,11 +316,11 @@ document.addEventListener("DOMContentLoaded", function() {
         ctx.fillStyle = "lightblue";
         ctx.fillText(
             `Y = ${regressionModel.a.toFixed(2)}X + ${regressionModel.b.toFixed(2)}     R² = ${regressionModel.rSquared.toFixed(2)}`,
-            chartRect.x + 350,
+            chartRect.x + 380,
             chartRect.bottom() + 30
         );
         ctx.fillStyle = "white";
-        ctx.fillText(processDesc, chartRect.x + 100, chartRect.y + 15);
+        ctx.fillText(processDesc, chartRect.x + 130, chartRect.y + 15);
     
         ctx.beginPath();
     
@@ -329,16 +328,16 @@ document.addEventListener("DOMContentLoaded", function() {
             ctx.fillStyle = "orange";
             ctx.strokeStyle = "orange";
             for (let t = 0; t <= n; t += n/10) {
-                let x = My2dUtilities.transformX(t, 0, n, chartRect.x, rectWidth);
+                let x = My2dUtilities.transformX(t, 0, n, chartRect.x + 30, rectWidth);
                 ctx.moveTo(x, chartRect.bottom() - 3);
                 ctx.lineTo(x, chartRect.bottom() + 3);
                 ctx.fillText(t.toFixed(1).toString(), x - 5, chartRect.bottom() + 15);
             }
             for (let t = 0; t <= 1; t += 0.1) {
                 let y = My2dUtilities.transformY(t, 0, 1, chartRect.y, rectHeight);
-                ctx.moveTo(chartRect.left() - 3, y); 
-                ctx.lineTo(chartRect.left() + 3, y); 
-                ctx.fillText(t.toFixed(1).toString(), chartRect.left() - 25, y + 5); 
+                ctx.moveTo(chartRect.left() + 27, y); 
+                ctx.lineTo(chartRect.left() + 33, y); 
+                ctx.fillText(t.toFixed(1).toString(), chartRect.left(), y); 
             }
         }
     

@@ -35,7 +35,7 @@ html {
 }
 
 body {
-  background-color: #333 !important;/* Dark grey background */
+  background-color: #0d1d31 !important;/* Dark grey background */
   color: white !important; /* Set text color to white */
 }
 
@@ -43,9 +43,10 @@ body {
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 5px;
-  background-color: #333  !important; /* Slightly lighter background */
+  background-color: #0c0d13  !important; /* Slightly lighter background */
   color: white; /* Ensure text is white */
-  margin-top: 480px;
+  margin-top: 650px;
+  margin-right: 5px;
   right: 10px; /* Align to the right */
   top: 10px; /* Align to the top */
   width: 200px; /* Set a fixed width */
@@ -59,7 +60,7 @@ label {
   display: block;
 }
 input{
-  background-color: #333 !important;
+  background-color: #0c0d13 !important;
   color: rgb(255, 255, 255) !important;
   border: 1px solid #ff0000;
   border-radius: 25px;
