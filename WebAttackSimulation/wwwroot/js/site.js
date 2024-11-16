@@ -8,7 +8,9 @@ document.addEventListener("DOMContentLoaded", function() {
         BERNULLI: Symbol("bernoulli"),
         BROWNIAN: Symbol("brownian"),
         REGRESSION: Symbol("regression"),
-        INTERVAL: Symbol("interval")
+        INTERVAL: Symbol("interval"),
+        INVERSION: Symbol("inversion"),
+        MEANMV: Symbol("meanMV")
     });
 
     const recomputeBtn = document.getElementById("recomputeBtn");
@@ -19,8 +21,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const pathsInput = document.getElementById("pathsInput");
 
     // New Inputs for Interval Simulation
-    const numDrawsInput = document.getElementById("numDraws"); // Add this input in your HTML
-    const numIntervalsInput = document.getElementById("numIntervals"); // Add this input in your HTML
+    const numDrawsInput = document.getElementById("numDraws");
+    const numIntervalsInput = document.getElementById("numIntervals"); 
 
     const animated = document.getElementById("animated");
     const absoluteFrequency = document.getElementById("absolute");
@@ -33,6 +35,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const brownian = document.getElementById("brownian");
     const regression = document.getElementById("regression");
     const interval = document.getElementById("interval");
+    const inversion = document.getElementById("inversion");
+    const meanMV = document.getElementById("meanMV");
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
@@ -84,15 +88,80 @@ document.addEventListener("DOMContentLoaded", function() {
             const histRectN = new Rettangolo(My2dUtilities.transformY(histTimeN, 0, n, chartRect.x + 40, chartRect.width), chartRect.y - 20, chartRect.width + 120, chartRect.height + 40);
             histRectN.disegnaRettangolo(ctx, "rgba(0,255,0 )", 2, [1, 1]);
 
-            // Create gradient with inverted x and y axes
-            const gradient = ctx.createLinearGradient(histRectN.y, histRectN.x, histRectN.y + histRectN.height, histRectN.x + histRectN.width);
-            gradient.addColorStop(0, "blue");
-            gradient.addColorStop(1, "green");
-
-            MyChartUtilities.horizontalHistoFromIntervals(ctx, intervalsN, histRectN, gradient, 1, "lightgreen", numDrawsInput.value, numIntervalsInput.value);
+            MyChartUtilities.horizontalHistoFromIntervals(ctx, intervalsN, histRectN, 1, "lightgreen", numDrawsInput.value, numIntervalsInput.value);
 
             
-        } else {
+        } else if (processType === VariateType.INVERSION) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const histRectN = new Rettangolo(My2dUtilities.transformY(histTimeN, 0, n, chartRect.x + 40, chartRect.width), chartRect.y - 20, chartRect.width + 120, chartRect.height + 40);
+            histRectN.disegnaRettangolo(ctx, "rgba(0,255,0 )", 2, [1, 1]);
+            Inversion.drawInversion(ctx, histRectN, numDrawsInput.value, numIntervalsInput.value);
+
+        } else if (processType === VariateType.MEANMV) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const histRectN = new Rettangolo(My2dUtilities.transformY(histTimeN, 0, n, chartRect.x + 40, chartRect.width), chartRect.y - 20, chartRect.width + 120, chartRect.height + 40);
+            histRectN.disegnaRettangolo(ctx, "rgba(0,255,0 )", 2, [1, 1]);
+
+            let meanArray = [];
+            let varianceArray = [];
+            let intervalsMean = [];
+            let intervalsVar = [];
+            
+            let value = 0;
+            for (let i = 0; i <= numIntervalsInput.value; i++) {
+                value = (1 / numIntervalsInput.value) * i;
+                MyDistributionUtilities.allocateValueInIntervals(value, intervalsMean, 1 / numIntervalsInput.value);
+                MyDistributionUtilities.allocateValueInIntervals(value, intervalsVar, 1 / numIntervalsInput.value);
+            }
+
+            for (let i = 0; i < numIntervalsInput.value; i++) {
+                intervalsMean[i].count = 0;
+                intervalsVar[i].count = 0;
+            }
+
+            for(let i = 0; i < numIntervalsInput.value; i++) {
+                console.log("Mean and Variance", i);
+                MyChartUtilities.MeanAndVariance(intervalsMean, intervalsVar, numIntervalsInput.value, numDrawsInput.value, i, meanArray, varianceArray, 0);
+            }
+
+            const [MeanMean, MeanVariance] = MyChartUtilities.MeanMeanAndMeanVariance(meanArray, varianceArray);
+            //console.log("Mean of the Mean: " + MeanMean + " Mean of the Variance: " + MeanVariance);
+           
+            // Send data to hw7.html
+            const data = {
+                meanArray: meanArray,
+                varianceArray: varianceArray,
+                MeanMean: MeanMean,
+                MeanVariance: MeanVariance
+            };
+            window.parent.postMessage(data, '*');
+
+            MyChartUtilities.drawRectangles(ctx, histRectN, intervalsMean, intervalsVar, numIntervalsInput.value);
+
+
+            if (window.parent.location.href.includes('hw7.html')) {
+                // Create the "See Results" button
+                let seeResultsButton = document.getElementById('seeResultsButton');
+                if (!seeResultsButton) {
+                    seeResultsButton = document.createElement('button');
+                    seeResultsButton.id = 'seeResultsButton';
+                    seeResultsButton.textContent = 'See Detailed Results';
+                    seeResultsButton.style.position = 'relative';
+                    seeResultsButton.style.bottom = '270px';
+                    seeResultsButton.style.left = '800px';
+                    seeResultsButton.className = 'btn btn-primary';
+        
+                    seeResultsButton.addEventListener('click', function() {
+                        // Send a message to the parent window to scroll down
+                        window.parent.postMessage({ action: 'scrollDown' }, '*');
+                    });
+        
+                    document.body.appendChild(seeResultsButton);
+                }
+            }
+
+        }
+        else {
             if (animate) {
                 timer = setInterval(animatePaths, 10);
             } else {
@@ -136,9 +205,13 @@ document.addEventListener("DOMContentLoaded", function() {
         } else if (brownian.checked) {
             setProcess("Brownian Motion (Σ N( -√(1/n), √(1/n)), mean=0, var = t)", VariateType.BROWNIAN, true, -sigmaRange, sigmaRange, () => (Math.random() <= lambda / n) ? -Math.sqrt(1 / n) : Math.sqrt(1 / n), (sum) => (sum));
         } else if (regression.checked) {
-            setProcess("Regression Coefficients (With n random points)", VariateType.REGRESSION, true, 0, n, () => Math.random(), (sum, t) => sum);
+            setProcess("", VariateType.REGRESSION, true, 0, n, () => Math.random(), (sum, t) => sum);
         } else if (interval.checked) {
             setProcess("Interval Simulation", VariateType.INTERVAL, false, 0, 1, () => Math.random(), (sum, t) => sum);
+        }  else if (inversion.checked) {
+            setProcess("Inversion Method", VariateType.INVERSION, false, 0, 1, () => Math.random(), (sum, t) => sum);
+        }   else if (meanMV.checked) {  
+            setProcess("Mean and Variance", VariateType.MEANMV, false, 0, 1, () => Math.random(), (sum, t) => sum);
         }
 
         range = maxView - minView;

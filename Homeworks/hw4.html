@@ -105,11 +105,29 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         window.addEventListener('message', function(event) {
-          const iframe = document.querySelector('.content-section iframe');
-          if (iframe && Number.isInteger(event.data)) {
-            iframe.style.height = event.data + 'px';
-          }
+            const iframe = document.querySelector('.content-section iframe');
+            if (iframe && Number.isInteger(event.data)) {
+                iframe.style.height = event.data + 'px';
+            }
         });
-      </script>
+        // Function to send messages to the iframe after it loads
+        function sendMessagesToIframe() {
+            const iframe = document.querySelector('.content-section iframe');
+            if (iframe && iframe.contentWindow) {
+                // Message to set the "Random Walk (RW)" radio button as checked
+                iframe.contentWindow.postMessage({ action: 'setProcess', processId: 'brownian' }, '*');
+    
+                // Delay clicking the recompute button to ensure the radio button is set
+                setTimeout(function() {
+                    iframe.contentWindow.postMessage({ action: 'clickRecompute' }, '*');
+                }, 500); // Adjust the delay as needed
+            }
+        }
+        // Attach the function to the iframe's load event
+        const iframeElement = document.querySelector('.content-section iframe');
+        if (iframeElement) {
+            iframeElement.onload = sendMessagesToIframe;
+        }
+    </script>
 </body>
 </html>

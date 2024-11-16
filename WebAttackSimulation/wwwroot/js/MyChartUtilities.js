@@ -109,7 +109,7 @@ class MyChartUtilities {
   }
 
 
-  static horizontalHistoFromIntervals(ctx, intervals, viewRect, strokeStyle, lineWidth, fillStyle, numDraws, numIntervals) {
+  static horizontalHistoFromIntervals(ctx, intervals, viewRect, lineWidth, fillStyle, numDraws, numIntervals) {
     // Log intervals before calling randomDrawDistribution
     console.log("Intervals before randomDrawDistribution:", JSON.stringify(intervals));
 
@@ -234,6 +234,134 @@ class MyChartUtilities {
     ctx.fillText(`Theoretical Variance: ${theoreticalVariance.toFixed(4)}`, viewRect.x + 600, viewRect.y + viewRect.height + 40);
 
 }
+
+  static MeanAndVariance(intervalsMean, intervalsVar, numIntervals, numDraws, intervalIndex, meanArray, varianceArray) {
+
+    // Variables for mean and variance calculation using Welford's algorithm
+    let mean = 0;
+    let m2 = 0;
+    let variance = 0;
+
+    // Randomly allocate draws to intervals and update mean and variance
+    for (let i = 0; i < numDraws; i++) {
+        let draw = Math.random();
+        
+        // Update mean and variance using Welford's algorithm
+        let delta = draw - mean;
+        mean += delta / (i + 1);
+        let delta2 = draw - mean;
+        m2 += delta * delta2;
+        variance = m2 / (i + 1);
+    }
+    console.log("Interval Index:", intervalIndex , "Mean:", mean, "Variance:", variance);
+
+    //console.log("Mean Var",MeanVar);
+
+    intervalsMean[intervalIndex].count = mean;
+    intervalsVar[intervalIndex].count = variance;
+    
+
+    console.log("Intervals:", JSON.stringify(intervalsMean[intervalIndex]));
+    console.log("Intervals:", JSON.stringify(intervalsVar[65]));
+    
+    
+    meanArray[intervalIndex] = mean;
+    varianceArray[intervalIndex] = variance;
+
+    // Theoretical mean and variance for a uniform distribution [0, 1]
+    const theoreticalMean = 0.5;
+    const theoreticalVariance = 1 / 12;
+
+  }
+   static MeanMeanAndMeanVariance(mean, variance) {
+      let MeanMean = 0;
+      let MeanVariance = 0;
+  
+      // Calculate the mean of the values in the mean array
+      for (let i = 0; i < mean.length; i++) {
+          MeanMean += mean[i];
+      }
+      MeanMean /= mean.length;
+  
+      // Calculate the mean of the values in the variance array
+      for (let i = 0; i < variance.length; i++) {
+          MeanVariance += variance[i];
+      }
+      MeanVariance /= variance.length;
+
+      return [MeanMean, MeanVariance];
+  }
+
+  static drawRectangles(ctx, histRectN, intervals1, intervals2, numIntervals) {
+      //console.log("Intervals1:", JSON.stringify(intervals1));
+      //console.log("Intervals2:", JSON.stringify(intervals2));
+  
+      // Determine the maximum count to scale the bars
+      let maxcount1 = 0;
+      let maxcount2 = 0;
+      let maxcount = 0;
+      for (let i = 0; i < numIntervals; i++) {
+        const interval1max = intervals1[i];
+        const interval2max = intervals2[i];
+        maxcount1 = Math.max(maxcount, interval1max.count);
+        maxcount2 = Math.max(maxcount, interval2max.count);
+        maxcount = Math.max(maxcount1, maxcount2);
+      }
+      
+      console.log("interval lenght:", intervals1.length ,"numIntervals", numIntervals);
+      // Define spacing and bar dimensions
+      const spacing = 5; // Space between bars
+      const barWidth = (histRectN.width - (intervals1.length + 1) * spacing) / (intervals1.length * 2); // Adjust bar width to fit two bars side by side
+      const maxBarHeight = histRectN.height - 50; // Reserve space for labels
+  
+      // Set font for labels
+      ctx.font = "10px Verdana";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+  
+      // Iterate through intervals1 and intervals2 in parallel and draw each bar
+      for (let i = 0; i < numIntervals; i++) {
+          const interval1 = intervals1[i];
+          const interval2 = intervals2[i];
+  
+          const barHeight1 = (interval1.count / maxcount) * maxBarHeight;
+          const barHeight2 = (interval2.count / maxcount) * maxBarHeight;
+  
+          const x1 = histRectN.x + spacing + i * (2 * barWidth + spacing);
+          const x2 = x1 + barWidth;
+          const y1 = histRectN.y + histRectN.height - barHeight1; // Adjust y-coordinate for interval1
+          const y2 = histRectN.y + histRectN.height - barHeight2; // Adjust y-coordinate for interval2
+  
+          // Draw the first bar (red)
+          ctx.fillStyle = '#FF4500'; // Red color
+          ctx.fillRect(x1, y1, barWidth, barHeight1);
+          ctx.strokeStyle = 'black'; // Black border
+          ctx.lineWidth = 1;
+          ctx.strokeRect(x1, y1, barWidth, barHeight1);
+  
+          // Draw the second bar next to the first one (blue)
+          ctx.fillStyle = 'blue'; // Blue color
+          ctx.fillRect(x2, y2, barWidth, barHeight2);
+          ctx.strokeStyle = 'black'; // Black border
+          ctx.lineWidth = 1;
+          ctx.strokeRect(x2, y2, barWidth, barHeight2);
+  
+          // Draw the count label for the first bar
+          ctx.fillStyle = "white";
+          //ctx.fillText(interval1.count.toString(), x1 + barWidth / 2, y1 - 10);
+  
+          // Draw the count label for the second bar
+          //ctx.fillText(interval2.count.toString(), x2 + barWidth / 2, y2 - 10);
+  
+          // Draw the interval range label for the first bar
+          if (i % 5 == 0 || i == intervals1.length - 1) {
+              const label = `[${interval1.lower.toFixed(2)}, ${interval1.upper.toFixed(2)})`;
+              ctx.fillText(label, x1 + barWidth / 2, histRectN.y + histRectN.height + 20);
+          }
+  
+         
+      }
+  }
 
   static chartColumnForMap(wordMap, ctx, rettangolo, columnColor, font, fillStyle) {
 

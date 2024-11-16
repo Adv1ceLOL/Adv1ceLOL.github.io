@@ -186,14 +186,38 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
+        <script>
         window.addEventListener('message', function(event) {
-          const iframe = document.querySelector('.content-section iframe');
-          if (iframe && Number.isInteger(event.data)) {
-            iframe.style.height = event.data + 'px';
-          }
+            const iframe = document.querySelector('.content-section iframe');
+            if (iframe && Number.isInteger(event.data)) {
+                iframe.style.height = event.data + 'px';
+            }
         });
-      </script>
+        // Function to send messages to the iframe after it loads
+        function sendMessagesToIframe() {
+            const iframe = document.querySelector('.content-section iframe');
+            if (iframe && iframe.contentWindow) {
+                // Message to set the "Interval" radio button as checked
+                iframe.contentWindow.postMessage({ action: 'setProcess', processId: 'interval' }, '*');
+    
+                // Message to set the number of draws to 100
+                iframe.contentWindow.postMessage({ action: 'setInput', inputId: 'numDraws', value: 100 }, '*');
+    
+                // Message to set the number of intervals to 10
+                iframe.contentWindow.postMessage({ action: 'setInput', inputId: 'numIntervals', value: 10 }, '*');
+    
+                // Delay clicking the recompute button to ensure inputs are set
+                setTimeout(function() {
+                    iframe.contentWindow.postMessage({ action: 'clickRecompute' }, '*');
+                }, 500); // Adjust the delay as needed
+            }
+        }
+        // Attach the function to the iframe's load event
+        const iframeElement = document.querySelector('.content-section iframe');
+        if (iframeElement) {
+            iframeElement.onload = sendMessagesToIframe;
+        }
+    </script>
 </body>
 </html>
 

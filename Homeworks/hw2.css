@@ -41,7 +41,7 @@ body {
 }
 
 .content-section iframe {
-    height: 1400px; /* Apply height only to the iframe */
+    height: auto; /* Apply height only to the iframe */
     width: 100%; /* Ensure iframe takes full width */
     border: none; /* Remove iframe border */
     overflow: none;

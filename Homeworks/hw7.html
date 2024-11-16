@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 7</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../hw.css" rel="stylesheet">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+<body>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <a class="navbar-brand" href="../index.html">
+            <img src="../Images/Navigation.jpg" alt="Navigation" style="height: 40px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link">Previous Homeworks: </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://sites.google.com/view/blogs-statistics-cyber/homework-1">Homework 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw2.html">Homework 2</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw3.html">Homework 3</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw4.html">Homework 4</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw5.html">Homework 5</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw6.html">Homework 6</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="card rounded-border-gradient">
+            <div class="card-body">
+                <div class="header">
+                    <img src="/Images/meanvarianceanalysis_Edited.png" alt="Statistical Independence" class="header-image">
+                    <h1 class="header-text">Homework 7</h1>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h2 class="section-title">Practice</h2>
+            <iframe src="../WebAttackSimulation/Pages/Index.html"></iframe>
+        </div>
+        
+        <div class="content-section mt-4">
+            <h2 class="section-title">Results</h2>
+            <div id="results" class="results-container">
+                <h1>Mean of the Mean</h1>
+                <p id="MeanMean"></p>
+                <h1>Mean of the Variance</h1>
+                <p id="MeanVariance"></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        window.addEventListener('message', function(event) {
+            const iframe = document.querySelector('.content-section iframe');
+            if (event.data) {
+                if (event.data.action === 'scrollDown') {
+                    // Scroll the page to the "Results" section
+                    const resultsSection = document.querySelector('#results');
+                    if (resultsSection) {
+                        resultsSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            }
+        });
+
+        window.addEventListener('message', function(event) {
+            const iframe = document.querySelector('.content-section iframe');
+            if (iframe && Number.isInteger(event.data)) {
+                iframe.style.height = event.data + 'px';
+            } else if (event.data.meanArray && event.data.varianceArray) {
+                // Process the received data
+                const meanArray = event.data.meanArray;
+                const varianceArray = event.data.varianceArray;
+                const MeanMean = event.data.MeanMean;
+                const MeanVariance = event.data.MeanVariance;
+    
+                // Format arrays to add newline after every 5 values
+                const formatArray = (arr) => {
+                    let formattedArray = '\\begin{align*}';
+                    for (let i = 0; i < arr.length; i++) {
+                        formattedArray += arr[i];
+                        if ((i + 1) % 5 === 0 && i !== arr.length - 1) {
+                            formattedArray += ' \\\\\n';
+                        } else if (i !== arr.length - 1) {
+                            formattedArray += ', ';
+                        }
+                    }
+                    formattedArray += '\\end{align*}';
+                    return formattedArray;
+                };
+    
+                // Display the data
+                document.getElementById('MeanMean').innerHTML = `
+                    $$\\text{Mean of each sample: } \\boxed{${formatArray(meanArray)}}$$
+                    <br>
+                    $$\\text{Mean of the Mean: } \\bar{\\bar{x}} = \\frac{1}{n} \\sum_{i=1}^{n} \\bar{x}_i = ${MeanMean}$$
+                `;
+    
+                document.getElementById('MeanVariance').innerHTML = `
+                    $$\\text{Variance of each sample: } \\boxed{${formatArray(varianceArray)}}$$
+                    <br>
+                    $$\\text{Mean of the Variance: } \\bar{s}^2 = \\frac{1}{n} \\sum_{i=1}^{n} s^2_i = ${MeanVariance}$$
+                `;
+    
+                // Trigger MathJax to render the new content
+                MathJax.typeset();
+            }
+        });
+    </script>
+</body>
+</html>
