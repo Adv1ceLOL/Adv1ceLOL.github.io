@@ -106,6 +106,10 @@ document.addEventListener("DOMContentLoaded", function() {
             let varianceArray = [];
             let intervalsMean = [];
             let intervalsVar = [];
+
+            // Theoretical mean and variance for a uniform distribution [0, 1]
+            const theoreticalMean = 0.5;
+            const theoreticalVariance = 1 / 12;
             
             let value = 0;
             for (let i = 0; i <= numIntervalsInput.value; i++) {
@@ -132,7 +136,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 meanArray: meanArray,
                 varianceArray: varianceArray,
                 MeanMean: MeanMean,
-                MeanVariance: MeanVariance
+                MeanVariance: MeanVariance,
+                TheoreticalMean: theoreticalMean,
+                TheoreticalVariance: theoreticalVariance
             };
             window.parent.postMessage(data, '*');
 

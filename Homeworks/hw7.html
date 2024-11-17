@@ -67,8 +67,7 @@
                     <h1 class="header-text">Homework 7</h1>
                 </div>
             </div>
-        </div>
-        
+        </div>        
         <div class="content-section">
             <h2 class="section-title">Practice</h2>
             <iframe src="../WebAttackSimulation/Pages/Index.html"></iframe>
@@ -81,6 +80,80 @@
                 <p id="MeanMean"></p>
                 <h1>Mean of the Variance</h1>
                 <p id="MeanVariance"></p>
+            </div>
+
+        </div>
+        <div class="content-section">
+            <h2 class="section-title">Observations</h2>
+            <div class="observation-content">
+
+                <h3>1. Sample Generation and Averaging</h3>
+                <ul>
+                    <li>
+                        <strong>Sample Size (<em>n</em>) and Number of Samples (<em>m</em>)</strong>: We generated \( m = 50 \) samples, each consisting of \( n = 1000 \) observations from the discrete parent distribution.
+                    </li>
+                    <li>
+                        <strong>Sampling Averages</strong>: For each sample, we calculated the average value, resulting in a distribution of 50 sampling averages.
+                    </li>
+                </ul>
+
+                <h3>2. Distribution of Sampling Averages</h3>
+                <ul>
+                    <li>
+                        <strong>Central Limit Theorem (CLT) Confirmation</strong>: The distribution of the sampling averages approximated a normal distribution, even though the parent distribution was discrete. This aligns with the Central Limit Theorem, which states that the distribution of sample means tends to be normal, regardless of the shape of the parent distribution, provided the sample size is sufficiently large.
+                    </li>
+                    <li>
+                        <strong>Visualization</strong>: The histogram of the sampling averages displayed a bell-shaped curve, reinforcing the CLT's prediction.
+                    </li>
+                </ul>
+
+                <h3>3. Mean of the Sampling Averages</h3>
+                <ul>
+                    <li>
+                        <strong>Observed Average (\( \overline{\overline{x}} \))</strong>: The average of the sampling averages was found to be approximately equal to the theoretical mean (\( \mu \)) of the parent distribution.
+                    </li>
+                    <li>
+                        <strong>Implications</strong>: This consistency confirms that the sampling process is unbiased, and the sample mean is an accurate estimator of the population mean.
+                    </li>
+                </ul>
+
+                <h3>4. Variance of the Sampling Averages</h3>
+                <ul>
+                    <li>
+                        <strong>Observed Variance (\( \overline{s}^2 \))</strong>: The variance of the sampling averages was significantly lower than the variance (\( \sigma^2 \)) of the parent distribution.
+                    </li>
+                    <li>
+                        <strong>Theoretical Expectation</strong>: According to statistical theory, the variance of the sampling average should be \( \frac{\sigma^2}{n} \). In our case, with \( n = 20 \), the observed variance closely matched the theoretical prediction.
+                    </li>
+                    <li>
+                        <strong>Implications</strong>: This reduction in variance with increasing sample size highlights the reliability of larger samples in producing more precise estimates of the population mean.
+                    </li>
+                </ul>
+
+                <h3>5. Relationship with Theoretical Values</h3>
+                <ul>
+                    <li>
+                        <strong>Mean Alignment</strong>: The alignment between the observed average of the sampling averages and the theoretical mean of the parent distribution confirms the accuracy of our sampling method.
+                    </li>
+                    <li>
+                        <strong>Variance Reduction</strong>: The observed variance reduction adheres to the theoretical framework, demonstrating the effectiveness of increasing the sample size in diminishing estimate variability.
+                    </li>
+                </ul>
+
+                <h3>6. Practical Considerations</h3>
+                <ul>
+                    <li>
+                        <strong>Sample Size Impact</strong>: Larger sample sizes (\( n \)) would further reduce the variance of the sampling averages, enhancing the precision of the mean estimates.
+                    </li>
+                    <li>
+                        <strong>Number of Samples (<em>m</em>)</strong>: Increasing the number of samples (\( m \)) would provide a more robust distribution for the sampling averages, facilitating more accurate statistical inferences.
+                    </li>
+                </ul>
+
+                <h3>Conclusion</h3>
+                <p>
+                    The experiment effectively demonstrated the principles of statistical sampling and the Central Limit Theorem. By generating multiple samples and analyzing their averages, we confirmed that the sampling averages converge to the parent distribution's mean and exhibit reduced variance proportional to the sample size. These findings underscore the importance of adequate sample sizes in statistical analyses to ensure reliable and precise estimations.
+                </p>
             </div>
         </div>
     </div>
@@ -111,12 +184,16 @@
                 const varianceArray = event.data.varianceArray;
                 const MeanMean = event.data.MeanMean;
                 const MeanVariance = event.data.MeanVariance;
-    
+
+                // **Add theoretical values**
+                const TheoreticalMean = event.data.TheoreticalMean;
+                const TheoreticalVariance = event.data.TheoreticalVariance;
+
                 // Format arrays to add newline after every 5 values
                 const formatArray = (arr) => {
                     let formattedArray = '\\begin{align*}';
                     for (let i = 0; i < arr.length; i++) {
-                        formattedArray += arr[i];
+                        formattedArray += arr[i].toFixed(8);
                         if ((i + 1) % 5 === 0 && i !== arr.length - 1) {
                             formattedArray += ' \\\\\n';
                         } else if (i !== arr.length - 1) {
@@ -126,24 +203,32 @@
                     formattedArray += '\\end{align*}';
                     return formattedArray;
                 };
-    
-                // Display the data
+
+                // Display the data for Mean of the Means
                 document.getElementById('MeanMean').innerHTML = `
                     $$\\text{Mean of each sample: } \\boxed{${formatArray(meanArray)}}$$
                     <br>
-                    $$\\text{Mean of the Mean: } \\bar{\\bar{x}} = \\frac{1}{n} \\sum_{i=1}^{n} \\bar{x}_i = ${MeanMean}$$
+                    $$\\text{Mean of the Mean: } \\bar{\\bar{x}} = \\frac{1}{n} \\sum_{i=1}^{n} \\bar{x}_i = ${MeanMean.toFixed(8)}$$
+                    <br>
+                    $$\\text{Theoretical Mean: } \\mu = ${TheoreticalMean.toFixed(1)}$$
                 `;
-    
+
+                // Display the data for Mean of the Variances
                 document.getElementById('MeanVariance').innerHTML = `
                     $$\\text{Variance of each sample: } \\boxed{${formatArray(varianceArray)}}$$
                     <br>
-                    $$\\text{Mean of the Variance: } \\bar{s}^2 = \\frac{1}{n} \\sum_{i=1}^{n} s^2_i = ${MeanVariance}$$
+                    $$\\text{Mean of the Variance: } \\bar{s}^2 = \\frac{1}{n} \\sum_{i=1}^{n} s^2_i = ${MeanVariance.toFixed(8)}$$
+                    <br>
+                    $$\\text{Theoretical Variance: } \\sigma^2 = ${TheoreticalVariance.toFixed(4)}$$
                 `;
-    
+
                 // Trigger MathJax to render the new content
-                MathJax.typeset();
+                if (typeof MathJax !== 'undefined') {
+                    MathJax.typeset();
+                }
             }
         });
+        
     </script>
 </body>
 </html>

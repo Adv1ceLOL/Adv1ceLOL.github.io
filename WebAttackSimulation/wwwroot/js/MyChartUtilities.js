@@ -268,9 +268,7 @@ class MyChartUtilities {
     meanArray[intervalIndex] = mean;
     varianceArray[intervalIndex] = variance;
 
-    // Theoretical mean and variance for a uniform distribution [0, 1]
-    const theoreticalMean = 0.5;
-    const theoreticalVariance = 1 / 12;
+    
 
   }
    static MeanMeanAndMeanVariance(mean, variance) {
