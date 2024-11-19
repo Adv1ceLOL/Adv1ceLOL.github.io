@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
         REGRESSION: Symbol("regression"),
         INTERVAL: Symbol("interval"),
         INVERSION: Symbol("inversion"),
-        MEANMV: Symbol("meanMV")
+        MEANMV: Symbol("meanMV"),
+        CRYPTO_ANALYSIS: Symbol("cryptoAnalysis")
     });
 
     const recomputeBtn = document.getElementById("recomputeBtn");
@@ -37,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const interval = document.getElementById("interval");
     const inversion = document.getElementById("inversion");
     const meanMV = document.getElementById("meanMV");
+    const cryptoAnal = document.getElementById("cryptoAnalysis");
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
@@ -166,6 +168,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
 
+        } else if (processType === VariateType.CRYPTO_ANALYSIS) {
+            const max_U = parseInt(document.getElementById('max_U').value) || 1000;
+            const results = Crypto.performCryptoAnalysis(max_U, ctx);
+
+            // Send results to parent window
+            if (window.parent) {
+                window.parent.postMessage({
+                    action: 'updateCryptoResults',
+                    results: results
+                }, '*');
+            }
         }
         else {
             if (animate) {
@@ -198,6 +211,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const sigmaRange = 4;
 
+        if (window.parent) {
+            let processId = '';
+            if (meanMV.checked) {
+                processId = 'meanMV';
+            } else if (cryptoAnal.checked) {
+                processId = 'cryptoAnalysis';
+            } else {
+                processId = 'other';
+            }
+    
+            window.parent.postMessage({
+                action: 'processSelected',
+                processId: processId
+            }, '*');
+        }
+
         if (randomWalk.checked) {
             if (absoluteFrequency.checked) {
                 setProcess("Random Walk (sum of scaled Rademacher rv's = Σ σ R(-1,1), ±1 jumps, p=.5, mean=0, var = σ² t, std = σ √t", VariateType.RW, false, -sigmaRange * sigma * Math.sqrt(n), sigmaRange * sigma * Math.sqrt(n), () => (Math.random() <= lambda / 100) ? -1 : 1, (sum) => (sigma * sum));
@@ -218,6 +247,8 @@ document.addEventListener("DOMContentLoaded", function() {
             setProcess("Inversion Method", VariateType.INVERSION, false, 0, 1, () => Math.random(), (sum, t) => sum);
         }   else if (meanMV.checked) {  
             setProcess("Mean and Variance", VariateType.MEANMV, false, 0, 1, () => Math.random(), (sum, t) => sum);
+        } else if (cryptoAnal.checked) {
+            setProcess("Crypto Analysis", VariateType.CRYPTO_ANALYSIS, false, 0, 1, () => Math.random(), (sum, t) => sum);
         }
 
         range = maxView - minView;

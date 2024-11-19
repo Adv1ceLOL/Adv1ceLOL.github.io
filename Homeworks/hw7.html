@@ -7,7 +7,16 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="../hw.css" rel="stylesheet">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
+    <style>
+        .center-title {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .horizontal-table th, .horizontal-table td {
+            color: white !important;
+            text-align: center !important;
+        }
+    </style>
 </head>
 <body>
     <div class="stars">
@@ -63,7 +72,7 @@
         <div class="card rounded-border-gradient">
             <div class="card-body">
                 <div class="header">
-                    <img src="/Images/meanvarianceanalysis_Edited.png" alt="Statistical Independence" class="header-image">
+                    <img src="/Images/entropy.jpg" alt="Statistical Independence" class="header-image">
                     <h1 class="header-text">Homework 7</h1>
                 </div>
             </div>
@@ -73,7 +82,7 @@
             <iframe src="../WebAttackSimulation/Pages/Index.html"></iframe>
         </div>
         
-        <div class="content-section mt-4">
+        <div class="content-section mt-4" id="results-section" style="display: none;">
             <h2 class="section-title">Results</h2>
             <div id="results" class="results-container">
                 <h1>Mean of the Mean</h1>
@@ -81,9 +90,9 @@
                 <h1>Mean of the Variance</h1>
                 <p id="MeanVariance"></p>
             </div>
-
         </div>
-        <div class="content-section">
+
+        <div class="content-section" id="observations-section" style="display: none;">
             <h2 class="section-title">Observations</h2>
             <div class="observation-content">
 
@@ -228,7 +237,214 @@
                 }
             }
         });
-        
+
+    </script>
+
+    <script>
+        // Hide sections by default
+        document.getElementById('results-section').style.display = 'none';
+        document.getElementById('observations-section').style.display = 'none';
+
+        // Event listener for messages
+        window.addEventListener('message', function(event) {
+            if (event.data) {
+                const resultsSection = document.getElementById('results-section');
+                const observationsSection = document.getElementById('observations-section');
+                const resultsContainer = document.getElementById('results');
+
+                if (event.data.action === 'processSelected') {
+                    const processId = event.data.processId;
+
+                    if (processId === 'meanMV') {
+                        // Show both results and observations
+                        resultsSection.style.display = 'block';
+                        observationsSection.style.display = 'block';
+
+                        // Clear and set up the results container for Mean of the Mean and Variance
+                        resultsContainer.innerHTML = `
+                            <h1>Mean of the Mean</h1>
+                            <p id="MeanMean"></p>
+                            <h1>Mean of the Variance</h1>
+                            <p id="MeanVariance"></p>
+                        `;
+                    } else if (processId === 'cryptoAnalysis') {
+                        // Show results, hide observations
+                        resultsSection.style.display = 'block';
+                        observationsSection.style.display = 'none';
+
+                        // Clear the results container for Crypto Analysis
+                        resultsContainer.innerHTML = '';
+                    } else {
+                        // Hide both sections
+                        resultsSection.style.display = 'none';
+                        observationsSection.style.display = 'none';
+
+                        // Clear the results container
+                        resultsContainer.innerHTML = '';
+                    }
+                } else if (event.data.action === 'updateCryptoResults') {
+                    // Update the results section with Crypto Analysis results
+                    const cryptoResults = event.data.results;
+                    let resultsHTML = '<h1></h1>';
+
+                    const cases = {};
+
+                    // Organize results by case
+                    cryptoResults.forEach(result => {
+                        if (!cases[result.caseName]) {
+                            cases[result.caseName] = [];
+                        }
+                        cases[result.caseName].push(result);
+                    });
+
+                    Object.keys(cases).forEach(caseName => {
+                        resultsHTML += `<h1 class="center-title">${caseName}</h1>`;
+                        const caseResults = cases[caseName];
+                        caseResults.forEach((result, index) => {
+                            const { n, g, entropy, distribution, totalCounts, possibleYValues, maxU } = result;
+
+                            resultsHTML += `
+                                <h3>${index + 1}. Distribution for \\( n = ${n} \\), \\( g = ${g} \\):</h3>
+
+                                <table class="table table-bordered horizontal-table">
+                                    <thead>
+                                        <tr>
+                                            ${Object.keys(distribution).sort((a, b) => a - b).map(value => `<th>${value}</th>`).join('')}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            ${Object.keys(distribution).sort((a, b) => a - b).map(value => `<td>${distribution[value]}</td>`).join('')}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p><strong>Entropy:</strong> $$H = -\\sum p \\log_2(p) = ${entropy.toFixed(4)} \\ bits$$</p>
+
+                                <h4>Analysis:</h4>
+                                <ul>
+                                    <li><strong>Possible Values of \\( Y \\):</strong> ${possibleYValues.join(', ')}</li>
+                                    <li><strong>Total Counts:</strong> ${Object.values(distribution).join(' + ')} = ${totalCounts} (matches max_U)</li>
+                                    <li><strong>${possibleYValues.length === 1 ? 'Deterministic Outcome' : possibleYValues.length === 2 ? 'Equal Frequencies' : 'Uniform Distribution'}:</strong> ${possibleYValues.length === 1 ? `Every computation yields \\( Y = ${possibleYValues[0]} \\).` : 'Each value occurs with equal frequency.'}</li>
+                                    <li><strong>Entropy Calculation:</strong> ${possibleYValues.length === 1 ? 'With only one possible outcome, the entropy is 0 bits, indicating no randomness.' : `For a uniform distribution over \\( k \\) outcomes, entropy \\( H = \\log_2(k) \\). Here, \\( H = \\log_2(${possibleYValues.length}) = ${Math.log2(possibleYValues.length).toFixed(4)} \\) bits, which matches your calculated entropy.`}</li>
+                                </ul>
+                            `;
+                            if (caseName === 'Case B (n = 15)' && g === 12) {
+                                resultsHTML += `<p><em>Note:</em> Identical to the case with \\( g = 3 \\).</p>`;
+                            }
+                        });
+                    });
+                    resultsHTML += ` 
+                    <div class="content-section">
+                        <h1 class="section-title">Observations</h1>
+                        <div class="observation-content">
+                            <br>
+                            <h3>A) Distributions of \( Y = g^U \mod n \) for \( n = 19 \) and \( g = 2, 3, 10, 17 \)</h3>
+                            <br>
+                            <p>
+                                For Case A, with \( n = 19 \), the values of \( g \) are chosen as \( 2, 3, 10, 17 \). These values are primitive roots modulo 19, which means they generate all possible residues from 1 to \( n-1 \) when raised to powers \( U \). The distributions of \( Y \) in this case are uniform, and the computed entropy is high, approaching the maximum possible entropy for the given \( n \).
+                            </p>
+                            <br>
+
+                            <h4>B) Distributions of \( Y = g^U \mod n \) for \( n = 15 \) and \( g = 3, 6, 9, 12 \)</h4>
+                            <br>
+                            <p>
+                                In Case B, with \( n = 15 \), the chosen values of \( g \) do not generate all possible residues modulo 15. The distributions of \( Y \) are less uniform and exhibit lower entropy compared to Case A. This indicates predictability and patterns within the generated values.
+                            </p>
+                            <br>
+
+                            <h4>Cryptographic Implications and Potential Applications</h4>
+                            <br>
+                            <ul>
+                                <li>
+                                    <strong>Uniformity:</strong> High entropy and uniform distributions, as seen in Case A, are crucial for cryptographic strength. They ensure that each possible value of \( Y \) is equally likely, making it difficult for an adversary to predict or deduce secret information.
+                                </li>
+                                <li>
+                                    <strong>Predictability and Lower Entropy:</strong> In Case B, the predictability due to lower entropy can lead to vulnerabilities. If certain values of \( Y \) are more likely than others, attackers can exploit this bias to reduce the search space for cryptographic keys or messages.
+                                </li>
+                            </ul>
+                            <br>
+
+                            <h4>Why is Case A Better Suited for Cryptographic Applications?</h4>
+                            <br>
+                            <p>
+                                Case A utilizes primitive roots modulo \( n \), resulting in maximum cyclicity and uniform distributions. This leads to higher entropy, making \( Y \) unpredictable and evenly distributed. Such properties are desirable in cryptography to ensure secure key generation and encryption processes.
+                            </p>
+                            <br>
+
+                            <h4>Possible Vulnerabilities Illustrated by Case B</h4>
+                            <br>
+                            <p>
+                                The lower entropy and non-uniform distributions in Case B indicate that \( Y \) values are more predictable. This can be exploited by attackers to perform cryptanalysis, as the reduced randomness makes it easier to guess or compute secret keys. It illustrates the importance of choosing appropriate parameters in cryptographic algorithms.
+                            </p>
+                            <br>
+
+                            <h4>Reason for Choosing the Set \( \{2, 3, 10, 17\} \) in Case A</h4>
+                            <br>
+                            <p>
+                                These values are primitive roots modulo 19. Primitive roots generate all non-zero residues modulo \( n \) and ensure that the generated values of \( Y \) cover the entire set from 1 to \( n-1 \) uniformly. This maximizes entropy and makes the discrete logarithm problem hard, which is a fundamental assumption in the security of many cryptographic systems.
+                            </p>
+                            <br>
+                        </div>
+                    </div>`;
+
+                    resultsContainer.innerHTML = resultsHTML;
+
+                    // Trigger MathJax rendering
+                    if (typeof MathJax !== 'undefined' && MathJax.typeset) {
+                        MathJax.typeset();
+                    }
+                } else if (event.data.meanArray && event.data.varianceArray) {
+                    // Update the results section with Mean and Variance results
+                    // Existing code to process meanArray and varianceArray
+                    const meanArray = event.data.meanArray;
+                    const varianceArray = event.data.varianceArray;
+                    const MeanMean = event.data.MeanMean;
+                    const MeanVariance = event.data.MeanVariance;
+    
+                    // Add theoretical values
+                    const TheoreticalMean = event.data.TheoreticalMean;
+                    const TheoreticalVariance = event.data.TheoreticalVariance;
+    
+                    // Format arrays to add newline after every 5 values
+                    const formatArray = (arr) => {
+                        let formattedArray = '\\begin{align*}';
+                        for (let i = 0; i < arr.length; i++) {
+                            formattedArray += arr[i].toFixed(8);
+                            if ((i + 1) % 5 === 0 && i !== arr.length - 1) {
+                                formattedArray += ' \\\\\n';
+                            } else if (i !== arr.length - 1) {
+                                formattedArray += ', ';
+                            }
+                        }
+                        formattedArray += '\\end{align*}';
+                        return formattedArray;
+                    };
+    
+                    // Display the data for Mean of the Means
+                    document.getElementById('MeanMean').innerHTML = `
+                        $$\\text{Mean of each sample: } \\boxed{${formatArray(meanArray)}}$$
+                        <br>
+                        $$\\text{Mean of the Mean: } \\bar{\\bar{x}} = \\frac{1}{n} \\sum_{i=1}^{n} \\bar{x}_i = ${MeanMean.toFixed(8)}$$
+                        <br>
+                        $$\\text{Theoretical Mean: } \\mu = ${TheoreticalMean.toFixed(1)}$$
+                    `;
+    
+                    // Display the data for Mean of the Variances
+                    document.getElementById('MeanVariance').innerHTML = `
+                        $$\\text{Variance of each sample: } \\boxed{${formatArray(varianceArray)}}$$
+                        <br>
+                        $$\\text{Mean of the Variance: } \\bar{s}^2 = \\frac{1}{n} \\sum_{i=1}^{n} s^2_i = ${MeanVariance.toFixed(8)}$$
+                        <br>
+                        $$\\text{Theoretical Variance: } \\sigma^2 = ${TheoreticalVariance.toFixed(4)}$$
+                    `;
+    
+                    // Trigger MathJax to render the new content
+                    if (typeof MathJax !== 'undefined' && MathJax.typeset) {
+                        MathJax.typeset();
+                    }
+                }
+            }
+        });
     </script>
 </body>
 </html>
