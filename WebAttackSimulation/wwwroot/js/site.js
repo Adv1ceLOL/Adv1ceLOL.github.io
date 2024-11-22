@@ -388,7 +388,7 @@ document.addEventListener("DOMContentLoaded", function() {
         ctx.fillStyle = "lightblue";
         ctx.fillText("paths: " + currentPath + "  avg = " + avgLast.toFixed(2) + "  var = " + (ssLast / numPaths).toFixed(2), chartRect.x + 350, chartRect.bottom() + 30);
         ctx.fillStyle = "white";
-        ctx.fillText(processDesc, chartRect.x + 100, chartRect.y + 15);
+        ctx.fillText(processDesc, chartRect.x + 170, chartRect.y + 15);
 
         ctx.beginPath();
 

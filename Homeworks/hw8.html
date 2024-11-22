@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 8</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="hw8/hw8.css" rel="stylesheet">
+    <link href="../hw.css" rel="stylesheet">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .center-title {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .horizontal-table th, .horizontal-table td {
+            color: white !important;
+            text-align: center !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <a class="navbar-brand" href="../index.html">
+            <img src="../Images/Navigation.jpg" alt="Navigation" style="height: 40px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link">Previous Homeworks: </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://sites.google.com/view/blogs-statistics-cyber/homework-1">Homework 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw2.html">Homework 2</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw3.html">Homework 3</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw4.html">Homework 4</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw5.html">Homework 5</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw6.html">Homework 6</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw7.html">Homework 7</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="card rounded-border-gradient">
+            <div class="card-body">
+                <div class="header">
+                    <img src="/Images/encryption.webp" alt="Statistical Independence" class="header-image">
+                    <h1 class="header-text">Homework 8</h1>
+                </div>
+            </div>
+        </div>  
+ 
+        <div class="content-section">
+            <h2 class="section-title">Practice</h2>
+            <canvas id="canvas" width="900" height="600" oncontextmenu="return false;" class="border"></canvas>
+        </div>
+        <div class="text-section">
+            <h3>Original Text</h3>
+            <p id="original-text"></p>
+            <h3>Encrypted Text</h3>
+            <p id="encrypted-text"></p>
+            <h3>Decrypted Text</h3>
+            <p id="decrypted-text"></p>
+        </div>
+
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../WebAttackSimulation/wwwroot/js/MyRndUtilities.js"></script>
+    <script src="../WebAttackSimulation/wwwroot/js/MyChartUtilities.js"></script>
+    <script src="../WebAttackSimulation/wwwroot/js/My2dUtilities.js"></script>
+    <script src="../WebAttackSimulation/wwwroot/js/MyDistributionUtilities.js"></script>
+    <script src="../WebAttackSimulation/wwwroot/js/Rettangolo.js"></script>
+    <script src="../WebAttackSimulation/wwwroot/js/Regression.js"></script>
+    <script src="../WebAttackSimulation/wwwroot/js/Inversion.js"></script>
+    <script src="../WebAttackSimulation/wwwroot/js/Crypto.js"></script>
+    <script src="hw8/hw8.js"></script>
+    
+    <script>
+        window.addEventListener('message', function(event) {
+            const iframe = document.querySelector('.content-section iframe');
+            if (iframe && Number.isInteger(event.data)) {
+                iframe.style.height = event.data + 'px';
+            }
+        });
+        // Function to send messages to the iframe after it loads
+        function sendMessagesToIframe() {
+            const iframe = document.querySelector('.content-section iframe');
+            if (iframe && iframe.contentWindow) {
+                // Message to set the "Random Walk (RW)" radio button as checked
+                iframe.contentWindow.postMessage({ action: 'setProcess', processId: 'brownian' }, '*');
+    
+                // Delay clicking the recompute button to ensure the radio button is set
+                setTimeout(function() {
+                    iframe.contentWindow.postMessage({ action: 'clickRecompute' }, '*');
+                }, 500); // Adjust the delay as needed
+            }
+        }
+        // Attach the function to the iframe's load event
+        const iframeElement = document.querySelector('.content-section iframe');
+        if (iframeElement) {
+            iframeElement.onload = sendMessagesToIframe;
+        }
+    </script>
+
+</body>
+</html>
