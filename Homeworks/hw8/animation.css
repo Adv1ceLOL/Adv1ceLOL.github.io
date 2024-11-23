@@ -1,53 +1,12 @@
-#canvas {
-    position: relative;
-    top: 50px !important;
-}
-
-.content-section {
-    width: 100%;
-    height: auto;
-    border: none;
-    margin-bottom: 50px;
-    border-radius: 50px;
-}
-
-.center-title {
-    text-align: center;
-    margin: 20px 0;
-}
-
-.observation-content h3,
-.observation-content h4,
-.observation-content h5 {
-    margin-top: 15px;
-    margin-bottom: 15px; /* Adjust the value as needed */
-    font-family: 'Trebuchet MS', sans-serif;
-    font-weight: bold;
-    color:#01f01d;
-}
-
-.horizontal-table th, .horizontal-table td {
-    color: white !important;
-    text-align: center !important;
-}
-
-.text-content {
-    font-family: Lato, 'Times New Roman', Times, serif;
-    font-weight: 200;
-    font-size: 1.2em;
-    color: rgb(255, 255, 255);
-}
-
-#action-button{
-    position: relative;
-    bottom:15px;
-}
-
-.MathJax_Display {
-    font-size: 1.2em;
-    margin: 1em 0;
-}
-
+body {
+    background: #182028;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
   h1 {
     font-size: 9vmin;
     color: #8bf;
@@ -105,7 +64,7 @@
   
   .typewriter::before {
     content: "";
-    animation: typing 0.75s infinite;
+    animation: typing 13.5s infinite;
   }
   
   .typewriter::after {
@@ -137,7 +96,7 @@
   
     .typewriter::before {
       content: "developer";
-      animation: sequencePopup 1s linear infinite;
+      animation: sequencePopup 12s linear infinite;
     }
   }
   

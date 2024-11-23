@@ -8,16 +8,7 @@
     <link href="hw8/hw8.css" rel="stylesheet">
     <link href="../hw.css" rel="stylesheet">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <style>
-        .center-title {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .horizontal-table th, .horizontal-table td {
-            color: white !important;
-            text-align: center !important;
-        }
-    </style>
+
 </head>
 <body>
     <div class="stars">
@@ -86,13 +77,96 @@
             <h2 class="section-title">Practice</h2>
             <canvas id="canvas" width="900" height="600" oncontextmenu="return false;" class="border"></canvas>
         </div>
+
         <div class="text-section">
-            <h3>Original Text</h3>
-            <p id="original-text"></p>
-            <h3>Encrypted Text</h3>
-            <p id="encrypted-text"></p>
-            <h3>Decrypted Text</h3>
-            <p id="decrypted-text"></p>
+            <h3 id="text-title">Original Text (First 200 words)</h3>
+            <p id="text-content" class="text-content"></p>
+            <button id="action-button" class="btn btn-primary mt-3">Encrypt</button>
+        </div>
+
+        <div class="content-section" id="observations-section">
+            <h2 class="section-title">Observations</h2>
+            <div class="observation-content">
+                <h3>Comparing Frequency Analysis of the Caesar Cipher and RSA Cryptanalysis</h3> 
+                
+                <h4>Caesar Cipher and Frequency Analysis</h4> 
+                <p>The Caesar cipher is a simple substitution cipher where each letter in the plaintext is shifted by a fixed number of positions down or up the alphabet. Due to its simplicity, it is highly susceptible to frequency analysis attacks.</p>
+                
+                <h5>Simplicity of Frequency Analysis:</h5> 
+                <ul>
+                    <li><strong>Preservation of Frequencies:</strong> The Caesar cipher maintains the relative frequency of letters from the plaintext to the ciphertext. For example, if 'E' is the most common letter in the plaintext, the shifted character will also be the most common in the ciphertext.</li>
+                    <li><strong>Attack Method:</strong> An attacker can analyze the ciphertext's letter frequency distribution and compare it to known language frequencies (like English) to deduce the shift value.</li>
+                    <li><strong>Low Computational Complexity:</strong> Breaking the Caesar cipher by trying all possible shifts (only 25 in English) or using frequency analysis requires minimal computational resources.</li>
+                </ul>
+                
+                <h5>Shannon Entropy Calculation:</h5> 
+                <p>Shannon entropy quantifies the uncertainty or randomness in a data set.</p>
+                
+                <p><strong>Plaintext Entropy (\( H_{\text{plain}} \)):</strong> Calculated using the formula:</p>
+                <p>
+                    \[
+                    H = -\sum_{i} p_i \log_2 p_i
+                    \]
+                </p>
+                
+                <p><strong>Ciphertext Entropy (\( H_{\text{cipher}} \)):</strong> For the Caesar cipher, 
+                    \[
+                    H_{\text{plain}} = H_{\text{cipher}}
+                    \]
+                    because the frequencies are preserved.
+                </p>
+                
+                <h4>RSA Encryption and Its Resistance to Cryptanalysis</h4> 
+                <p>RSA is an asymmetric encryption algorithm that relies on the mathematical difficulty of factoring large composite numbers.</p>
+                
+                <h5>Infeasibility of Breaking RSA:</h5> 
+                <ul>
+                    <li><strong>No Frequency Patterns:</strong> RSA encryption transforms plaintext into numerical ciphertext without preserving any patterns or frequencies from the original message.</li>
+                    <li><strong>Dependence on Private Key:</strong> Without the private key components (prime factors \( p \) and \( q \)), decrypting RSA-encrypted data is computationally infeasible.</li>
+                    <li><strong>Computational Complexity:</strong> Factoring a large number (product of two large primes) requires resources beyond current computational capabilities for sufficiently large key sizes (e.g., 2048 bits).</li>
+                </ul>
+                
+                <h5>Shannon Entropy Calculation:</h5> 
+                <p><strong>High Entropy:</strong> RSA ciphertexts have high entropy, approaching the maximum possible for the key size used.</p>
+                <p><strong>Entropy Value:</strong> For a 2048-bit key, the entropy can be up to 2048 bits, indicating maximal uncertainty.</p>
+                
+                <h4>Summary of Findings</h4> 
+                
+                <h5>Caesar Cipher:</h5> 
+                <ul>
+                    <li><strong>Easy to Break:</strong> The simplicity of the Caesar cipher makes it vulnerable to frequency analysis.</li>
+                    <li><strong>Low Entropy Change:</strong> Since letter frequencies are preserved, the entropy does not increase, leaving patterns exposed.</li>
+                </ul>
+                
+                <h5>RSA Encryption:</h5> 
+                <ul>
+                    <li><strong>Secure Without Private Key:</strong> RSA is resistant to cryptanalysis without access to the private key due to the difficulty of prime factorization.</li>
+                    <li><strong>High Entropy Ciphertext:</strong> The ciphertext's high entropy eliminates detectable patterns, thwarting frequency analysis.</li>
+                </ul>
+                
+                <h4>Role of Statistical Analysis in Cryptography and Cybersecurity</h4> 
+                
+                <h5>Understanding Algorithm Strengths and Weaknesses:</h5> 
+                <ul>
+                    <li><strong>Identifying Vulnerabilities:</strong> Statistical tools help reveal patterns or weaknesses in encryption algorithms.</li>
+                    <li><strong>Entropy as a Security Measure:</strong> High entropy in ciphertext implies a more secure encryption, as there is less predictable structure to exploit.</li>
+                </ul>
+                
+                <h5>Enhancing Cryptographic Design:</h5> 
+                <ul>
+                    <li><strong>Algorithm Improvement:</strong> Insights from statistical analysis guide the development of stronger cryptographic methods that resist statistical attacks.</li>
+                    <li><strong>Randomness Testing:</strong> Ensuring that cryptographic processes produce outputs that appear random to prevent attackers from finding exploitable patterns.</li>
+                </ul>
+                
+                <h5>Importance in Cybersecurity:</h5> 
+                <ul>
+                    <li><strong>Data Protection:</strong> Understanding statistical weaknesses helps in safeguarding sensitive information.</li>
+                    <li><strong>Cryptanalysis Skills:</strong> Cybersecurity professionals use statistical analysis to test the robustness of encryption and to assess potential threats.</li>
+                </ul>
+                
+                <h4>Conclusion</h4> 
+                <p>The comparison highlights how simple ciphers like Caesar are vulnerable due to detectable statistical patterns, whereas robust algorithms like RSA eliminate such patterns, rendering frequency analysis ineffective. Statistical analysis is a crucial tool in both attacking weak cryptographic systems and in verifying the strength of secure ones. Developing expertise in statistical methods is essential for advancing cybersecurity measures and protecting data integrity.</p>
+            </div>
         </div>
 
     </div>

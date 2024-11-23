@@ -1,5 +1,7 @@
 "use strict";
 
+const shift = Math.floor(Math.random() * 25) + 1;
+
 function calculateLetterFrequency(text) {
     const frequency = {};
     let totalLetters = 0;
@@ -116,6 +118,7 @@ function checkDecryptionAccuracy(originalText, decryptedText) {
 }
 
 
+
 document.addEventListener('DOMContentLoaded', function() {
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -124,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.text())
         .then(data => {
             const text = data;
-            const shift = 13; 
+            
 
             // Calculate frequency distribution of the original text
             const originalFrequencyDistribution = calculateLetterFrequency(text);
@@ -219,23 +222,77 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.textAlign = 'center';
             ctx.fillText("Decryption Accuracy: " + accuracy.toFixed(2) + "%", canvas.width - 150, 60);
 
-            //! 250 text section
-
-            // Display the first 250 words of the original text
-            const first250Words = text.split(' ').slice(0, 250).join(' ');
-            document.getElementById('original-text').textContent = first250Words;
-
-            // Apply Caesar cipher to the text
-            const smallencryptedText = caesarShift(first250Words, shift);
-            document.getElementById('encrypted-text').textContent = smallencryptedText;
-
-            // Decrypt the text using the detected shift
-            const smalldetectedShift = findShift(calculateLetterFrequency(smallencryptedText), englishLetterFrequency);
-            const smalldecryptedText = decryptCaesarShift(smallencryptedText, smalldetectedShift);
-            document.getElementById('decrypted-text').textContent = smalldecryptedText;
-
         })
         .catch(error => console.error('Error fetching the compiled text:', error));
+});
+
+function typeWriterEffect(element, text, speed = 2, callback) {
+    element.textContent = '';
+    let index = 0;
+
+    // Get the text section element
+    const textSection = document.querySelector('.text-section');
+
+    function type() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+
+            // Scroll the text section into view
+            textSection.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+            setTimeout(type, speed);
+        } else {
+            if (typeof callback === 'function') {
+                callback();
+            }
+        }
+    }
+
+    type();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const textTitle = document.getElementById('text-title');
+    const textContent = document.getElementById('text-content');
+    const actionButton = document.getElementById('action-button');
+
+    let originalText = '';
+    let encryptedText = '';
+    let decryptedText = '';
+    const shift = Math.floor(Math.random() * 25) + 1; // Random shift between 1 and 25
+
+    // Disable the button until the text is loaded
+    actionButton.disabled = true;
+
+    fetch('hw8/compiled_text.txt')
+        .then(response => response.text())
+        .then(data => {
+            originalText = data.split(' ').slice(0, 200).join(' ');
+            textContent.textContent = originalText; // Display text without animation
+            actionButton.disabled = false; // Re-enable the button
+        })
+        .catch(error => console.error('Error fetching the compiled text:', error));
+
+    actionButton.addEventListener('click', function() {
+        actionButton.disabled = true; // Disable the button during animation
+
+        if (actionButton.textContent === 'Encrypt') {
+            encryptedText = caesarShift(originalText, shift);
+            textTitle.textContent = 'Encrypted Text';
+            typeWriterEffect(textContent, encryptedText, 2, function() {
+                actionButton.disabled = false; // Re-enable after animation
+            });
+            actionButton.textContent = 'Decrypt';
+        } else if (actionButton.textContent === 'Decrypt') {
+            decryptedText = decryptCaesarShift(encryptedText, shift);
+            textTitle.textContent = 'Decrypted Text';
+            typeWriterEffect(textContent, decryptedText, 2, function() {
+                actionButton.disabled = false; // Re-enable after animation
+            });
+            actionButton.textContent = 'Encrypt';
+        }
+    });
 });
 
 // English (EN) Letter Frequency Distribution
@@ -267,4 +324,3 @@ const englishLetterFrequency = {
     'y': 1.97,
     'z': 0.07
 };
-
