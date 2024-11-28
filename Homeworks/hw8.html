@@ -72,14 +72,31 @@
                 </div>
             </div>
         </div>  
- 
-        <div class="content-section">
-            <h2 class="section-title">Practice</h2>
-            <canvas id="canvas" width="900" height="600" oncontextmenu="return false;" class="border"></canvas>
+        <br>
+        <!-- Cipher Selection Section -->
+        <div class="cipher-selection mb-4">
+            <label for="cipher-select"><strong>Select Cipher:</strong></label>
+            <select id="cipher-select" class="form-control mt-2">
+                <option value="caesar">Caesar Cipher</option>
+                <option value="modular">Modular Exponent Cipher</option>
+            </select>
         </div>
 
+        <!-- Modular Exponent Cipher Settings -->
+        <div id="modular-cipher-settings" class="mb-4" style="display: none;">
+            <label for="exponent"><strong>Exponent (e):</strong></label>
+            <input type="number" id="exponent" class="form-control mt-2" value="3" min="1">
+
+            <label for="modulus" class="mt-3"><strong>Modulus (P):</strong></label>
+            <input type="number" id="modulus" class="form-control mt-2" value="37" min="2">
+        </div>
+
+        <!-- Canvas for visualization -->
+        <canvas id="canvas" width="900" height="600" oncontextmenu="return false;" class="border"></canvas>
+
+        <!-- Text Section -->
         <div class="text-section">
-            <h3 id="text-title">Original Text (First 200 words)</h3>
+            <h3 id="text-title">Original Text</h3>
             <p id="text-content" class="text-content"></p>
             <button id="action-button" class="btn btn-primary mt-3">Encrypt</button>
         </div>
