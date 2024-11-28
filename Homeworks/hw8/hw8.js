@@ -71,26 +71,40 @@ document.addEventListener('DOMContentLoaded', function() {
                 actionButton.textContent = 'Encrypt';
             }
         } else if (cipherSelect.value === 'modular') {
-            // Modular Exponent Cipher Encryption
+            // Modular Exponent Cipher Encryption and Decryption
             const e = parseInt(exponentInput.value);
             const P = parseInt(modulusInput.value);
-
+        
             if (isNaN(e) || isNaN(P) || P <= 1) {
                 alert('Please enter valid exponent and modulus values.');
                 actionButton.disabled = false;
                 return;
             }
-
+        
             if (actionButton.textContent === 'Encrypt') {
                 const encryptedText = modularExponentEncrypt(originalText, e, P);
                 textTitle.textContent = 'Encrypted Text (Modular Exponent Cipher)';
-                typeWriterEffect(textContent, encryptedText, 2, function() {
+                typeWriterEffect(textContent, encryptedText, 0.2, function() {
                     actionButton.disabled = false;
                 });
                 actionButton.textContent = 'Decrypt';
             } else {
-                alert('Decryption is not implemented for Modular Exponent Cipher.');
-                actionButton.disabled = false;
+                // Modular Exponent Cipher Decryption
+                const phiP = P - 1; // Assuming P is prime
+                const d = modInverse(e, phiP);
+                console.log("D: ", d);
+                if (d === null) {
+                    alert('Cannot compute modular inverse of e. Decryption is not possible.');
+                    actionButton.disabled = false;
+                    return;
+                }
+        
+                const decryptedText = modularExponentDecrypt(encryptedText, d, P);
+                textTitle.textContent = 'Decrypted Text (Modular Exponent Cipher)';
+                typeWriterEffect(textContent, decryptedText, 2, function() {
+                    actionButton.disabled = false;
+                });
+                actionButton.textContent = 'Encrypt';
             }
         } else {
             actionButton.disabled = false;
@@ -240,6 +254,23 @@ function visualizeModularCipher() {
     ctx.fillText(`Modulus (P): ${P}`, canvas.width - 120, 60);
 }
 
+function modularExponentDecrypt(input, d, P) {
+    let result = '';
+    const tokens = input.split(' ');
+
+    for (let token of tokens) {
+        if (token.match(/^\d+$/)) {
+            const C = parseInt(token);
+            const L = modPow(C, d, P);
+            const ch = String.fromCharCode(L + 'A'.charCodeAt(0));
+            result += ch;
+        } else {
+            result += token;
+        }
+    }
+
+    return result;
+}
 
 function findShift(encryptedFrequency, englishFrequency) {
     // Find the most frequent letter in the encrypted text
