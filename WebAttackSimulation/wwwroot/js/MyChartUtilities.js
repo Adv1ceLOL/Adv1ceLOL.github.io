@@ -290,6 +290,39 @@ class MyChartUtilities {
       return [MeanMean, MeanVariance];
   }
 
+  static VarianceMeanAndVarianceVariance(mean, variance) {
+    let meanOfMeans = 0;
+    let meanOfVariances = 0;
+    let varianceOfMeans = 0;
+    let varianceOfVariances = 0;
+
+    // Calculate the mean of the values in the mean array
+    for (let i = 0; i < mean.length; i++) {
+        meanOfMeans += mean[i];
+    }
+    meanOfMeans /= mean.length;
+
+    // Calculate the mean of the values in the variance array
+    for (let i = 0; i < variance.length; i++) {
+        meanOfVariances += variance[i];
+    }
+    meanOfVariances /= variance.length;
+
+    // Calculate the variance of the values in the mean array
+    for (let i = 0; i < mean.length; i++) {
+        varianceOfMeans += Math.pow(mean[i] - meanOfMeans, 2);
+    }
+    varianceOfMeans /= mean.length;
+
+    // Calculate the variance of the values in the variance array
+    for (let i = 0; i < variance.length; i++) {
+        varianceOfVariances += Math.pow(variance[i] - meanOfVariances, 2);
+    }
+    varianceOfVariances /= variance.length;
+
+    return [varianceOfMeans, varianceOfVariances];
+}
+
   static drawRectangles(ctx, histRectN, intervals1, intervals2, numIntervals) {
       //console.log("Intervals1:", JSON.stringify(intervals1));
       //console.log("Intervals2:", JSON.stringify(intervals2));

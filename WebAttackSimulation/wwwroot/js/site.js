@@ -129,25 +129,23 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log("Mean and Variance", i);
                 MyChartUtilities.MeanAndVariance(intervalsMean, intervalsVar, numIntervalsInput.value, numDrawsInput.value, i, meanArray, varianceArray, 0);
             }
+            if(window.parent.location.href.includes('hw7.html')){      
+                const [MeanMean, MeanVariance] = MyChartUtilities.MeanMeanAndMeanVariance(meanArray, varianceArray);
+                //console.log("Mean of the Mean: " + MeanMean + " Mean of the Variance: " + MeanVariance);
+            
+                // Send data to hw7.html
+                const data = {
+                    meanArray: meanArray,
+                    varianceArray: varianceArray,
+                    MeanMean: MeanMean,
+                    MeanVariance: MeanVariance,
+                    TheoreticalMean: theoreticalMean,
+                    TheoreticalVariance: theoreticalVariance
+                };
+                window.parent.postMessage(data, '*');
 
-            const [MeanMean, MeanVariance] = MyChartUtilities.MeanMeanAndMeanVariance(meanArray, varianceArray);
-            //console.log("Mean of the Mean: " + MeanMean + " Mean of the Variance: " + MeanVariance);
-           
-            // Send data to hw7.html
-            const data = {
-                meanArray: meanArray,
-                varianceArray: varianceArray,
-                MeanMean: MeanMean,
-                MeanVariance: MeanVariance,
-                TheoreticalMean: theoreticalMean,
-                TheoreticalVariance: theoreticalVariance
-            };
-            window.parent.postMessage(data, '*');
+                MyChartUtilities.drawRectangles(ctx, histRectN, intervalsMean, intervalsVar, numIntervalsInput.value);
 
-            MyChartUtilities.drawRectangles(ctx, histRectN, intervalsMean, intervalsVar, numIntervalsInput.value);
-
-
-            if (window.parent.location.href.includes('hw7.html')) {
                 // Create the "See Results" button
                 let seeResultsButton = document.getElementById('seeResultsButton');
                 if (!seeResultsButton) {
@@ -164,6 +162,53 @@ document.addEventListener("DOMContentLoaded", function() {
                         window.parent.postMessage({ action: 'scrollDown' }, '*');
                     });
         
+                    document.body.appendChild(seeResultsButton);
+                }
+                
+            } else if(window.parent.location.href.includes('hw9.html')){      
+                const [varianceMean, varianceVariance] = MyChartUtilities.VarianceMeanAndVarianceVariance(meanArray, varianceArray);
+                console.log("varianceMean: ", varianceMean, "varianceVariance:", varianceVariance);
+
+                // Assuming you have access to the population variance and sample size
+                const populationVariance = 0.083; 
+                const sampleSize = numIntervalsInput.value; 
+
+                // Calculate Theoretical Variance of the Mean
+                const theoreticalMeanVar = populationVariance / sampleSize;
+
+                // Calculate Theoretical Variance of the Variance (assuming normal distribution)
+                const theoreticalVarianceVar = (2 * Math.pow(populationVariance, 2)) / (sampleSize - 1);
+
+            
+                // Send data to hw9.html
+                const data = {
+                    meanArray: meanArray,
+                    varianceArray: varianceArray,
+                    VarianceMean: varianceMean,
+                    VarianceVariance: varianceVariance,
+                    TheoreticalMean: theoreticalMeanVar,
+                    TheoreticalVariance: theoreticalVarianceVar
+                };
+                window.parent.postMessage(data, '*');
+            
+                MyChartUtilities.drawRectangles(ctx, histRectN, intervalsMean, intervalsVar, numIntervalsInput.value);
+            
+                // Create the "See Results" button
+                let seeResultsButton = document.getElementById('seeResultsButton');
+                if (!seeResultsButton) {
+                    seeResultsButton = document.createElement('button');
+                    seeResultsButton.id = 'seeResultsButton';
+                    seeResultsButton.textContent = 'See Detailed Results';
+                    seeResultsButton.style.position = 'relative';
+                    seeResultsButton.style.bottom = '270px';
+                    seeResultsButton.style.left = '800px';
+                    seeResultsButton.className = 'btn btn-primary';
+            
+                    seeResultsButton.addEventListener('click', function() {
+                        // Send a message to the parent window to scroll down
+                        window.parent.postMessage({ action: 'scrollDown' }, '*');
+                    });
+            
                     document.body.appendChild(seeResultsButton);
                 }
             }
