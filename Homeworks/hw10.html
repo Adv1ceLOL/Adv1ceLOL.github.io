@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 10</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../hw.css" rel="stylesheet">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['\\[', '\\]'], ['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .center-title {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .horizontal-table th, .horizontal-table td {
+            color: white !important;
+            text-align: center !important;
+        }
+        #functionCanvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <a class="navbar-brand" href="../index.html">
+            <img src="../Images/Navigation.jpg" alt="Navigation" style="height: 40px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link">Previous Homeworks: </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://sites.google.com/view/blogs-statistics-cyber/homework-1">Homework 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw2.html">Homework 2</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw3.html">Homework 3</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw4.html">Homework 4</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw5.html">Homework 5</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw6.html">Homework 6</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw7.html">Homework 7</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw8.html">Homework 8</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hw9.html">Homework 9</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="card rounded-border-gradient">
+            <div class="card-body">
+                <div class="header">
+                    <img src="/Images/DistributionJokejpg.jpg" alt="Statistical Independence" class="header-image">
+                    <h1 class="header-text">Homework 10</h1>
+                </div>
+            </div>
+        </div>     
+        <div class="content-section">
+            <h2 class="section-title">Theory</h2>
+            
+            <!-- First Subtitle: General Concepts of Sampling Mean and Variance -->
+            <h3 style="color: rgb(1, 240, 29);">General Concepts of Sampling Mean and Variance</h3>
+            <p>
+                When we talk about the sampling mean and sampling variance, we’re focusing on understanding how samples drawn from a population behave in terms of their average (mean) and their spread (variance).
+            </p>
+            <p>
+                <strong>1. Population vs. Sample:</strong><br>
+                <em>Population:</em> The entire set of data points you're interested in (e.g., heights of all adults in a city).<br>
+                <em>Sample:</em> A smaller subset drawn from the population (e.g., heights of 100 adults selected randomly).<br>
+                When you draw a sample, you compute:
+            </p>
+            <ul>
+                <li>The sample mean (\(\bar{X}\)): the average of your sample.</li>
+                <li>The sample variance (\(S^2\)): a measure of how spread out your sample values are around the mean.</li>
+            </ul>
+            <p>
+                These quantities are estimates of the true population mean (\(\mu\)) and population variance (\(\sigma^2\)).
+            </p>
+            <p>
+                <strong>2. Sampling Mean:</strong><br>
+                The sample mean is calculated as:
+            </p>
+            <p>
+                \[
+                \bar{X} = \frac{1}{n} \sum_{i=1}^{n} X_i
+                \]
+            </p>
+            <p>
+                where \(X_1, X_2, \ldots, X_n\) are your sample values, and \(n\) is the sample size.
+            </p>
+            <p>
+                <strong>Key Features of the Sampling Mean:</strong><br>
+                <em>Expected Value:</em> The sample mean is an unbiased estimator of the population mean:
+            </p>
+            <p>
+                \[
+                E[\bar{X}] = \mu
+                \]
+            </p>
+            <p>
+                <em>Variance:</em> The variance of the sample mean decreases as the sample size increases:
+            </p>
+            <p>
+                \[
+                \text{Var}(\bar{X}) = \frac{\sigma^2}{n}
+                \]
+            </p>
+            <p>
+                Larger samples give more accurate estimates of the mean.
+            </p>
+            <p>
+                <em>Distribution:</em>
+            </p>
+            <ul>
+                <li>If the population follows a normal distribution, the sample mean also follows a normal distribution.</li>
+                <li>If the population is not normal, the Central Limit Theorem tells us that \(\bar{X}\) will approximate a normal distribution as \(n\) increases.</li>
+            </ul>
+            <p>
+                <strong>3. Sampling Variance:</strong><br>
+                The sample variance is calculated as:
+            </p>
+            <p>
+                \[
+                S^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2
+                \]
+            </p>
+            <p>
+                This is a measure of how spread out the sample data is around the sample mean.
+            </p>
+            <p>
+                <strong>Key Features of the Sampling Variance:</strong><br>
+                <em>Expected Value:</em> The sample variance is an unbiased estimator of the population variance:
+            </p>
+            <p>
+                \[
+                E[S^2] = \sigma^2
+                \]
+            </p>
+            <p>
+                <em>Distribution:</em>
+            </p>
+            <ul>
+                <li>The sampling variance does not follow a normal distribution. Instead, it follows a chi-squared distribution when the population is normal.</li>
+                <li>Specifically:
+                \[
+                \frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)
+                \]
+                This means the variance’s distribution depends on the sample size (\(n\)).
+                </li>
+            </ul>
+            <p>
+                <strong>4. Main Features of Their Distributions:</strong><br>
+                <em>Sampling Mean Distribution:</em>
+            </p>
+            <ul>
+                <li>Centered around the population mean (\(\mu\)).</li>
+                <li>Spread (standard deviation) shrinks as \(n\) increases:
+                \[
+                \text{SD}(\bar{X}) = \frac{\sigma}{\sqrt{n}}
+                \]
+                </li>
+                <li>Approximates a normal distribution for large \(n\) (Central Limit Theorem).</li>
+            </ul>
+            <p>
+                <em>Sampling Variance Distribution:</em>
+            </p>
+            <ul>
+                <li>Follows a chi-squared distribution (scaled by the population variance).</li>
+                <li>Becomes more concentrated around \(\sigma^2\) as \(n\) increases.</li>
+            </ul>
+            <p>
+                <strong>5. Central Limit Theorem (CLT): Why It’s Important:</strong><br>
+                The CLT states that, regardless of the population’s distribution, the sampling mean will be approximately normally distributed if the sample size is large enough. This is why we often assume normality in statistics when dealing with large samples.
+            </p>
+            <p>
+                <strong>6. Practical Implications:</strong><br>
+                <em>Reliability:</em>
+            </p>
+            <ul>
+                <li>The mean is more reliable than the variance with small samples because its distribution is more predictable (normal or close to normal).</li>
+                <li>Variance estimates are less reliable with small samples because the chi-squared distribution is highly skewed for small \(n\).</li>
+            </ul>
+            <p>
+                <em>Confidence Intervals:</em>
+            </p>
+            <ul>
+                <li>You can construct confidence intervals for the mean using the sampling distribution:
+                \[
+                \bar{X} \pm Z \cdot \frac{\sigma}{\sqrt{n}}
+                \]
+                </li>
+                <li>For variance, intervals are based on the chi-squared distribution.</li>
+            </ul>
+        
+            <!-- Second Subtitle: General Idea of Lebesgue–Stieltjes Integration -->
+            <h3 style="color: rgb(1, 240, 29);">General Idea of Lebesgue–Stieltjes Integration</h3>
+            <p>
+                The Lebesgue–Stieltjes integral is a generalization of the Lebesgue integral that incorporates a weighting function. It is useful for dealing with cases where integration depends on changes in a function (like a cumulative distribution function, or CDF, in probability theory).
+            </p>
+            <p>
+                <strong>1. Why Generalize the Lebesgue Integral?</strong><br>
+                The classic Lebesgue integral sums the values of a function over sets of inputs grouped by their function value (slicing horizontally). But sometimes, you want to weight the importance of different parts of the domain based on a function \(g(x)\), called a distribution function or weighting function.
+            </p>
+            <p>
+                The Lebesgue–Stieltjes integral integrates a function \(f(x)\) with respect to another function \(g(x)\) (rather than \(x\)), allowing it to handle more complex relationships between variables.
+            </p>
+            <p>
+                <strong>2. Definition</strong><br>
+                The Lebesgue–Stieltjes integral of \(f(x)\) with respect to \(g(x)\) is written as:
+            </p>
+            <p>
+                \[
+                \int f(x) \, dg(x)
+                \]
+            </p>
+            <p>
+                Here’s what’s happening:
+            </p>
+            <ul>
+                <li>\(f(x)\): the function you’re integrating.</li>
+                <li>\(g(x)\): a monotonically increasing function representing the weighting or distribution.</li>
+            </ul>
+            <p>
+                This setup accommodates cases where \(g(x)\) might not be smooth (e.g., jumps or plateaus), allowing the integral to adapt to the underlying structure of \(g(x)\).
+            </p>
+            <p>
+                <strong>3. Key Idea in Simple Terms</strong><br>
+                Imagine you're summing \(f(x)\), but instead of equal steps (\(dx\)), the step sizes are dictated by \(g(x)\). If \(g(x)\) grows slowly, you add less weight; if \(g(x)\) jumps, you add more weight.
+            </p>
+            <h4 style="color: rgb(1, 240, 29);">Applications</h4>
+            <p>
+                <strong>1. In Probability Theory</strong><br>
+                The Lebesgue–Stieltjes integral is critical because:
+            </p>
+            <ul>
+                <li>Probability distributions are defined by their CDFs (\(F(x)\)), which are often non-smooth or piecewise.</li>
+                <li>For a random variable \(X\) with CDF \(F(x)\), the expected value can be written as:
+                \[
+                E[X] = \int x \, dF(x)
+                \]
+                </li>
+                <li>It works seamlessly for both discrete and continuous distributions, as \(F(x)\) captures all probabilities.</li>
+            </ul>
+            <p>
+                <strong>Example:</strong><br>
+                For a discrete random variable, \(F(x)\) jumps at specific points (probabilities), and the integral captures these jumps.<br>
+                For a continuous random variable, \(F(x)\) is smooth, and the integral reduces to the usual Lebesgue form.
+            </p>
+            <p>
+                <strong>2. In Measure Theory</strong><br>
+                The Lebesgue–Stieltjes integral connects functions with measures. A measure assigns a "size" or "weight" to subsets of a space.
+            </p>
+            <p>
+                If \(g(x)\) is a CDF, its derivative \(f(x)\) (when it exists) is the probability density function (PDF). The integral then bridges the gap between density functions and measures.
+            </p>
+        </div>
+        <div class="content-section">
+            <h2 class="section-title">Practice</h2>
+            <!--<iframe src="../WebAttackSimulation/Pages/Index.html"></iframe>-->
+        </div>
+
+        <div class="input-section mb-3 d-flex justify-content-center align-items-center">
+            <label for="inputA" class="mr-2">Lower Limit (a):</label>
+            <input type="number" id="inputA" value="-2" step="0.1" class="mr-3">
+            <label for="inputB" class="mr-2">Upper Limit (b):</label>
+            <input type="number" id="inputB" value="2" step="0.1" class="mr-3">
+            <button id="updateButton" class="btn btn-primary btn-sm">Update</button>
+        </div>
+        
+        <div class="content-section mt-4" id="results-section">
+            <h2 class="section-title">Numerical Integration Comparison</h2>
+            <div id="results">
+                
+            </div>
+        </div>
+
+        <div class="content-section" id="function-plot">
+            <h2 class="section-title">Function Plot</h2>
+            <canvas id="functionCanvas" width="600" height="400"></canvas>
+        </div>
+
+        <div class="content-section" id="observations-section">
+
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/WebAttackSimulation/wwwroot/js/MyChartUtilities.js"></script>
+    <script src="/WebAttackSimulation/wwwroot/js/integralCalculator.js"></script>
+    <script>
+        // Define the function to integrate
+        function gaussianFunction(x) {
+            return Math.exp(-x * x); // Gaussian function
+        }
+
+        // Add event listener to the Update button
+        document.getElementById('updateButton').addEventListener('click', updateCalculations);
+
+        // Initial calculation when the page loads
+        updateCalculations();
+
+        function updateCalculations() {
+            // Get the input values for 'a' and 'b'
+            const aInput = document.getElementById('inputA');
+            const bInput = document.getElementById('inputB');
+            const a = parseFloat(aInput.value);
+            const b = parseFloat(bInput.value);
+            const n = 1000; // Number of intervals
+
+            // Ensure 'a' is less than 'b'; if not, swap them
+            if (a >= b) {
+                alert("Lower limit 'a' must be less than upper limit 'b'.");
+                return;
+            }
+
+            // Create an instance of the IntegralCalculator
+            const calculator = new IntegralCalculator(gaussianFunction, a, b, n);
+
+            // Compute the integrals
+            const riemannResult = calculator.computeRiemannIntegral();
+            const lebesgueResult = calculator.computeLebesgueIntegral();
+
+            // Prepare the introduction and formulas using MathJax
+            const introduction = `
+                <p>
+                    In this exercise, we compute the definite integral of the Gaussian function:
+                    \\( f(x) = e^{-x^2} \\)
+                    over the interval \\( [${a}, ${b}] \\) using both the Riemann and Lebesgue integration methods.
+                </p>
+                <h3>Riemann Integral</h3>
+                <p>
+                    The Riemann integral approximates the area under the curve by partitioning the domain (x-axis) into small intervals and summing up the areas of rectangles:
+                    $$ \\int_{${a}}^{${b}} f(x) \\,dx \\approx \\sum_{i=0}^{n-1} f(x_i) \\Delta x = ${riemannResult.toFixed(5)} $$
+                    where \\( \\Delta x = \\frac{b - a}{n} \\).
+                </p>
+                <h3>Lebesgue Integral</h3>
+                <p>
+                    The Lebesgue integral partitions the codomain (y-axis) and sums the measure of the pre-images of these partitions:
+                    $$ \\int_{${a}}^{${b}} f(x) \\,dx = \\int_{0}^{\\infty} m\\left( \\{ x \\in [${a}, ${b}] : f(x) > y \\} \\right) \\,dy = ${lebesgueResult.toFixed(5)} $$
+                    where \\( m(S) \\) is the measure (length) of the set \\( S \\).
+                </p>
+            `;
+
+            // Display results in the "Results" section
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = `${introduction}`;
+
+            // Trigger MathJax rendering
+            if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+                MathJax.typesetPromise().then(() => {
+                    console.log("MathJax typesetting complete.");
+                }).catch((err) => console.error("MathJax typesetting failed:", err.message));
+            } else if (typeof MathJax !== 'undefined' && MathJax.typeset) {
+                MathJax.typeset();
+            }
+
+            // Plotting the Gaussian function and histograms
+            const canvas = document.getElementById('functionCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Number of intervals for histograms
+            const numIntervals = 50;
+
+            // Generate intervals for Riemann and Lebesgue integrals
+            const riemannIntervals = [];
+            const lebesgueIntervals = [];
+
+            // Calculate intervals for Riemann integral (partitioning x-axis)
+            for (let i = 0; i < numIntervals; i++) {
+                const x0 = a + (i * (b - a)) / numIntervals;
+                const x1 = a + ((i + 1) * (b - a)) / numIntervals;
+                const fx0 = gaussianFunction(x0);
+                riemannIntervals.push({
+                    lower: x0,
+                    upper: x1,
+                    value: fx0,
+                    count: fx0
+                });
+            }
+
+            // Calculate intervals for Lebesgue integral (partitioning y-axis)
+            const yMin = 0;
+            const yMax = gaussianFunction(0); // Maximum value of the Gaussian function at x=0
+            for (let i = 0; i < numIntervals; i++) {
+                const y0 = yMin + (i * (yMax - yMin)) / numIntervals;
+                const y1 = yMin + ((i + 1) * (yMax - yMin)) / numIntervals;
+                const measure = computeLebesgueMeasure(y0, y1, a, b, n);
+                lebesgueIntervals.push({
+                    lower: y0,
+                    upper: y1,
+                    value: measure,
+                    count: measure
+                });
+            }
+
+            // Function to compute the measure for Lebesgue intervals
+            function computeLebesgueMeasure(y0, y1, a, b, n) {
+                const deltaX = (b - a) / n;
+                let measure = 0;
+                for (let i = 0; i < n; i++) {
+                    const x = a + i * deltaX;
+                    const y = gaussianFunction(x);
+                    if (y >= y0 && y < y1) {
+                        measure += deltaX;
+                    }
+                }
+                return measure;
+            }
+
+            // Draw the histograms
+            drawHistograms(ctx, riemannIntervals, lebesgueIntervals, canvas);
+        }
+
+        function drawHistograms(ctx, riemannIntervals, lebesgueIntervals, canvas) {
+            // Set up view rectangles
+            const riemannViewRect = {
+                x: 50,
+                y: 50,
+                width: (canvas.width - 150) / 2,
+                height: canvas.height - 100
+            };
+
+            const lebesgueViewRect = {
+                x: riemannViewRect.x + riemannViewRect.width + 50,
+                y: 50,
+                width: (canvas.width - 150) / 2,
+                height: canvas.height - 100
+            };
+
+            // Draw Riemann histogram
+            drawRiemannHistogram(ctx, riemannIntervals, riemannViewRect);
+
+            // Draw Lebesgue histogram
+            drawLebesgueHistogram(ctx, lebesgueIntervals, lebesgueViewRect);
+        }
+
+        // Function to draw the Riemann histogram
+        function drawRiemannHistogram(ctx, intervals, viewRect) {
+            const maxCount = Math.max(...intervals.map(interval => interval.count));
+            const barWidth = viewRect.width / intervals.length;
+
+            for (let i = 0; i < intervals.length; i++) {
+                const interval = intervals[i];
+                const x = viewRect.x + i * barWidth;
+                const height = (interval.count / maxCount) * viewRect.height;
+                const y = viewRect.y + viewRect.height - height;
+
+                ctx.fillStyle = 'rgba(0, 0, 255, 0.6)';
+                ctx.fillRect(x, y, barWidth, height);
+                ctx.strokeRect(x, y, barWidth, height);
+            }
+
+            // Label the histogram
+            ctx.fillStyle = 'white';
+            ctx.font = '14px Consolas';
+            ctx.fillText('Riemann Sum Histogram', viewRect.x, viewRect.y - 10);
+        }
+
+        // Function to draw the Lebesgue histogram
+        function drawLebesgueHistogram(ctx, intervals, viewRect) {
+            const maxCount = Math.max(...intervals.map(interval => interval.count));
+            const barHeight = viewRect.height / intervals.length;
+
+            for (let i = 0; i < intervals.length; i++) {
+                const interval = intervals[i];
+                const y = viewRect.y + i * barHeight;
+                const width = (interval.count / maxCount) * viewRect.width;
+                const x = viewRect.x;
+
+                ctx.fillStyle = 'rgba(0, 255, 0, 0.6)';
+                ctx.fillRect(x, y, width, barHeight);
+                ctx.strokeRect(x, y, width, barHeight);
+            }
+
+            // Label the histogram
+            ctx.fillStyle = 'white';
+            ctx.font = '14px Consolas';
+            ctx.fillText('Lebesgue Sum Histogram', viewRect.x, viewRect.y - 10);
+        }
+    </script>
+</body>
+</html>
