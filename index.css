@@ -1,28 +1,42 @@
 .header {
-    background-color: #67434F;
-    color: white;
+    background-color: #000000;
+    color: #d9ddd0;
     padding: 20px;
     text-align: center;
 }
 body {
     background-color: transparent !important; /* Make body background transparent */
     color: white !important; /* White text */
+    height: 100%;
 }
 .custom-navbar {
-    background-color: #67434F !important;
+    background-color: #000000 !important;
 }
 .btn-homework {
     margin: 10px;
-    background-color: #67434F; /* Change button background color */
-    border-color: #67434F; /* Change button border color */
+    background: linear-gradient(to right, #000000, #C3CCAF); /* Gradient background */
     color: white; /* Ensure button text is white */
-    border-color: black;
-    border-width: 0.7mm;
+    border: none; /* Remove default border */
+    padding: 10px 20px; /* Add padding to create space for the gradient border */
+    position: relative; /* Position relative to use pseudo-elements */
+    z-index: 1; /* Ensure the button content is above the pseudo-elements */
+    overflow: hidden; /* Hide overflow to ensure the pseudo-elements are contained */
 }
+
+.btn-homework::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: radial-gradient(circle, #000000 25%, #C3CCAF 100%); /* Radial gradient border */
+    z-index: -1; /* Place the pseudo-element behind the button content */
+    border-radius: 4px; /* Optional: Add border-radius for rounded corners */
+}
+
 .btn-block{
     width:fit-content !important;
-    
-    
 }
 .homework-image {
     width: 100%;
@@ -58,10 +72,10 @@ body {
     order: 3;
 }
 
-
 .img-fluid {
     height: auto;
     width: 100%;
+    max-width: 100% !important;
 }
 
 /* Frame styles */
@@ -69,19 +83,25 @@ figure {
     display: flex;
     width: 100%;
     height: auto;
-    margin: 1em auto;
-    align-items: center;
+    margin: 5em auto;
     justify-content: center;
     align-content: center;
     flex-direction: column;
     flex-wrap: nowrap;
+
 }
 
 .outerBevel { /* of frame */
+    display: flex;
     box-shadow: 4px 6px 12px 0 black;
     border-width: 5px;
     border-style: solid;
     border-color: rgb(109, 84, 58) rgb(24, 19, 13) rgb(24, 19, 13) rgb(109, 84, 58);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* width: 750px; */
+    /* height: 470px; */
 }
 
 .flatSurface { /* of frame */
@@ -99,7 +119,7 @@ figure {
     clear: both;
     height: auto;
     width: 100%;
-    padding: 7.5% 7.5% 10% 7.5%; /* Mat width */
+    padding: 4.5% 4.5% 4.5% 4.5%; /* Mat width */
     background-color: rgb(255,249,224);  /* Mat color */
     border-width: 3px; /* Gold edge of mat */
     border-style: solid;
@@ -110,22 +130,19 @@ figure {
     text-align: center;
     font-style: Helvetica;
     color: black;
-
     display: block;
     clear: both;
     height: auto;
     width: 100%;
-    
     padding: 2.5% 2.5% 2.5% 2.5%; /* Mat width */
     background-color: rgb(255,249,224);  /* Mat color */
     border-width: 3px; /* Gold edge of mat */
     border-style: solid;
     border-color: rgb(207, 166, 0) rgb(207, 166, 0) rgb(145, 110, 0) rgb(145, 110, 0);
     white-space: nowrap; /* Ensure text fits in one line */
-    padding: 0 10px; /* Add horizontal padding to keep text well inside */.mt-5, .my-5 {
-    margin-top: 3rem !important;
+    padding: 0 10px; /* Add horizontal padding to keep text well inside */
 }
-}
+
 .mt-5, .my-5 {
     margin-top: 0rem !important;
 }
@@ -136,14 +153,17 @@ figure {
     flex-wrap: nowrap;
     align-items: center; 
     justify-content: center;
-    font-family: "dancing script, cursive" !important;
+    font-family: "Dancing Script", cursive !important;
+    max-width: 1400px !important;
+    margin-left: auto !important; /* Center the container */
+    margin-right: auto !important; /* Center the container */
 }
 
 /* Background styles */
 html {
     --s: 100px; /* control the size */
-    --c1: #C3CCAF;
-    --c2: #67434F;
+    --c1: #000000;
+    --c2: #C3CCAF;
     
     --_s: calc(2*var(--s)) calc(2*var(--s));
     --_g: var(--_s) conic-gradient(at 40% 40%,#0000 75%,var(--c1) 0);
@@ -214,7 +234,7 @@ html {
         margin: 0; /* Remove margins on smaller screens */
         order: 0;
         flex-direction: column;
-        justify-content:center;
+        justify-content:right;
         align-items: flex-end; 
     }
     .homework-row {
