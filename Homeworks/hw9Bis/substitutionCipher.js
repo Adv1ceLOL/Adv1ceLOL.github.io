@@ -253,94 +253,208 @@ function updateTentativeKey(currentKey, newMapping) {
     return updatedKey;
 }
 
-// Update the analyzeFrequency event listener
+// Function to create the key adjustment table
+function createKeyAdjustmentTable() {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const rows = [];
+    const itemsPerRow = 7;
+    
+    for (let i = 0; i < alphabet.length; i += itemsPerRow) {
+        const row = alphabet.slice(i, i + itemsPerRow);
+        const cells = row.map(letter => `
+            <td>
+                ${letter} →
+                <select class="letter-select" data-letter="${letter}">
+                    <option value="_">_</option>
+                    ${alphabet.map(l => `
+                        <option value="${l}" ${window.currentAnalysis?.key[letter] === l ? 'selected' : ''}>
+                            ${l}
+                        </option>
+                    `).join('')}
+                </select>
+            </td>
+        `).join('');
+        rows.push(`<tr>${cells}</tr>`);
+    }
+    
+    return rows.join('');
+}
+
 // Event listener for 'Analyze Frequency' button
-document.getElementById('analyzeFrequency').addEventListener('click', () => {
-    const encryptedInput = document.getElementById('encryptedInput').value.toUpperCase();
-    if (!encryptedInput) {
-        alert('Please enter an encrypted message.');
+function validateKeyMapping(newKey) {
+    const usedValues = new Set();
+    const errors = [];
+
+    for (let [from, to] of Object.entries(newKey)) {
+        // Check if letter maps to itself
+        if (from === to) {
+            errors.push(`Letter ${from} cannot map to itself`);
+        }
+
+        // Check if mapping is already used
+        if (usedValues.has(to)) {
+            errors.push(`Letter ${to} is already mapped to another letter`);
+        }
+        usedValues.add(to);
+    }
+
+    return {
+        isValid: errors.length === 0,
+        errors
+    };
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // First, ensure decryption output container exists
+    const decryptionContainer = document.getElementById('decryptionOutput');
+    if (!decryptionContainer) {
+        console.error('Decryption output container not found');
         return;
     }
 
-    const analysisResult = analyzeEncryptedMessage(encryptedInput);
+    const style = document.createElement('style');
+    style.textContent = `
+        .custom-table {
+            background-color: #0d1d31;
+            color: white !important;
+        }
+        .custom-table td {
+            background-color: #0d1d31;
+            color: white !important;
+            border-color: #404040;
+        }
+        .letter-select {
+            background-color: #0d1d31;
+            color: white;
+            border: 1px solid #404040;
+        }
+        .custom-table select {
+            color: white;
+        }
+        .table-bordered {
+            border: 1px solid #404040;
+        }
+    `;
+    document.head.appendChild(style);
 
-    // Create tentative key list
-    let tentativeKeyList = '';
-    for (let encryptedLetter in analysisResult.tentativeKey) {
-        tentativeKeyList += `${encryptedLetter} → ${analysisResult.tentativeKey[encryptedLetter]}, `;
-    }
-    tentativeKeyList = tentativeKeyList.slice(0, -2); // Remove trailing comma and space
 
-    // Set up initial display with histogram
-    document.getElementById('decryptionOutput').innerHTML = `
-        <h4>Reversed Encrypted Message:</h4>
-        <pre style="color: white;">${analysisResult.reversedMessage}</pre>
-        <div class="chart-container">
-            <h4>Letter Frequency Analysis</h4>
-            <canvas id="decryptionFrequencyChart"></canvas>
-        </div>
-        <div id="analysisResults">
-            <h4>Tentative Substitution Key:</h4>
-            <pre style="color: white;">${tentativeKeyList}</pre>
-            <div class="form-group">
-                <label for="keyAdjustment">Adjust Key (Format: A->B, C->D):</label>
-                <input type="text" id="keyAdjustment" class="form-control" placeholder="E->A, T->B">
-                <button id="updateKey" class="btn btn-primary mt-2">Update Key</button>
-            </div>
-            <h4>Partial Decryption:</h4>
-            <pre style="color: white;" id="currentDecryption">${applyTentativeKey(
-                analysisResult.reversedMessage,
-                analysisResult.tentativeKey
-            )}</pre>
-            <p>Previous attempts:</p>
-            <div id="decryptionHistory"></div>
-        </div>
+    // Add initial HTML structure
+    decryptionContainer.innerHTML = `
+        <div id="reversedMessage"></div>
+        <div class="chart-container"></div>
+        <div class="key-adjustment mt-3"></div>
+        <div id="currentDecryption"></div>
+        <div id="decryptionHistory"></div>
     `;
 
-    // Calculate max count and render histogram
-    const maxCount = Math.max(...Object.values(analysisResult.counts)) || 1;
-    renderCountsChart(
-        'decryptionFrequencyChart',
-        analysisResult.counts,
-        'Letter Frequency Distribution',
-        'rgba(0, 0, 255, 0.7)',
-        maxCount
-    );
+    // Event listener for analyze frequency
+    const analyzeBtn = document.getElementById('analyzeFrequency');
+    if (analyzeBtn) {
+        analyzeBtn.addEventListener('click', () => {
+            const encryptedInput = document.getElementById('encryptedInput')?.value.toUpperCase();
+            if (!encryptedInput) {
+                alert('Please enter an encrypted message.');
+                return;
+            }
 
-    // Store current state
-    window.currentAnalysis = {
-        message: analysisResult.reversedMessage,
-        key: analysisResult.tentativeKey,
-        attempts: []
-    };
+            const analysisResult = analyzeEncryptedMessage(encryptedInput);
 
-    // Add event listener for key updates
-    document.getElementById('updateKey').addEventListener('click', () => {
-        const newMapping = document.getElementById('keyAdjustment').value.toUpperCase();
-        const updatedKey = updateTentativeKey(window.currentAnalysis.key, newMapping);
-        
-        // Update current key
-        window.currentAnalysis.key = updatedKey;
-        
-        // Store attempt in history
-        window.currentAnalysis.attempts.push({
-            key: { ...updatedKey },
-            decryption: applyTentativeKey(window.currentAnalysis.message, updatedKey)
+            // Update all sections individually
+            document.getElementById('reversedMessage').innerHTML = `
+                <h4>Reversed Encrypted Message:</h4>
+                <pre style="color: white;">${analysisResult.reversedMessage}</pre>
+            `;
+
+            document.querySelector('.chart-container').innerHTML = `
+                <h4>Letter Frequency Analysis</h4>
+                <canvas id="decryptionFrequencyChart"></canvas>
+            `;
+
+            document.querySelector('.key-adjustment').innerHTML = `
+                <h4>Adjust Key:</h4>
+                <table class="table table-bordered custom-table">
+                    ${createKeyAdjustmentTable()}
+                </table>
+                <button id="applyKeyChanges" class="btn btn-primary mt-2">Apply Changes</button>
+            `;
+
+            // Initialize current state
+            window.currentAnalysis = {
+                message: analysisResult.reversedMessage,
+                key: analysisResult.tentativeKey,
+                attempts: []
+            };
+
+            // Render histogram
+            const maxCount = Math.max(...Object.values(analysisResult.counts)) || 1;
+            renderCountsChart(
+                'decryptionFrequencyChart',
+                analysisResult.counts,
+                'Letter Frequency Distribution',
+                'rgba(0, 0, 255, 0.7)',
+                maxCount
+            );
+
+            // Add event listener for key changes
+            const applyChangesBtn = document.getElementById('applyKeyChanges');
+            if (applyChangesBtn) {
+                applyChangesBtn.addEventListener('click', handleKeyChanges);
+            }
         });
+    }
+});
 
-        // Update displays
-        const newDecryption = applyTentativeKey(window.currentAnalysis.message, updatedKey);
-        document.getElementById('currentDecryption').textContent = newDecryption;
 
-        // Update key display
-        let updatedKeyList = '';
-        for (let letter in updatedKey) {
-            updatedKeyList += `${letter} → ${updatedKey[letter]}, `;
+// Separate function to handle key changes
+function handleKeyChanges() {
+    const currentDecryption = document.getElementById('currentDecryption');
+    const decryptionHistory = document.getElementById('decryptionHistory');
+    
+    if (!currentDecryption || !decryptionHistory || !window.currentAnalysis) return;
+
+    const newKey = {};
+    const dropdowns = document.querySelectorAll('.letter-select');
+    
+    // Clear previous error styling
+    dropdowns.forEach(dropdown => {
+        dropdown.style.borderColor = '#0d1d31';
+    });
+
+    // Collect new mappings
+    dropdowns.forEach(dropdown => {
+        const from = dropdown.dataset.letter;
+        const to = dropdown.value;
+        if (to !== '_') {
+            newKey[from] = to;
         }
-        document.querySelector('#analysisResults pre').textContent = 
-            updatedKeyList.slice(0, -2);
+    });
 
-        // Update history
+    // Validate new key
+    const validation = validateKeyMapping(newKey);
+    
+    if (!validation.isValid) {
+        alert(validation.errors.join('\n'));
+        return;
+    }
+
+    // Update current key and display
+    window.currentAnalysis.key = newKey;
+    window.currentAnalysis.attempts.push({
+        key: { ...newKey },
+        decryption: applyTentativeKey(window.currentAnalysis.message, newKey)
+    });
+
+    if (currentDecryption) {
+        currentDecryption.innerHTML = `
+            <h4>Current Decryption:</h4>
+            <pre style="color: white;">${applyTentativeKey(
+                window.currentAnalysis.message,
+                newKey
+            )}</pre>
+        `;
+    }
+
+    if (decryptionHistory) {
         const historyHTML = window.currentAnalysis.attempts
             .map((attempt, index) => `
                 <div class="mt-2">
@@ -349,11 +463,8 @@ document.getElementById('analyzeFrequency').addEventListener('click', () => {
                 </div>
             `)
             .join('');
-        document.getElementById('decryptionHistory').innerHTML = historyHTML;
-
-        // Clear input field
-        document.getElementById('keyAdjustment').value = '';
-    });
-});
+        decryptionHistory.innerHTML = historyHTML;
+    }
+}
 
 /*N->E, L->T, M->A, H->O, K->I, O->N, R->S, V->H, Y->R, A->D, B->L, C->U*/

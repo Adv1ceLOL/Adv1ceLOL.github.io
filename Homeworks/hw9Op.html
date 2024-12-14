@@ -210,6 +210,99 @@
                     </div>
                 </div>
             </div>
+
+            <div class="theory-section mt-4">
+                <h2 class="section-title">Statistical Analysis: Frequency Distribution and Entropy</h2>
+                
+                <div class="card mb-3">
+                    <div class="card-header" data-toggle="collapse" data-target="#freqDistribution">
+                        <h4>Frequency Distribution Changes</h4>
+                    </div>
+                    <div id="freqDistribution" class="collapse show">
+                        <div class="card-body">
+                            <p>The substitution cipher in this exercise preserves the overall frequency distribution of the plaintext message. For instance, if a letter like 'L' appears three times in the plaintext, its substitute, e.g., 'N,' will also appear three times in the ciphertext. However, after the permutation step (reversing the order of the encrypted text), local patterns such as digraphs or trigraphs (e.g., "LL" becoming "NN") are disrupted. This disruption can obscure common patterns and make frequency-based cryptanalysis more difficult.</p>
+                            
+                            <p>While the global frequency distribution remains the same (important for language patterns like 'E' being the most common letter in English), permutation disrupts localized statistical predictability, making it harder for attackers to guess specific sequences.</p>
+            
+                            <p><strong>Significance in Cryptography:</strong></p>
+                            <ul>
+                                <li>Substitution Cipher: The cipher alone is vulnerable to frequency analysis attacks, as it does not obscure the letter frequency.</li>
+                                <li>Permutation Step: Adds an additional layer of security by fragmenting recognizable patterns, improving the cipher's resistance to attacks such as digraph and trigram analysis.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="card mb-3">
+                    <div class="card-header" data-toggle="collapse" data-target="#entropyConsider">
+                        <h4>Entropy Considerations</h4>
+                    </div>
+                    <div id="entropyConsider" class="collapse">
+                        <div class="card-body">
+                            <p>Entropy measures the uncertainty or randomness in a message:</p>
+                            <ul>
+                                <li>Original Message Entropy: English text typically has an entropy of about 3.5 bits per character due to its inherent structure and predictability.</li>
+                                <li>Post-Substitution Entropy: Theoretical entropy of the cipher text increases slightly (~4.7 bits/character) because of uniform substitution probabilities, but the actual entropy remains limited by the redundancy in English text.</li>
+                                <li>Post-Permutation Entropy: The reversal of letters does not increase the true randomness but disrupts recognizable sequences. This does not significantly increase the entropy but makes cryptanalysis harder.</li>
+                            </ul>
+                            
+                            <p><strong>Security and Unpredictability:</strong> Higher entropy in the encrypted message indicates greater security, as it suggests that the message is less predictable and more resistant to attacks. However, the substitution-permutation combination in this exercise falls short of achieving the entropy levels seen in advanced cryptographic systems like AES (~8 bits per character).</p>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="card mb-3">
+                    <div class="card-header" data-toggle="collapse" data-target="#rsaComparison">
+                        <h4>Contrast with RSA Concepts</h4>
+                    </div>
+                    <div id="rsaComparison" class="collapse">
+                        <div class="card-body">
+                            <p>RSA encryption operates differently:</p>
+                            <ul>
+                                <li><strong>Frequency Distribution:</strong> RSA encryption does not rely on substitution but instead applies modular arithmetic (e.g., c = m^e mod n). This process randomizes the ciphertext without preserving the plaintext's frequency distribution.</li>
+                                <li><strong>Key Management:</strong> Unlike the substitution cipher, RSA uses key pairs (public and private keys) to ensure security. Frequency analysis is irrelevant because the ciphertext's statistical structure is entirely unrelated to the plaintext.</li>
+                                <li><strong>Security:</strong> RSA achieves security through computational difficulty (factoring large primes), while this toy cipher relies on obscurity and pattern disruption.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="card mb-3">
+                    <div class="card-header" data-toggle="collapse" data-target="#finalThoughts">
+                        <h4>Final Thoughts on Entropy and Security</h4>
+                    </div>
+                    <div id="finalThoughts" class="collapse">
+                        <div class="card-body">
+                            <p>Entropy is a cornerstone of cryptographic strength. High entropy implies unpredictability, reducing the likelihood of successful attacks based on patterns or frequency. Systems like AES excel by employing:</p>
+                            <ul>
+                                <li>Complex Substitution: Highly nonlinear mappings through S-boxes.</li>
+                                <li>Extensive Permutation and Mixing: Techniques like ShiftRows and MixColumns disrupt patterns.</li>
+                                <li>Key-Dependent XORs: Enhance randomness and security further.</li>
+                            </ul>
+                            
+                            <p>Although the exercise omits the XOR steps for simplicity, they are critical in modern ciphers like AES for preventing predictable transformations and ensuring high entropy. The toy cipher demonstrates foundational concepts but highlights the limitations of simple substitution and permutation when compared to robust cryptographic algorithms.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <style>
+                .example-box {
+                    border-radius: 5px;
+                    margin: 10px 0;
+                }
+                .math-box {
+                    font-family: "Courier New", monospace;
+                    border-radius: 5px;
+                    margin: 10px 0;
+                }
+                pre {
+                    background-color: transparent;
+                    border: none;
+                    margin: 0;
+                    padding: 0;
+                }
+            </style>
             <h2 class="section-title">AES-Inspired Encryption, Didactical "Toy" Version Exercise</h2>
             <p>Objective: Apply statistics to learn about encryption and decryption using a simple substitution and permutation cipher. Gain insight into the fundamentals of encryption, key management, and frequency analysis, similar to concepts used in AES and RSA, particularly focusing on how these methods affect frequency distribution and entropy.</p>
             <h3>Create a Substitution Cipher</h3>
