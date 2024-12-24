@@ -168,6 +168,42 @@ span {
 }
 
 
+.analysis-card {
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.stats-summary {
+    margin-top: 15px;
+    color: #ffffff;
+}
+
+.stats-details {
+    color: #ffffff;
+    padding: 15px;
+}
+
+.stats-details h5 {
+    color: #00ff00;
+    margin-top: 20px;
+}
+
+.stats-details ul {
+    margin-bottom: 25px;
+}
+
+.table-dark {
+    background-color: #2a2a2a;
+}
+
+canvas {
+    max-width: 100%;
+    margin: 15px 0;
+}
+
+
 /* Background Stars */
 .stars {
     position: fixed;

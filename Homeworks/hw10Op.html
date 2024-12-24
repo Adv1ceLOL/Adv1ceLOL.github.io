@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 10 Optional</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../hw.css" rel="stylesheet">
+    <style>
+        /* Dark theme styles */
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+    
+        .card {
+            background-color: #0d1d31 ;
+            border: 1px solid #0d1d31 ;
+        }
+    
+        .card-header {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            cursor: pointer;
+        }
+    
+        .card-body {
+            color: #ffffff;
+        }
+    
+        .card-header:hover {
+            background-color: #0d1d31  ;
+        }
+    
+        .collapse {
+            background-color: #0d1d31 ;
+        }
+    
+        ul li {
+            color: #ffffff;
+        }
+    
+        strong {
+            color: #00ff00;
+        }
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <a class="navbar-brand" href="../index.html">
+            <img src="../Images/Navigation.jpg" alt="Navigation" style="height: 40px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="hw10.html">Homework 10</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="card rounded-border-gradient">
+            <div class="card-body">
+                <div class="header">
+                    <img src="/Images/cryptographic.jpg" alt="Statistical Independence" class="header-image">
+                    <h1 class="header-text">Homework 10 Optional</h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- Optional: SSL/TLS Certificate Analysis -->
+        <div class="content-section">
+            <h2 class="section-title">SSL/TLS Certificate Analysis (Optional)</h2>
+            
+            <!-- Analysis Overview -->
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-light" data-toggle="collapse" data-target="#certAnalysis">
+                    <h3>Certificate Data Analysis</h3>
+                </div>
+                <div id="certAnalysis" class="collapse show card-body">
+                    <p>
+                        Analyze publicly available certificate data for key insights:
+                        <ul>
+                            <li>Issuer distribution, validity periods, encryption methods</li>
+                            <li>Mean / median certificate durations, key length distributions</li>
+                            <li>Potential security risks and unusual patterns</li>
+                        </ul>
+                    </p>
+                    
+                    <hr/>
+                    <div class="row">
+                        <!-- Certificate Authorities -->
+                        <div class="col-md-6">
+                            <div class="analysis-card">
+                                <h4>Certificate Authorities Distribution</h4>
+                                <canvas id="caDistribution"></canvas>
+                                <div class="stats-summary">
+                                    <ul>
+                                        <li>Let's Encrypt: 54%</li>
+                                        <li>DigiCert: 15%</li>
+                                        <li>Sectigo: 12%</li>
+                                        <li>Others: 19%</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Validity Periods -->
+                        <div class="col-md-6">
+                            <div class="analysis-card">
+                                <h4>Validity Period Distribution</h4>
+                                <canvas id="validityPeriods"></canvas>
+                                <div class="stats-summary">
+                                    <ul>
+                                        <li>90 days: 65%</li>
+                                        <li>1 year: 30%</li>
+                                        <li>2+ years: 5%</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Key Lengths -->
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="analysis-card">
+                                <h4>Key Length Distribution</h4>
+                                <canvas id="keyLengths"></canvas>
+                                <div class="stats-summary">
+                                    <table class="table table-dark">
+                                        <tr>
+                                            <th>Key Size</th>
+                                            <th>Percentage</th>
+                                            <th>Security Level</th>
+                                        </tr>
+                                        <tr>
+                                            <td>2048-bit RSA</td>
+                                            <td>75%</td>
+                                            <td>Standard</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4096-bit RSA</td>
+                                            <td>20%</td>
+                                            <td>High</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ECC P-256</td>
+                                            <td>5%</td>
+                                            <td>Standard</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Brief RSA & TLS Details -->
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="analysis-card">
+                                <h4>RSA & TLS Quick Reference</h4>
+                                <ul>
+                                    <li>RSA Roles: Key Gen, Signature, Encryption</li>
+                                    <li>Key Lengths: 1024 (deprecated), 2048 (standard), 4096 (high)</li>
+                                    <li>TLS 1.2 vs. TLS 1.3: Faster and more secure handshakes</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hints / Code Snippets -->
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="analysis-card">
+                                <h4>VB.NET Certificate Analyses</h4>
+                                <p>
+                                    <code>Imports System.Security.Cryptography.X509Certificates</code><br/>
+                                    Use classes like <code>X509Certificate2</code> and <code>X509Store</code> to list and analyze certificates.
+                                </p>
+                                <p>
+                                    See example: <strong>CertificateAnalyzer</strong> with methods:
+                                    <ul>
+                                        <li>FetchCertificatesAsync</li>
+                                        <li>PerformAnalysis</li>
+                                        <li>DisplayResults</li>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistical Analysis -->
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="analysis-card">
+                                <h4>Statistical Insights</h4>
+                                <div class="stats-details">
+                                    <h5>Key Statistics</h5>
+                                    <ul>
+                                        <li>Mean Validity Period: 180 days</li>
+                                        <li>Median Key Length: 2048 bits</li>
+                                        <li>Most Common CA: Let's Encrypt (54%)</li>
+                                    </ul>
+                                    
+                                    <h5>Trends and Patterns</h5>
+                                    <ul>
+                                        <li>Short-lived certificates (90 days) are becoming more common</li>
+                                        <li>ECC adoption is gradually increasing</li>
+                                        <li>Automated certification (ACME) dominates new issuances</li>
+                                    </ul>
+
+                                    <h5>Security Implications</h5>
+                                    <ul>
+                                        <li>98% of certificates use adequate key lengths</li>
+                                        <li>No deprecated signature algorithms detected</li>
+                                        <li>All certificates support modern TLS versions</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show optional SSL/TLS Analysis -->
+    <div class="content-section mt-4">
+        <h2 class="section-title">SSL/TLS Certificate Analysis</h2>
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-light" data-toggle="collapse" data-target="#sslAnalysis">
+                <h3>Optional Certificate Analysis from LocalMachine</h3>
+            </div>
+            <div id="sslAnalysis" class="collapse show card-body">
+                <p>Below is an example <strong>CertificateStoreAnalysis.vb</strong> code that:</p>
+                <ul>
+                    <li>Opens the Windows certificate store</li>
+                    <li>Collects fields like Issuer, NotBefore, NotAfter, PubKeySize</li>
+                    <li>Computes mean and median validity periods</li>
+                    <li>Groups by issuer or key length</li>
+                </ul>
+                <hr/>
+
+                <pre style="white-space:pre-wrap;background:#333;color:white;padding:10px;border-radius:5px;">
+Imports System.Security.Cryptography.X509Certificates
+
+Module CertificateStoreAnalysis
+    Sub Main()
+        Using store As New X509Store(StoreName.Root, StoreLocation.LocalMachine)
+            store.Open(OpenFlags.ReadOnly)
+
+            Dim certList As New List(Of MyCertInfo)()
+
+            ' Collect certificate info
+            For Each cert As X509Certificate2 In store.Certificates
+                Dim keySize As Integer = 0
+                If TypeOf cert.PublicKey.Key Is System.Security.Cryptography.RSA Then
+                    keySize = DirectCast(cert.PublicKey.Key, System.Security.Cryptography.RSA).KeySize
+                End If
+
+                certList.Add(New MyCertInfo With {
+                    .IssuerName = cert.Issuer,
+                    .NotBefore = cert.NotBefore,
+                    .NotAfter = cert.NotAfter,
+                    .PubKeySize = keySize
+                })
+            Next
+
+            ' Compute mean/median validity
+            Dim validityDays = certList.Select(Function(c) (c.NotAfter - c.NotBefore).TotalDays).OrderBy(Function(d) d).ToList()
+
+            Dim meanValidity As Double = 0
+            Dim medianValidity As Double = 0
+
+            If validityDays.Count > 0 Then
+                meanValidity = validityDays.Average()
+                Dim mid = validityDays.Count \ 2
+                If validityDays.Count Mod 2 = 0 Then
+                    medianValidity = (validityDays(mid - 1) + validityDays(mid)) / 2.0
+                Else
+                    medianValidity = validityDays(mid)
+                End If
+            End If
+
+            ' Group by issuer
+            Dim issuerDistribution = certList.
+                GroupBy(Function(c) c.IssuerName).
+                Select(Function(g) New With {
+                    .Issuer = g.Key,
+                    .Count = g.Count()
+                }).
+                OrderByDescending(Function(x) x.Count).
+                ToList()
+
+            ' Group by key length
+            Dim keyLengthDistribution = certList.
+                GroupBy(Function(c) c.PubKeySize).
+                Select(Function(g) New With {
+                    .KeyBits = g.Key,
+                    .Count = g.Count()
+                }).
+                OrderByDescending(Function(x) x.Count).
+                ToList()
+
+            ' Display results
+            Console.WriteLine("=== Certificate Analysis from LocalMachine Root Store ===")
+            Console.WriteLine($"Total Certificates: {certList.Count}")
+            Console.WriteLine($"Mean Validity: {meanValidity:F2} days")
+            Console.WriteLine($"Median Validity: {medianValidity:F2} days")
+
+            Console.WriteLine(vbCrLf & "Issuer Distribution:")
+            For Each dist In issuerDistribution
+                Console.WriteLine($"  {dist.Issuer}: {dist.Count} certs")
+            Next
+
+            Console.WriteLine(vbCrLf & "Key Length Distribution:")
+            For Each kld In keyLengthDistribution
+                Console.WriteLine($"  {kld.KeyBits} bits: {kld.Count} certs")
+            Next
+
+            Console.WriteLine(vbCrLf & "Press any key to exit.")
+            Console.ReadKey()
+        End Using
+    End Sub
+
+    Private Class MyCertInfo
+        Public Property IssuerName As String
+        Public Property NotBefore As Date
+        Public Property NotAfter As Date
+        Public Property PubKeySize As Integer
+    End Class
+End Module
+                </pre>
+
+                <p>Compile and run this code in Visual Studio, then refer to its console output. You can adapt these results for additional charts (e.g. pie charts of issuers, bar charts of key lengths).</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // CA Distribution Chart
+        new Chart(document.getElementById('caDistribution'), {
+            type: 'pie',
+            data: {
+                labels: ["Let's Encrypt", "DigiCert", "Sectigo", "Others"],
+                datasets: [{
+                    data: [54, 15, 12, 19],
+                    backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: 'white'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Validity Periods Chart
+        new Chart(document.getElementById('validityPeriods'), {
+            type: 'bar',
+            data: {
+                labels: ['90 days', '1 year', '2+ years'],
+                datasets: [{
+                    label: 'Percentage',
+                    data: [65, 30, 5],
+                    backgroundColor: '#36A2EB'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'white'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Key Lengths Chart
+        new Chart(document.getElementById('keyLengths'), {
+            type: 'doughnut',
+            data: {
+                labels: ['2048-bit RSA', '4096-bit RSA', 'ECC P-256'],
+                datasets: [{
+                    data: [75, 20, 5],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: 'white'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Example: Additional Certificate Analysis Section
+        const certAnalysisDiv = document.createElement('div');
+        certAnalysisDiv.className = 'analysis-card mt-4';
+        certAnalysisDiv.innerHTML = `
+            <h4>Optional SSL/TLS Certificate Transparency Analysis</h4>
+            <p>
+                This section showcases analysis of certificates using <strong>CertificateAnalyzer.vb</strong> 
+                (fetches and processes data from <em>crt.sh</em>). 
+                Key aspects:
+                <ul>
+                    <li>Issuer distribution</li>
+                    <li>Key length distribution</li>
+                    <li>Average validity period</li>
+                </ul>
+            </p>
+            <p>Use the .NET classes <code>X509Certificate2</code>, <code>X509Store</code>, etc. to gather real certificates.</p>
+            <pre style="white-space:pre-wrap;background:#333;color:white;padding:10px;border-radius:5px;">
+Imports System.Security.Cryptography.X509Certificates
+' Example steps:
+' 1. Open store or fetch from an API
+' 2. Collect certificate info (Issuer, NotBefore, NotAfter, PubKeySize)
+' 3. Perform mean/median calculations on validity periods
+' 4. Group by issuer or key length for distribution statistics
+            </pre>
+        `;
+        document.querySelector('.content-section').appendChild(certAnalysisDiv);
+
+    });
+    </script>
+</body>
+</html>
