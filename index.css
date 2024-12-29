@@ -30,8 +30,9 @@ body {
     left: -1px;
     right: -1px;
     bottom: -1px;
-    background: radial-gradient(circle, #000000 25%, #C3CCAF 100%); /* Radial gradient border */
-    z-index: -1; /* Place the pseudo-element behind the button content */
+    background: rgb(65, 40, 16); /* Radial gradient border */
+    border: 4px solid rgb(207, 166, 0);
+    z-index: -1; 
     border-radius: 4px; /* Optional: Add border-radius for rounded corners */
 }
 

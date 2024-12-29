@@ -1,0 +1,56 @@
+
+
+.btn-flip {
+  opacity: 1;
+  outline: 0;
+  color: #fff;
+  line-height: 40px;
+  position: relative;
+  text-align: center;
+  letter-spacing: 1px;
+  display: inline-block;
+  text-decoration: none;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-transform: uppercase;
+}
+.btn-flip:hover:after {
+  opacity: 1;
+  transform: translateY(0) rotateX(0);
+}
+.btn-flip:hover:before {
+  opacity: 0;
+  transform: translateY(50%) rotateX(90deg);
+}
+.btn-flip:after {
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  color: rgb(65, 40, 16);
+  display: block;
+  transition: 0.5s;
+  position: absolute;
+  background: rgb(207, 166, 0);
+  content: attr(data-back);
+  transform: translateY(-50%) rotateX(90deg);
+  margin: 6px;
+  border-radius: 5px;
+}
+.btn-flip:before {
+  top: 0;
+  left: 0;
+  opacity: 1;
+  color: rgb(207, 166, 0);
+  display: block;
+  padding: 0 30px;
+  line-height: 40px;
+  transition: 0.5s;
+  position: relative;
+  background: rgb(65, 40, 16);
+  content: attr(data-front);
+  transform: translateY(0) rotateX(0);
+  margin: 6px;
+  border-radius: 5px;
+}
+
+/*# sourceMappingURL=button.css.map */
