@@ -44,30 +44,48 @@
             color: #00ff00;
         }
     </style>
-
+        <link href="../navbar/navbar.css" rel="stylesheet">
+        <script src="https://unpkg.com/feather-icons"></script>
+        <script src="../navbar/navbar.js" defer></script>
 </head>
 <body>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
     <nav class="navbar navbar-expand-lg custom-navbar">
-        <a class="navbar-brand" href="../index.html">
-            <img src="../Images/Navigation.jpg" alt="Navigation" style="height: 40px;">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="hw10.html">Homework 10</a>
-                </li>
-            </ul>
+        <div class="header">
+            <a class="header__logo" href="../index.html">
+                <img src="../Images/Logo-Photoroom.png" style="width: 70px;">
+            </a>
+            <nav class="navbar">
+                <ul class="navbar__menu">
+                    <li class="navbar__item">
+                        <a href="hw10.html" class="navbar__link"><i data-feather="folder"></i>
+                            <span>HW 10</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </nav>
     <div class="container mt-4">
         <div class="card rounded-border-gradient">
             <div class="card-body">
-                <div class="header">
-                    <img src="/Images/cryptographic.jpg" alt="Statistical Independence" class="header-image">
-                    <h1 class="header-text">Homework 10 Optional</h1>
+                <div class="headerSecond">
+                    <img src="/Images/cryptographic.jpg" alt="Statistical Independence" class="headerSecond-image">
+                    <h1 class="headerSecond-text">Homework 10 Optional</h1>
                 </div>
             </div>
         </div>

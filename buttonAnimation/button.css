@@ -10,8 +10,9 @@
   letter-spacing: 1px;
   display: inline-block;
   text-decoration: none;
-  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  text-transform: uppercase;
+  font-family:'Times New Roman', Times, serif;
+  font-size: large;
+  font-weight: bold;
 }
 .btn-flip:hover:after {
   opacity: 1;

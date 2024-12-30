@@ -1,8 +1,10 @@
 .header {
-    background-color: #000000;
-    color: #d9ddd0;
+    background-color: #280004;
+    color: #a78488;
     padding: 20px;
     text-align: center;
+    font-style:italic;
+    font-family: 'Times New Roman', Times, serif;
 }
 body {
     background-color: transparent !important; /* Make body background transparent */
@@ -163,8 +165,8 @@ figure {
 /* Background styles */
 html {
     --s: 100px; /* control the size */
-    --c1: #000000;
-    --c2: #C3CCAF;
+    --c1: #280004;
+    --c2: #a78488;
     
     --_s: calc(2*var(--s)) calc(2*var(--s));
     --_g: var(--_s) conic-gradient(at 40% 40%,#0000 75%,var(--c1) 0);
